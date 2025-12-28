@@ -50,7 +50,7 @@ export default function Header() {
               </a>
 
               <div className="social_icons">
-                <a href="https://linkedin.com/in/delebayo-joe-f-2b0056b1/" aria-label="LinkedIn">
+                <a href="https://www.linkedin.com/in/delebayo-joeA/" aria-label="LinkedIn">
                   <i className="fab fa-linkedin"></i>
                 </a>
                 

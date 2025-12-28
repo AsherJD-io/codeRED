@@ -63,7 +63,7 @@ export default function Base({ menu }: any) {
         <img className="w-16 h-16 rounded-full" src={myPic} alt="" />
         <div className="social">
           <a
-            href="https://linkedin.com/in/delebayo-joe-f-2b0056b1/"
+            href="https://www.linkedin.com/in/delebayo-joeA//"
             target="_blank"
             rel="noopener noreferrer"
           >

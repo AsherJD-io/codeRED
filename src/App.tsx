@@ -42,7 +42,7 @@ export default function App() {
 
             {/* MOBILE SOCIALS */}
             <div className="social_buttons">
-              <a href="https://www.linkedin.com/in/delebayo-joe-f-2b0056b1/" target="_blank" rel="noreferrer">
+              <a href="https://www.linkedin.com/in/delebayo-joeA/" target="_blank" rel="noreferrer">
                 <i className="fab fa-linkedin"></i>
               </a>
               
