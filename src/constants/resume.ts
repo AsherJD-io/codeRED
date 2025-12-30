@@ -75,7 +75,7 @@ const workExperiences: WorkExperience[] = [
   },
   {
     company: "Specogreeno Concerns Limited, Rivers, Nigeria",
-    role: "Operations & Technical Engineer",
+    role: "Service Engineer, Operations & Technical Engineer",
     startDate: "JUN 2019",
     endDate: "JUL 2020",
     achievements: [
@@ -83,14 +83,14 @@ const workExperiences: WorkExperience[] = [
       "Managed generator rental operations end-to-end, overseeing approximately 20 rental contracts, including documentation, compliance, and client coordination.",
       "Coordinated procurement of generator spare parts from authorized dealers, including Jubaili Bros Engineering Ltd (Trans Amadi, Port Harcourt), ensuring timely availability of critical components.",
       "Led deployment and operation of a ₦1M+ contract supplying a 1000 KVA diesel power system to the Rivers State Government Cassava Processing Initiative (Afam, Oyigbo LGA).",
-      "Extended generator service life through advanced mechanical diagnostics, reducing long-term maintenance costs.",
+      "Extended generator service life through advanced mechanical diagnostics, overhaul and cylinder heads pressure testing, reducing long-term maintenance costs.",
     ],
   },
   {
     company: "Kingslader Engineering Limited, Lagos, Nigeria",
     role: "Service Engineer Intern",
-    startDate: "SEP 2017",
-    endDate: "MAY 2018",
+    startDate: "DEC 2016",
+    endDate: "MAR 2018",
     achievements: [
       "Executed preventive and corrective maintenance on Caterpillar heavy-duty diesel generator sets across electrical, mechanical, and control subsystems.",
       "Performed scheduled inspections, diagnostics, and servicing for selected companies including UAC Foods, Ojota, Epoxy Oilserv Nigeria Ltd, Apapa and Sandtex, Ewekoro to ensure operational readiness under load conditions.",

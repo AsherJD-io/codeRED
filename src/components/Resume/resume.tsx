@@ -31,7 +31,7 @@ export default function Resume(props: ResumeProps) {
 
           <div className="buttons">
             <a
-              href="https://drive.google.com/file/d/1API4dDN7vCUxUWDPPNEOO3JFjxl_A8Sq/view?usp=sharing"
+              href="https://drive.google.com/file/d/1gWquqEBYGQYQqWtsjs2U0bF2xl_Rj3xb/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
             >
