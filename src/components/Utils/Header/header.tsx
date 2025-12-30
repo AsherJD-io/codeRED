@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../../../assets/svgs/codered-logo.svg';
-import './header.scss';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import logo from "../../../assets/svgs/codered-logo.svg";
+import "./header.scss";
 
 export default function Header() {
   const [isClosed, setIsClosed] = useState<boolean>(true);
@@ -19,7 +19,7 @@ export default function Header() {
 
         <div className="menu_btn_wrapper">
           <button
-            className={isClosed ? 'menu_btn' : 'menu_btn menu_btn_open'}
+            className={isClosed ? "menu_btn" : "menu_btn menu_btn_open"}
             onClick={toggleMenu}
           >
             <div className="menu_btn_line"></div>
@@ -33,13 +33,19 @@ export default function Header() {
           <div className="mobile_menu_container">
             <ul>
               <li>
-                <Link to="/" onClick={toggleMenu}>Home</Link>
+                <Link to="/" onClick={toggleMenu}>
+                  Home
+                </Link>
               </li>
               <li>
-                <Link to="/projects" onClick={toggleMenu}>Projects</Link>
+                <Link to="/projects" onClick={toggleMenu}>
+                  Projects
+                </Link>
               </li>
               <li>
-                <Link to="/resume" onClick={toggleMenu}>Résumé</Link>
+                <Link to="/resume" onClick={toggleMenu}>
+                  Résumé
+                </Link>
               </li>
             </ul>
 
@@ -50,10 +56,13 @@ export default function Header() {
               </a>
 
               <div className="social_icons">
-                <a href="https://www.linkedin.com/in/delebayo-joeA/" aria-label="LinkedIn">
+                <a
+                  href="https://www.linkedin.com/in/delebayo-joea/"
+                  aria-label="LinkedIn"
+                >
                   <i className="fab fa-linkedin"></i>
                 </a>
-                
+
                 <a href="https://github.com/AsherJD-io" aria-label="GitHub">
                   <i className="fab fa-github"></i>
                 </a>
@@ -61,7 +70,6 @@ export default function Header() {
                 <a href="https://x.com/23asher_io" aria-label="X (Twitter)">
                   <i className="fab fa-x-twitter"></i>
                 </a>
-                
               </div>
             </div>
           </div>

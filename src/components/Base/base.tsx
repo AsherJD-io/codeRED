@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import myPic from '../../assets/imgs/my-pic.jpg';
-import arrow from '../../assets/svgs/arrow.svg';
-import navLine from '../../assets/svgs/menu-line.svg';
-import './base.scss';
+import { Link } from "react-router-dom";
+import myPic from "../../assets/imgs/my-pic.jpg";
+import arrow from "../../assets/svgs/arrow.svg";
+import navLine from "../../assets/svgs/menu-line.svg";
+import "./base.scss";
 
 export default function Base({ menu }: any) {
   return (
@@ -13,19 +13,26 @@ export default function Base({ menu }: any) {
             Hi! I'm <br /> Delebayo Fadejin.
           </h1>
           <div className="my-pic">
-            <img className="w-48 h-48 rounded-full" src={myPic} alt="my-avatar" />
+            <img
+              className="w-48 h-48 rounded-full"
+              src={myPic}
+              alt="my-avatar"
+            />
           </div>
         </div>
 
         <div className="description">
           <p>
             <span>
-              I am an enthusiastic and results-oriented{' '}
-              <span className="highlight">Data Engineer</span> with a strong foundation and industry
-              experience in{' '}
-              <span className="highlight">Energy</span>,{' '}
-              <span className="highlight">Agricultural and Biological Engineering</span>, focused on
-              building scalable backend solutions that drive real-world impact.
+              I’m a <span className="highlight">Data Engineer</span> with an
+              engineering background across{" "}
+              <span className="highlight">energy systems</span> and{" "}
+              <span className="highlight">
+                agricultural & environmental engineering
+              </span>
+              , focused on building reliable data pipelines and backend systems
+              that turn real-world operational data into analytics-ready
+              insights.
             </span>
           </p>
         </div>
@@ -63,7 +70,7 @@ export default function Base({ menu }: any) {
         <img className="w-16 h-16 rounded-full" src={myPic} alt="" />
         <div className="social">
           <a
-            href="https://www.linkedin.com/in/delebayo-joeA//"
+            href="https://www.linkedin.com/in/delebayo-joea/"
             target="_blank"
             rel="noopener noreferrer"
           >

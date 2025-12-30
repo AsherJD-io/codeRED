@@ -6,6 +6,7 @@ import "./resume.scss";
 
 type ResumeProps = {
   menu?: string[];
+  // eslint-disable-next-line no-unused-vars
   activeMenu?: (arg: number) => void;
 };
 
@@ -30,7 +31,7 @@ export default function Resume(props: ResumeProps) {
 
           <div className="buttons">
             <a
-              href="https://drive.google.com/file/d/1ArdlMmVnPnEeudkENHqwILZzoFAWHjoZ/view?usp=sharing"
+              href="https://drive.google.com/file/d/1API4dDN7vCUxUWDPPNEOO3JFjxl_A8Sq/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -43,10 +44,7 @@ export default function Resume(props: ResumeProps) {
 
         <div className="summary">
           {resume.bio.map((paragraph, key) => (
-            <p
-              key={key}
-              dangerouslySetInnerHTML={{ __html: paragraph }}
-            />
+            <p key={key} dangerouslySetInnerHTML={{ __html: paragraph }} />
           ))}
         </div>
 
@@ -58,9 +56,7 @@ export default function Resume(props: ResumeProps) {
         <div className="skills">
           {resume.skills.map((skill, key) => (
             <p key={`skill-${key}`}>
-              <span className="pr-2 font-bold text-white">
-                {skill.title}:{" "}
-              </span>
+              <span className="pr-2 font-bold text-white">{skill.title}: </span>
               {skill.body.map((val) => `${val}, `)}
             </p>
           ))}
@@ -107,9 +103,7 @@ export default function Resume(props: ResumeProps) {
                 {education.title}
                 <br />
                 <span>
-                  {education.startDate
-                    ? `${education.startDate} - `
-                    : ""}
+                  {education.startDate ? `${education.startDate} - ` : ""}
                   {education.endDate}
                 </span>
               </p>

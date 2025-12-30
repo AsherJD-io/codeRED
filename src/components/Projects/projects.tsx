@@ -19,6 +19,7 @@ type ProjectType = {
 
 type ProjectsProps = {
   menu?: string[];
+  // eslint-disable-next-line no-unused-vars
   activeMenu?: (arg: number) => void;
 };
 
@@ -29,13 +30,13 @@ const projects: ProjectType[] = [
     description: "My Portfolio Website",
     github: "https://github.com/AsherJD-io/codered",
     live: "https://codered-azure.vercel.app",
-    stack: "React + TypeScript + Vite + SCSS ",
+    stack: "React + TypeScript + SCSS + Vite",
     isPrivate: false,
     isLive: true,
   },
   {
     id: uuid(),
-    title: "Activity Tab Tracker",
+    title: "Tabs Activity Tracker",
     description: "A desktop monitoring tool",
     github: "https://github.com/AsherJD-io/Tabs-activity_tracker",
     live: "",
@@ -58,8 +59,7 @@ const projects: ProjectType[] = [
     title: "Undergraduate Project",
     description: "Mini evacuator for battery cage systems",
     github: "",
-    live:
-      "https://drive.google.com/file/d/14HWOratSFaNGelik2H1Q5oHGAxwcv2AY/view?usp=sharing",
+    live: "https://drive.google.com/file/d/1CisyfMfQD1r2V7Jhl8Xh1nVor8dvulMm/view?usp=sharing",
     stack: "Engineering Design + Fabrication + Automation",
     isPrivate: true,
     isLive: true,

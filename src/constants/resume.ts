@@ -42,9 +42,9 @@ export type Resume = {
 const name = "Delebayo Fadejin";
 
 const bio = [
-  "With a background in Agricultural and Environmental Engineering and hands-on experience in the energy sector and operations management, I aim to apply my data engineering skills and knowledge in the use of Python, TypeScript, JavaScript, C++ and many other stacks to building scalable data platforms, pipelines, and automated backend systems across these fields.",
-  "I love me data-driven innovations and bring a strong, proven commitment to making a positive impact, shaped by my track record so far. My work focuses on designing reliable data pipelines, building backend services, and using modern cloud and container technologies to support scalable, delivering systems that are efficient having real-world applications.",
-  "I’m open to a wide range of opportunities to learn, share ideas, and apply my skills across these fields. Reach out today—the world is&nbsp;&nbsp;<span class='highlight font-bold italic animate-pulse'>just a code away</span>&nbsp;&nbsp;from the next new innovation!"
+  "With a background in Agricultural and Environmental Engineering and hands-on experience across energy systems and operational environments, I work at the intersection of physical systems and data platforms. I apply data engineering practices using Python, TypeScript, JavaScript, C++, and related tooling to design scalable data pipelines, automated backend systems, and analytics-ready platforms that support real-world decision-making.",
+  "I love me data-driven innovations and bring a strong, proven commitment to making a positive impact, shaped by experience working with infrastructure, field operations, and production environments. My focus is on designing reliable data pipelines, building backend services, and applying modern cloud and container technologies to systems with real-world applications.",
+  "I’m open to opportunities that allow me to learn, collaborate, and apply data engineering across agriculture, energy, and sustainability-focused systems. Reach out today—the world is&nbsp;&nbsp;<span class='highlight font-bold italic animate-pulse'>just a code away</span>&nbsp;&nbsp;from the next meaningful innovation!",
 ];
 
 const workExperiences: WorkExperience[] = [
@@ -54,11 +54,11 @@ const workExperiences: WorkExperience[] = [
     startDate: "JAN 2023",
     endDate: "PRESENT",
     achievements: [
-      "Acted as primary operational support to the Facility Manager, coordinating cross-functional teams and stepping in as acting Facility Manager when required, contributing to a ~20% reduction in facility-related downtime and improved service continuity.",
-      "Oversaw day-to-day facility operations and maintenance, ensuring full safety and regulatory compliance, zero reportable safety incidents, and sustaining ~95% functional uptime across building systems.",
-      "Implemented process and workflow improvements across facility operations, reducing bottlenecks by ~25% and increasing departmental productivity by ~30%, enabling faster turnaround of operational requests.",
-      "Supported workforce well-being and workplace efficiency initiatives, contributing to a ~20% reduction in facility-related complaints and improved employee satisfaction across operational teams."
-    ]
+      "Supported facility operations and cross-functional teams, stepping in as acting Facility Manager when required and contributing to improved service continuity across building systems.",
+      "Monitored performance of critical infrastructure to ensure regulatory compliance, zero reportable safety incidents, and consistently high operational uptime.",
+      "Analyzed workflow bottlenecks and service turnaround data, improving response times and operational efficiency across facility operations.",
+      "Implemented structured issue tracking and feedback analysis, reducing recurring facility-related complaints and improving workplace experience.",
+    ],
   },
   {
     company: "Caspian Pacific Group | Lagos, Nigeria",
@@ -66,13 +66,12 @@ const workExperiences: WorkExperience[] = [
     startDate: "AUG 2020",
     endDate: "DEC 2022",
     achievements: [
-      "Served as technical support for Caspian Pacific Group and its subsidiaries, managing software, hardware, and web infrastructure across Nigeria, the UK, and the UAE while maintaining ~98% uptime for critical systems.",
-      "Oversaw incident response and troubleshooting workflows, resolving ~90% of technical issues within 24 hours and ensuring business continuity across distributed teams.",
-      "Produced and maintained technical documentation, reports, and drawings, sourcing accurate engineering data to support internal projects and external deliverables with ~95% documentation accuracy.",
-      "Delivered creative and visual design solutions for internal and client-facing projects across the Group, acting as the primary design resource for multiple business units.",
-      "Contributed to a smart metering deployment in Lekki (Alfa Bay), supporting system integration and validation that led to a ~30% improvement in energy service efficiency and a ~25% reduction in billing errors.",
-      "Supported software automation and system integration initiatives for the tax and audit unit (RFR Consulting), improving audit workflow efficiency by ~20%."
-    ]
+      "Provided technical and infrastructure support across subsidiaries in Nigeria, the UK, and the UAE, maintaining high availability of business-critical systems.",
+      "Led incident response workflows, improving visibility into recurring system and operational issues.",
+      "Produced and maintained technical documentation, engineering reports, and drawings by sourcing and validating project data.",
+      "Supported smart metering deployment in Lekki (Alfa Bay), assisting with system integration and validation that improved energy service reliability and reduced billing discrepancies.",
+      "Assisted software automation and system integration initiatives for the tax and audit unit (RFR Consulting), streamlining audit workflows.",
+    ],
   },
   {
     company: "Specogreeno Concerns Limited, Rivers, Nigeria",
@@ -80,11 +79,12 @@ const workExperiences: WorkExperience[] = [
     startDate: "JUN 2019",
     endDate: "JUL 2020",
     achievements: [
-      "Led maintenance strategy and fault resolution for a fleet of heavy-duty diesel generators, sustaining ~95% uptime through proactive diagnostics, preventive maintenance, and rapid incident response.",
-      "Owned generator rental operations end-to-end, serving as the primary technical and commercial point of contact; managed ~20 rental contracts, ensuring regulatory compliance, accurate documentation, and high client satisfaction.",
-      "Led the deployment, and operation of a ₦1M+ contract, 1000 KVA diesel power system supply to the Rivers State Government Cassava Processing Initiative in Afam, Oyigbo LGA, ensuring continuous power availability and enabling a ~20% increase in agricultural output.",
-      "Applied advanced mechanical diagnostics (including cylinder head and valve seat pressure testing) to extend generator service life by an average of ~2 years, reducing capital and maintenance costs."
-    ]
+      "Maintained and monitored heavy-duty diesel generator fleets, sustaining reliable power availability through preventive maintenance, diagnostics, and rapid fault resolution.",
+      "Managed generator rental operations end-to-end, overseeing approximately 20 rental contracts, including documentation, compliance, and client coordination.",
+      "Coordinated procurement of generator spare parts from authorized dealers, including Jubaili Bros Engineering Ltd (Trans Amadi, Port Harcourt), ensuring timely availability of critical components.",
+      "Led deployment and operation of a ₦1M+ contract supplying a 1000 KVA diesel power system to the Rivers State Government Cassava Processing Initiative (Afam, Oyigbo LGA).",
+      "Extended generator service life through advanced mechanical diagnostics, reducing long-term maintenance costs.",
+    ],
   },
   {
     company: "Kingslader Engineering Limited, Lagos, Nigeria",
@@ -92,45 +92,68 @@ const workExperiences: WorkExperience[] = [
     startDate: "SEP 2017",
     endDate: "MAY 2018",
     achievements: [
-      "Executed preventive and corrective maintenance on Caterpillar heavy-duty diesel generator sets, covering electrical systems, mechanical assemblies, and control components.",
-      "Conducted scheduled weekly inspections and servicing, including fault diagnostics, component testing, lubrication, and operational readiness checks to ensure system reliability.",
-      "Performed troubleshooting and repair support for electrical and mechanical faults, contributing to reduced downtime and improved generator performance under operational conditions.",
-    ]
-  }
+      "Executed preventive and corrective maintenance on Caterpillar heavy-duty diesel generator sets across electrical, mechanical, and control subsystems.",
+      "Performed scheduled inspections, diagnostics, and servicing for selected companies including UAC Foods, Ojota, Epoxy Oilserv Nigeria Ltd, Apapa and Sandtex, Ewekoro to ensure operational readiness under load conditions.",
+      "Supported spare-parts sourcing and logistics by liaising with Mantrac Nigeria (Oregun, Lagos) for Caterpillar generator components.",
+    ],
+  },
 ];
 
 const skills: Skill[] = [
-  { title: "Languages", body: ["Python", "JavaScript", "TypeScript", "Go", "Arduino"] },
-  { title: "Frameworks/Libraries", body: ["React", "Nodejs", "Nextjs", "GraphQL", "Flask"] },
-  { title: "Storages/Databases", body: ["SQL", "MongoDB", "Neo4j", "Kafka"] },
-  { title: "Tooling", body: ["Git", "Google Cloud Console", "Docker", "Kubernetes"] }
+  {
+    title: "Languages",
+    body: ["Python", "JavaScript", "TypeScript", "Go"],
+  },
+  {
+    title: "Data & Backend",
+    body: ["SQL", "MongoDB", "Neo4j", "REST APIs", "GraphQL"],
+  },
+  {
+    title: "Frameworks & Tools",
+    body: ["Node.js", "React", "Next.js", "Docker", "Git"],
+  },
+  {
+    title: "Cloud & Systems",
+    body: ["Google Cloud Platform", "Kubernetes", "Linux"],
+  },
+  {
+    title: "Embedded & Data Acquisition",
+    body: ["Raspberry Pi", "Arduino"],
+  },
 ];
 
 const educations: Education[] = [
   {
-    title: "B.Sc Agricultural and Environmental Engineering, University of Ibadan, Oyo",
+    title:
+      "B.Sc Agricultural and Environmental Engineering, University of Ibadan, Oyo",
     endDate: "APR 2019",
     relevant: [
-      "Algebra",
       "Elementary Computer Programming",
       "Fluid Mechanics",
-      "Manufacturing Science I",
       "Computer Modelling of Agricultural Systems",
-      "Environmental Engineering"
-    ]
-  }
+      "Environmental Engineering",
+    ],
+  },
 ];
 
 const certifications: Certification[] = [
-  { title: "Introduction to Data Engineering - IBM", date: "2024" },
-  { title: "The Arduino Platform and C Programming - University of California, Irvine", date: "2023" },
-  { title: "Problem Solving Using Computational Thinking - University of Michigan", date: "2022" }
+  { title: "Introduction to Data Engineering – IBM", date: "2024" },
+  {
+    title:
+      "The Arduino Platform and C Programming – University of California, Irvine",
+    date: "2023",
+  },
+  {
+    title:
+      "Problem Solving Using Computational Thinking – University of Michigan",
+    date: "2022",
+  },
 ];
 
 const languages: Language[] = [
   { name: "English", level: "PROFICIENT" },
   { name: "Yoruba", level: "PROFICIENT" },
-  { name: "German", level: "BEGINNER" }
+  { name: "German", level: "BEGINNER" },
 ];
 
 const hobbies = ["Reading biographies", "Swimming", "Football", "Traveling"];
@@ -143,5 +166,5 @@ export const resume: Resume = {
   educations,
   certifications,
   languages,
-  hobbies
+  hobbies,
 };

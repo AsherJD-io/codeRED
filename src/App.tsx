@@ -34,22 +34,43 @@ export default function App() {
 
             <Routes>
               <Route path="/" element={<Mobile menu={menu} />} />
-              <Route path="/resume" element={<Resume menu={menu} activeMenu={() => {}} />} />
-              <Route path="/projects" element={<Projects menu={menu} activeMenu={() => {}} />} />
-              <Route path="/contact" element={<Contact activeMenu={() => {}} />} />
+              <Route
+                path="/resume"
+                element={<Resume menu={menu} activeMenu={() => {}} />}
+              />
+              <Route
+                path="/projects"
+                element={<Projects menu={menu} activeMenu={() => {}} />}
+              />
+              <Route
+                path="/contact"
+                element={<Contact activeMenu={() => {}} />}
+              />
               <Route path="*" element={<Error404 />} />
             </Routes>
 
             {/* MOBILE SOCIALS */}
             <div className="social_buttons">
-              <a href="https://www.linkedin.com/in/delebayo-joeA/" target="_blank" rel="noreferrer">
+              <a
+                href="https://www.linkedin.com/in/delebayo-joea/"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <i className="fab fa-linkedin"></i>
               </a>
-              
-              <a href="https://https://github.com/AsherJD-io" target="_blank" rel="noreferrer">
+
+              <a
+                href="https://https://github.com/AsherJD-io"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <i className="fab fa-github"></i>
               </a>
-              <a href="https://x.com/23asher_io" target="_blank" rel="noreferrer">
+              <a
+                href="https://x.com/23asher_io"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <i className="fab fa-x-twitter"></i>
               </a>
             </div>
@@ -64,10 +85,22 @@ export default function App() {
             <div className="main">
               <div className="pages_container">
                 <Routes>
-                  <Route path="/" element={<Resume menu={menu} activeMenu={() => {}} />} />
-                  <Route path="/resume" element={<Resume menu={menu} activeMenu={() => {}} />} />
-                  <Route path="/projects" element={<Projects menu={menu} activeMenu={() => {}} />} />
-                  <Route path="/contact" element={<Contact activeMenu={() => {}} />} />
+                  <Route
+                    path="/"
+                    element={<Resume menu={menu} activeMenu={() => {}} />}
+                  />
+                  <Route
+                    path="/resume"
+                    element={<Resume menu={menu} activeMenu={() => {}} />}
+                  />
+                  <Route
+                    path="/projects"
+                    element={<Projects menu={menu} activeMenu={() => {}} />}
+                  />
+                  <Route
+                    path="/contact"
+                    element={<Contact activeMenu={() => {}} />}
+                  />
                   <Route path="*" element={<Error404 />} />
                 </Routes>
               </div>

@@ -45,17 +45,21 @@ export default class MyForm extends Component<Record<string, never>, IState> {
     };
   }
 
+  // eslint-disable-next-line no-undef
   submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const form = e.currentTarget;
+    // eslint-disable-next-line no-undef
     const data = new FormData(form);
+    // eslint-disable-next-line no-undef
     const xhr = new XMLHttpRequest();
 
     xhr.open(form.method, form.action);
     xhr.setRequestHeader("Accept", "application/json");
 
     xhr.onreadystatechange = () => {
+      // eslint-disable-next-line no-undef
       if (xhr.readyState !== XMLHttpRequest.DONE) return;
 
       if (xhr.status === 200) {
@@ -124,7 +128,11 @@ export default class MyForm extends Component<Record<string, never>, IState> {
 
           <div className="form_section">
             <button type="submit">
-              {!loading ? "Send Message" : <i className="fas fa-ellipsis-h"></i>}
+              {!loading ? (
+                "Send Message"
+              ) : (
+                <i className="fas fa-ellipsis-h"></i>
+              )}
             </button>
           </div>
         </form>

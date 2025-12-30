@@ -57,11 +57,7 @@ export default function Project(props: ProjectProps) {
 
               {github2 ? (
                 <small>
-                  <a
-                    href={github2}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={github2} target="_blank" rel="noopener noreferrer">
                     <i className="fas fa-code-branch"></i> BE Code
                   </a>
                 </small>
