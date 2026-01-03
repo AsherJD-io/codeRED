@@ -70,12 +70,12 @@ const workExperiences: WorkExperience[] = [
       "Led incident response workflows, improving visibility into recurring system and operational issues.",
       "Produced and maintained technical documentation, engineering reports, and drawings by sourcing and validating project data.",
       "Supported smart metering deployment in Lekki (Alfa Bay), assisting with system integration and validation that improved energy service reliability and reduced billing discrepancies.",
-      "Assisted software automation and system integration initiatives for the tax and audit unit (RFR Consulting), streamlining audit workflows.",
+      "Assisted software automation and system integration initiatives for the tax and audit arm (RFR Professionals International Group), streamlining audit workflows.",
     ],
   },
   {
     company: "Specogreeno Concerns Limited, Rivers, Nigeria",
-    role: "Service Engineer, Operations & Technical Engineer",
+    role: "Operations & Technical Engineer",
     startDate: "JUN 2019",
     endDate: "JUL 2020",
     achievements: [
