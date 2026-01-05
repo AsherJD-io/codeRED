@@ -10,7 +10,7 @@ export default function Base({ menu }: any) {
       <div className="hero">
         <div className="intro_box">
           <h1>
-            Hi! I'm <br /> Delebayo Fadejin.
+            Hi! I'm <br /> Delebayo Asher.
           </h1>
           <div className="my-pic">
             <img

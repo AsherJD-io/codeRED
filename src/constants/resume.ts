@@ -39,7 +39,7 @@ export type Resume = {
   hobbies: string[];
 };
 
-const name = "Delebayo Fadejin";
+const name = "Delebayo Asher";
 
 const bio = [
   "With a background in Agricultural and Environmental Engineering and hands-on experience across energy systems and operational environments, I work at the intersection of physical systems and data platforms. I apply data engineering practices using Python, TypeScript, JavaScript, C++, and related tooling to design scalable data pipelines, automated backend systems, and analytics-ready platforms that support real-world decision-making.",

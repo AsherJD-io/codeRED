@@ -21,8 +21,8 @@ export default function Resume(props: ResumeProps) {
     <div className="resume">
       <Helmet
         title="Resume"
-        name="Delebayo Fadejin Resume"
-        content="Delebayo Fadejin - Data Engineer Resume"
+        name="Delebayo Asher Resume"
+        content="Delebayo Asher - Data Engineer Resume"
       />
 
       <div className="resume_container">
