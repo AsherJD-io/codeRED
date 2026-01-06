@@ -49,7 +49,6 @@ export default function App() {
               <Route path="*" element={<Error404 />} />
             </Routes>
 
-            {/* MOBILE SOCIALS */}
             <div className="social_buttons">
               <a
                 href="https://www.linkedin.com/in/delebayo-joea/"
@@ -58,9 +57,8 @@ export default function App() {
               >
                 <i className="fab fa-linkedin"></i>
               </a>
-
               <a
-                href="https://https://github.com/AsherJD-io"
+                href="https://github.com/AsherJD-io"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -105,6 +103,11 @@ export default function App() {
                 </Routes>
               </div>
             </div>
+          </div>
+
+          {/* 🔒 TRUE OVERLAY FOOTER */}
+          <div className="global-footer-overlay">
+            © 2025 AsherJD. All rights reserved.
           </div>
         </BrowserRouter>
       )}

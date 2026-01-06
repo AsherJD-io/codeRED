@@ -6,6 +6,7 @@ import "./contact.scss";
 
 interface ContactProps {
   menu?: string[];
+  // eslint-disable-next-line no-unused-vars
   activeMenu?: (arg: number) => void;
 }
 
@@ -20,8 +21,8 @@ export default function Contact(props: ContactProps) {
     <div className="contact">
       <Helmet
         title="Contact Me"
-        name="Contact Delebayo Fadejin"
-        content="Reach out to Delebayo Fadejin"
+        name="Contact Delebayo Asher"
+        content="Reach out to Delebayo Asher"
       />
 
       <Form />

@@ -78,7 +78,7 @@ export default function Projects(props: ProjectsProps) {
       <Helmet
         title="My Projects"
         name="Selected Projects"
-        content="Selected Delebayo Fadejin Projects"
+        content="Selected Delebayo Asher Projects"
       />
 
       <div className="group portfolio_showcase">
