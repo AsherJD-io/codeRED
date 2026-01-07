@@ -173,30 +173,6 @@ body {
 
 /*===== OVERLAY FOOTER (NON-LAYOUT, NON-JUMPY) =====*/
 
-.global-footer {
-  position: fixed;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.35);
-  pointer-events: none;
-  z-index: 5;
-  text-align: center;
-  white-space: nowrap;
-
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.global-footer.visible {
-  opacity: 1;
-}
-
-.global-footer.hidden {
-  opacity: 0;
-}
-
 .global-footer-overlay {
   position: fixed;
   bottom: 14px;
