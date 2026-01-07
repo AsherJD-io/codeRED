@@ -14,10 +14,26 @@ import Error404 from "./components/Error/error404";
 export default function App() {
   const [menu] = useState<string[]>(["active_menu", "", ""]);
   const [isLoading, setLoading] = useState(true);
+  const [footerVisible, setFooterVisible] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Fade / hide footer on interaction
+  useEffect(() => {
+    const hideFooter = () => setFooterVisible(false);
+
+    window.addEventListener("scroll", hideFooter, { once: true });
+    window.addEventListener("click", hideFooter, { once: true });
+    window.addEventListener("touchstart", hideFooter, { once: true });
+
+    return () => {
+      window.removeEventListener("scroll", hideFooter);
+      window.removeEventListener("click", hideFooter);
+      window.removeEventListener("touchstart", hideFooter);
+    };
   }, []);
 
   return (
@@ -105,8 +121,10 @@ export default function App() {
             </div>
           </div>
 
-          {/* 🔒 TRUE OVERLAY FOOTER */}
-          <div className="global-footer-overlay">
+          {/* GLOBAL OVERLAY FOOTER */}
+          <div
+            className={`global-footer ${footerVisible ? "visible" : "hidden"}`}
+          >
             © 2025 AsherJD. All rights reserved.
           </div>
         </BrowserRouter>
