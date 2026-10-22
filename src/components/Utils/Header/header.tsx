@@ -47,6 +47,12 @@ export default function Header() {
                   Résumé
                 </Link>
               </li>
+
+              <li>
+                <Link to="/writing" onClick={toggleMenu}>
+                  Writing
+                </Link>
+              </li>
             </ul>
 
             <div className="social_box">

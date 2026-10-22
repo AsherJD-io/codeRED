@@ -8,11 +8,12 @@ import Base from "./components/Base/base";
 import Mobile from "./components/Base/mobile";
 import Projects from "./components/Projects/projects";
 import Resume from "./components/Resume/resume";
+import Writing from "./components/Writing/writing";
 import Contact from "./components/Contact/contact";
 import Error404 from "./components/Error/error404";
 
 export default function App() {
-  const [menu] = useState<string[]>(["active_menu", "", ""]);
+  const [menu] = useState<string[]>(["active_menu", "", "", "", ""]);
   const [isLoading, setLoading] = useState(true);
   const [footerVisible, setFooterVisible] = useState(true);
 
@@ -58,6 +59,7 @@ export default function App() {
                 path="/projects"
                 element={<Projects menu={menu} activeMenu={() => {}} />}
               />
+              <Route path="/writing" element={<Writing />} />
               <Route
                 path="/contact"
                 element={<Contact activeMenu={() => {}} />}
@@ -111,6 +113,7 @@ export default function App() {
                     path="/projects"
                     element={<Projects menu={menu} activeMenu={() => {}} />}
                   />
+                  <Route path="/writing" element={<Writing />} />
                   <Route
                     path="/contact"
                     element={<Contact activeMenu={() => {}} />}

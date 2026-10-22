@@ -27,7 +27,19 @@ export default [
         document: "readonly",
         HTMLElement: "readonly",
         setTimeout: "readonly",
-        clearTimeout: "readonly"
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        fetch: "readonly",
+        AbortController: "readonly",
+        AbortSignal: "readonly",
+        URL: "readonly",
+        URLSearchParams: "readonly",
+        Request: "readonly",
+        Response: "readonly",
+        Headers: "readonly",
+        console: "readonly",
+        process: "readonly",
       }
     },
 
