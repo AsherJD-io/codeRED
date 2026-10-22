@@ -53,6 +53,12 @@ export default function Header() {
                   Writing
                 </Link>
               </li>
+
+              <li>
+                <Link to="/contact" onClick={toggleMenu}>
+                  Contact
+                </Link>
+              </li>
             </ul>
 
             <div className="social_box">

@@ -72,6 +72,15 @@ export default function Base({ menu }: any) {
               </Link>
             </small>
           </li>
+
+          <li className={menu[5]}>
+            <small>
+              05
+              <Link to="/contact">
+                <img src={navLine} alt="menu bullet" /> CONTACT
+              </Link>
+            </small>
+          </li>
         </ul>
       </nav>
 

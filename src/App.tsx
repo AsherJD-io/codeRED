@@ -13,7 +13,7 @@ import Contact from "./components/Contact/contact";
 import Error404 from "./components/Error/error404";
 
 export default function App() {
-  const [menu] = useState<string[]>(["active_menu", "", "", "", ""]);
+  const [menu] = useState<string[]>(["active_menu", "", "", "", "", ""]);
   const [isLoading, setLoading] = useState(true);
   const [footerVisible, setFooterVisible] = useState(true);
 
