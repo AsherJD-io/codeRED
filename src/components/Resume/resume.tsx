@@ -31,7 +31,7 @@ export default function Resume(props: ResumeProps) {
 
           <div className="buttons">
             <a
-              href="https://drive.google.com/file/d/1SQ-L2hd894SVvayGlyQbUK5RGB8EpQcb/view?usp=sharing"
+              href="https://drive.google.com/file/d/1dJoSM0Dksn_k4PwfquTXXvDvndGEYCeC/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -74,8 +74,10 @@ export default function Resume(props: ResumeProps) {
                 {experience.company} - {experience.role}
                 <span>
                   <br />
-                  {experience.startDate} -{" "}
-                  {experience.endDate ? experience.endDate : "CURRENT"}
+                  {experience.startDate}
+                  {experience.startDate && experience.endDate ? " - " : ""}
+                  {experience.endDate ? experience.endDate : ""}
+                  {experience.current ? " - Present" : ""}
                 </span>
               </p>
 
@@ -122,7 +124,23 @@ export default function Resume(props: ResumeProps) {
               <p key={`certification-${key}`} className="title">
                 {certification.title}
                 <br />
-                <span>{certification.date}</span>
+                <span>
+                  {certification.issuer} · {certification.date}
+                  {certification.url ? (
+                    <>
+                      {" · "}
+                      <a
+                        href={certification.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View credential
+                      </a>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </span>
               </p>
             ))}
           </section>
