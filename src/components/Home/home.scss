@@ -295,9 +295,15 @@
    The label above the scrolling tool strip. It uses the same treatment as the
    other section headings so it reads as one system, but sits inside the About
    section rather than being a section of its own, so it is not in the nav.
+
+   It carries the same top divider as the other section headings. It is a
+   heading in the page's own language, so it gets the line above it too, with
+   the same clearance the other headings have.
 */
 .home__tools-heading {
   margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
 }
 
 /* The restored phrase, in its original class names. */

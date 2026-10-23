@@ -32,7 +32,6 @@ export default function Experience() {
     const list = listRef.current;
     if (!list) return;
 
-    const scroller = list.closest(".App") ?? document.scrollingElement;
     /*
      * The reference line is a fraction of the VIEWPORT. `.App` spans the whole
      * document, so both its `height` and its `clientHeight` are the full
@@ -41,19 +40,9 @@ export default function Experience() {
      * area the visitor is actually reading.
      */
     const viewHeight = window.innerHeight;
-
-    const scrollerRect = scroller
-      ? scroller.getBoundingClientRect()
-      : ({
-          top: 0,
-          height: viewHeight,
-          bottom: viewHeight,
-        } as DOMRect);
+    const reference = viewHeight * 0.32;
 
     const listRect = list.getBoundingClientRect();
-    // Reference line: a fraction of the visible height, so the active node
-    // moves continuously instead of locking to the top or bottom.
-    const reference = scrollerRect.top + viewHeight * 0.32;
 
     const fill = fillRef.current;
     if (fill) {
@@ -64,16 +53,22 @@ export default function Experience() {
       fill.style.height = `${progress * 100}%`;
     }
 
+    /*
+     * The active node is the entry the reference line is currently inside,
+     * rather than the node geometrically nearest to it.
+     *
+     * Nearest-node has a failure mode: when the list sits entirely below the
+     * fold, every node is below the line and the nearest one is always the
+     * first, so the emphasis sticks to the first entry no matter how far the
+     * page is scrolled. Comparing the line against each item's own span keeps
+     * the emphasis with the entry actually being read.
+     */
     let best = 0;
-    let bestDistance = Number.POSITIVE_INFINITY;
-    nodeRefs.current.forEach((node, index) => {
-      if (!node) return;
-      const rect = node.getBoundingClientRect();
-      const distance = Math.abs(rect.top + rect.height / 2 - reference);
-      if (distance < bestDistance) {
-        bestDistance = distance;
-        best = index;
-      }
+    itemRefs.current.forEach((item, index) => {
+      if (!item) return;
+      const rect = item.getBoundingClientRect();
+      const inside = reference >= rect.top && reference < rect.bottom;
+      if (inside) best = index;
     });
 
     setActive((previous) => (previous === best ? previous : best));
@@ -100,7 +95,9 @@ export default function Experience() {
     /*
      * A short poll backs up the rAF-driven measurement. rAF is throttled to
      * zero in a backgrounded or hidden tab, which would otherwise leave the
-     * fill and the active node frozen at their first reading.
+     * fill and the active node frozen at their first reading. The poll also
+     * self-corrects: if the emphasis ever lands on an entry the line has left,
+     * the next tick moves it.
      */
     const timer = window.setInterval(measure, 250);
 
@@ -135,9 +132,9 @@ export default function Experience() {
       </h2>
 
       {/*
-        The résumé download sits above the divider line, at the section's
-        right-hand edge, so it reads as an action on the section rather than
-        part of the timeline.
+        The résumé download. It sits ABOVE the heading's rule line, at the
+        right-hand edge, so it reads as an action attached to the section rather
+        than a row in the timeline.
       */}
       <a
         className="experience__download"
@@ -146,7 +143,7 @@ export default function Experience() {
         rel="noopener noreferrer"
       >
         <i className="fas fa-download" aria-hidden="true" />
-        <span>Download CV</span>
+        <span>Download Résumé</span>
       </a>
       <ol className="timeline" ref={listRef}>
         <span className="timeline__track" aria-hidden="true">

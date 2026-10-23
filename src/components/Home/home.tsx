@@ -166,8 +166,11 @@ export default function Home() {
         {/*
           The strip gets its own heading. It is a label for the tools below
           the about copy, not a page section, so it is not offered in the nav.
+
+          It carries the same top divider as every other section heading, so
+          the strip is not a heading without a line above it.
         */}
-        <RevealHeading className="section-title">
+        <RevealHeading className="section-title home__tools-heading">
           <span className="section-title__tag">
             &lt;Skills &amp; tools /&gt;
           </span>

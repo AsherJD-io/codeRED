@@ -28,29 +28,31 @@
 }
 
 /*
-   The résumé download. It sits above the section's rule line, at the right
-   edge, so it reads as an action on the section rather than a row in the
-   timeline. Pulled up over the heading's rule with a negative margin so it
-   never collides with the tag or the line.
+   The résumé download. It sits ABOVE the heading's rule line, at the
+   right-hand edge, so it reads as an action attached to the section rather than
+   a row in the timeline.
+
+   It is a plain inline link, not a pill. The pill treatment added a border and
+   a radius that fought the line it sits beside, and its padding pushed it away
+   from the rule.
 */
 .experience__download {
   position: absolute;
-  top: 0;
+  /* Sitting on the section's own divider line, at the right edge. */
+  top: calc(var(--space-6) - var(--space-1));
   right: 0;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 0.4rem 1rem;
-  border: 1px solid var(--rule);
-  border-radius: var(--nav-radius);
-  background-color: transparent;
+  /* No padding: any box here would sit over the rule and break the line. */
+  padding: 0;
   color: var(--ink-muted);
   font-family: "air-regular";
   font-size: var(--xsmall-font);
+  line-height: 1;
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.2s linear, border-color 0.2s linear,
-    background-color 0.2s linear;
+  transition: color 0.2s linear;
 }
 
 .experience__download i {
@@ -59,9 +61,7 @@
 
 .experience__download:hover,
 .experience__download:focus-visible {
-  border-color: var(--ink-muted);
   color: var(--ink);
-  background-color: var(--bg-elevated);
 }
 
 .experience__download:focus-visible {
@@ -69,9 +69,17 @@
   outline-offset: 3px;
 }
 
-/* The heading keeps room for the download on the right. */
+/*
+   The heading's rule is the line the download sits under, and the download is
+   absolutely positioned, so it is outside the heading's flow. The heading
+   therefore needs no padding on the right: padding it would shorten the rule
+   and leave a gap in the line exactly where the link sits, which read as the
+   line being obscured.
+
+   The rule runs to the heading's edge, and the link sits clear above it.
+*/
 .experience .section-title {
-  padding-right: 12rem;
+  padding-right: 0;
 }
 
 /* The track sits in the gutter, clear of the text. */
