@@ -1,4 +1,14 @@
-/*===== IMPORTING FONTS =====*/
+/* ==========================================================================
+   CodeRED design system
+   Editorial / dark / engineering register.
+   References: KCee Live (calm baseline), Darshan Solanki (inset floating nav),
+   Syph Software (restrained scroll reveal), Taheer Ahmed (monospace labels).
+   ========================================================================== */
+
+/* ----- Importing fonts -----
+   Local Airbnb Cereal files, registered under the same aliases the original
+   portfolio used (air-regular, air-light, air-semibold, air-bold,
+   air-extrabold, air-black). */
 
 @font-face {
   font-family: "air-regular";
@@ -30,78 +40,75 @@
   src: url("./assets/fonts/AirbnbCereal-Black.ttf") format("truetype");
 }
 
+/* ----- Design tokens ----- */
+
+:root {
+  /* Brand accent — burgundy, used sparingly as a single accent role */
+  --accent: #7a203a;
+  --accent-hover: #9a2b4c;
+  --accent-soft: rgba(122, 32, 58, 0.32);
+
+  /* Neutrals — tiered ramp */
+  --bg: #101011;
+  --bg-elevated: #16161a;
+  --surface: #1b1b1f;
+  --surface-2: #212126;
+  --ink: #ffffff;
+  --ink-strong: #f4f4f5;
+  --ink-muted: #a6a6a7;
+  --ink-faint: #777778;
+  --rule: #2c2c31;
+
+  /* Type scale */
+  --h1-font: 2.5rem;
+  --h2-font: 36px;
+  --h3-font: 22px;
+  --project-font: 19px;
+  --semi-font: 16px;
+  --normal-font: 14px;
+  --small-font: 13px;
+  --xsmall-font: 12px;
+
+  /* Monospace for dates, labels, stack chips (Taheer Ahmed) */
+  --mono: "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, "Liberation Mono",
+    monospace;
+
+  /* Rhythm */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+  --space-6: 96px;
+
+  /* Nav */
+  --nav-h: 52px;
+  --nav-radius: 999px;
+}
+
+/* ----- Base ----- */
+
 html,
 body {
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   margin: 0;
   padding: 0;
   font-family: "air-regular";
-  background: #101011;
-  color: #fff;
+  background: var(--bg);
+  color: var(--ink);
 }
 
 #root {
-  height: 100%;
+  min-height: 100%;
 }
 
 .App {
-  height: 100%;
+  min-height: 100vh;
   position: relative;
-  /* ⛔ overflow: hidden REMOVED to allow overlay rendering */
-}
-
-.app-container {
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.app-container .m-fixed {
-  height: 100vh;
-  width: 50%;
-  display: flex;
-  justify-content: center;
-}
-
-.app-container .main {
-  height: 100%;
-  width: 50%;
-  overflow-y: auto;
-}
-
-.main::-webkit-scrollbar {
-  width: 7px;
-}
-
-.main::-webkit-scrollbar-track {
-  background: #101011;
-}
-
-.main::-webkit-scrollbar-thumb {
-  background: #101011;
-}
-
-.main::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-.app-container .main .pages_container {
-  padding: 8% 15% 8% 5%;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-p {
-  font-size: var(--normal-font);
-}
-
-@media (min-width: 1400px) {
-  .App {
-    max-width: 1600px;
-    margin: auto;
-  }
+  background-color: var(--bg);
+  /* The moving field and its texture live in BackgroundField; the page
+     background stays flat so the two never double up. */
 }
 
 body {
@@ -128,109 +135,533 @@ body {
   }
 }
 
-/*===== RESPONSIVE STYLING =====*/
-
-.mobile_container {
-  display: none;
+p {
+  font-size: var(--normal-font);
 }
 
-@media (min-width: 994px) and (max-width: 1200px) {
-  .App .app-container .fixed .base_container {
-    padding-left: 8%;
-  }
+/* ==========================================================================
+   Floating pill navigation
+   The pill and the booking CTA share one right-anchored group at the top of
+   the viewport, so they sit side by side and cannot overlap. The brand mark is
+   pinned to the top-left.
+   ========================================================================== */
 
-  .App .app-container .main .pages_container {
-    padding-right: 8%;
-  }
+/*
+   The top row. It is a real row in the content flow, inset to the reading
+   column so its left and right edges line up with the hero's. In the flow
+   rather than pinned to the viewport, so the row scrolls away with the page
+   instead of floating over the content.
+*/
+.site-header {
+  width: 100%;
+  max-width: min(92vw, 1360px);
+  margin: 0 auto;
+  padding: 14px var(--space-5) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
 
-  h1 {
-    font-size: 34px !important;
+/*
+   The right-anchored group: pill on the left, CTA on the right.
+
+   A stacking context of its own, and one high enough to sit above the hero
+   display. The header is an ordinary in-flow row and the display is a positioned
+   sibling, so without this the mobile menu is painted in DOM order behind the
+   terminal and every click lands on the portrait instead of the link.
+*/
+.pill-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  /* Anchors the mobile menu dropdown, which is absolutely positioned. */
+  position: relative;
+  z-index: 1000;
+}
+
+/*
+   The brand mark sits at the left edge of the row, aligned with the left edge
+   of the reading column where the hero begins.
+*/
+.pill-brand {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  /* A button, not a link: it replays the intro rather than navigating. */
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+.pill-brand:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill-bar,
+  .pill-brand {
+    transition: opacity 0.15s linear;
+  }
+}
+
+.pill-brand img {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+
+.pill-nav {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 3px;
+  border: 1px solid var(--rule);
+  border-radius: var(--nav-radius);
+  background-color: rgba(22, 22, 26, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.pill-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+}
+
+.pill-nav__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px;
+  border-radius: var(--nav-radius);
+  color: var(--ink-muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.2s linear, background-color 0.2s linear;
+}
+
+.pill-nav__link:hover,
+.pill-nav__link:focus-visible {
+  color: var(--ink);
+  background-color: var(--surface-2);
+}
+
+.pill-nav__link:focus-visible {
+  outline: none;
+}
+
+.pill-nav__link[aria-current="page"] {
+  color: var(--ink);
+  background-color: var(--accent-soft);
+}
+
+.pill-nav__link[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background-color: var(--accent);
+}
+
+/* ==========================================================================
+   Section headings — "< Section />" bracket tags (Ragini Pandey)
+   ========================================================================== */
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-size: var(--h2-font);
+  font-family: "air-bold";
+  line-height: 1.2;
+}
+
+.section-title__tag {
+  font-family: var(--mono);
+  font-size: 0.5em;
+  font-weight: 400;
+  color: var(--accent-hover);
+  letter-spacing: 0.04em;
+}
+
+.section-title__rule {
+  flex-grow: 1;
+  height: 1px;
+  background-color: var(--rule);
+}
+
+/* ==========================================================================
+   Booking CTA
+   ========================================================================== */
+
+.book-call {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.5rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--nav-radius);
+  background-color: var(--accent);
+  color: var(--ink);
+  font-family: "air-regular";
+  font-size: var(--small-font);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s linear, border-color 0.2s linear,
+    transform 0.2s linear;
+}
+
+.book-call:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.book-call:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Layout — one vertical column, scrollable.
+   The scroller is the viewport itself, not an inner pane. An inner
+   `height: 100%; overflow-y: auto` ancestor makes every `position: fixed`
+   descendant resolve against that pane, which is why the floating nav and
+   the back-to-top control drifted. Scrolling here is document scrolling.
+   ========================================================================== */
+
+html {
+  /*
+     The root must be exactly the viewport height, not the document height.
+     With `height: auto` the root grows to fit all content, its own scrollable
+     overflow becomes zero, and `documentElement.scrollTop` is pinned to 0 —
+     which is what stopped the nav and every scroll-driven animation from
+     working. `overflow-y: auto` on a viewport-height root gives the document
+     a real scrollable area.
+  */
+  height: 100%;
+  min-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /*
+     No `scroll-behavior: smooth` here. The browser's own anchor navigation
+     respects it, and a smooth anchor jump is animated: in a headless or
+     backgrounded context there are no animation frames for it to run on, so it
+     never lands and a direct hash load leaves the page at the top with the
+     target section off screen. Section-to-section moves are smooth because the
+     nav calls `scrollTo` with an explicit behaviour, which does not depend on
+     this property.
+  */
+}
+
+body {
+  /* The document grows inside the scrolling root; it is not the scroller. */
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+.App {
+  height: 100%;
+  overflow-y: visible;
+}
+
+.mobile_container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/*
+   The content canvas. A full-bleed page background with a reading surface
+   of ~92vw, capped near 1360px so a 1440px desktop is filled by the layout
+   rather than surrounded by empty space. The cap is fixed while the fluid
+   width tracks the viewport, so the margins grow and shrink naturally.
+*/
+.page-column {
+  width: 100%;
+  max-width: min(92vw, 1360px);
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 48px) var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* Below the cap the fluid width would collapse the margins too far. */
+@media (max-width: 1080px) {
+  .page-column {
+    max-width: min(94vw, 1360px);
+  }
+}
+
+@media (min-width: 1600px) {
+  .page-column {
+    max-width: min(92vw, 1400px);
   }
 }
 
 @media (max-width: 993px) {
-  .App {
-    overflow: auto;
-  }
-
-  .App .app-container {
-    display: none;
+  .page-column {
+    padding: calc(var(--nav-h) + 24px) var(--space-3) var(--space-4);
   }
 
   .mobile_container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 5%;
+    padding: 0;
   }
 
-  .mobile_container.set_height {
-    height: 90%;
-    height: -moz-available;
-    height: -webkit-fill-available;
+  /* On mobile the pill nav becomes a compact bar top-right with a menu toggle,
+     and the brand mark stays at the top-left, both inside the row. */
+  .site-header {
+    padding: 12px var(--space-3) 0;
+    gap: 10px;
+  }
+
+  .pill-brand img {
+    height: 32px;
+  }
+
+  .pill-nav {
+    height: 34px;
+    padding: 3px;
   }
 }
 
-/*===== OVERLAY FOOTER (NON-LAYOUT, NON-JUMPY) =====*/
+/* ==========================================================================
+   Copyright notice
+   ========================================================================== */
 
 .global-footer {
-  position: fixed;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: 11px;
   color: rgba(255, 255, 255, 0.35);
-  pointer-events: none;
-  z-index: 5;
   text-align: center;
   white-space: nowrap;
-
-  opacity: 0;
-  transition: opacity 0.6s ease;
+  line-height: 1.5;
+  padding: 24px 0 8px;
+  border-top: 1px solid var(--rule);
+  margin-top: var(--space-5);
 }
 
-.global-footer.visible {
-  opacity: 1;
-}
-
-.global-footer.hidden {
-  opacity: 0;
-}
-
-.global-footer-overlay {
+/*
+   Back-to-top. Portalled to the document body and pinned to the viewport's
+   lower-right corner with a fixed inset, so it is anchored to the window
+   rather than to the page column or any transformed ancestor. It stays in
+   that corner for the whole scroll.
+*/
+.back-to-top {
   position: fixed;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
-  color: #777778;
-  opacity: 0.75;
-  z-index: 9999;
-  pointer-events: none;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 300;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background-color: rgba(22, 22, 26, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  color: var(--ink-muted);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.25s linear, transform 0.25s linear,
+    border-color 0.25s linear, color 0.25s linear;
 }
 
-@media (max-width: 993px) {
-  .global-footer-overlay {
-    bottom: 72px; /* clears Explore button on mobile */
-  }
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
 }
 
-/*===== ANIMATION =====*/
+.back-to-top:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* The text label is dropped; the arrow alone is the control. */
+.back-to-top > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.back-to-top i {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   Motion — restrained, and disabled under prefers-reduced-motion
+   ========================================================================== */
+
+/*
+   The loading intro. The codeRED mark appears and drifts gently from side to
+   side while it pulses, then the main page is revealed. The animation is
+   finite so the intro always finishes and cannot trap the visitor.
+*/
+.intro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background-color: var(--bg);
+}
+
+.intro__logo {
+  display: block;
+  width: clamp(140px, 22vw, 220px);
+  height: auto;
+}
 
 @media (prefers-reduced-motion: no-preference) {
-  .loader {
-    animation: slide infinite 1.5s linear;
+  .intro__logo {
+    animation:
+      intro-pulse 1.1s ease-in-out infinite,
+      intro-drift 1.5s ease-in-out infinite;
   }
 }
 
-@keyframes slide {
-  from {
-    transform: scale(1);
-    opacity: 0;
+@keyframes intro-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
   }
-
-  to {
-    transform: scale(2);
+  50% {
     opacity: 1;
+  }
+}
+
+@keyframes intro-drift {
+  0%,
+  100% {
+    transform: translateX(-8px);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+}
+
+/* Scroll reveal — a single deliberate device, from Syph Software.
+   `--reveal-progress` runs 0 -> 1 as the element travels from the bottom of
+   the viewport to a viewport-height above it, so the opacity, the lift and the
+   ink colour are all functions of scroll position rather than a one-shot fade.
+
+   The floor is a var rather than a literal. A literal floor meant anything
+   whose progress was never painted (content below the fold when the page
+   loads, or a section reached without a scroll event) sat at 0.08 and read as
+   missing. With the var, the default is fully opaque and only a real
+   `--reveal-progress` pulls it back. */
+.reveal {
+  --reveal-floor: 1;
+  opacity: calc(var(--reveal-progress, 0) * (1 - var(--reveal-floor)) + var(--reveal-floor));
+  transform: translateY(calc((1 - var(--reveal-progress, 0)) * 22px));
+  transition: color 0.18s linear;
+  will-change: transform, opacity;
+}
+
+.reveal.is-visible {
+  /* Once revealed, the scroll-driven floor applies. */
+  --reveal-floor: 0.08;
+  opacity: calc(var(--reveal-progress, 0) * 0.92 + var(--reveal-floor));
+}
+
+/* Headings and body copy shift toward the accent as they settle, which is the
+   observed reference behaviour: muted on entry, resolved on arrival.
+   The `.reveal` element may itself be the heading, so both the element and its
+   heading descendants are covered. The extra `.reveal` in each selector is
+   deliberate: it raises specificity above the plain `.section-title` rule that
+   sets the base ink, so the progress-driven colour can actually win. */
+.reveal.is-visible.section-title,
+.reveal.is-visible.work_row__title,
+.reveal.is-visible.timeline__company,
+.reveal.is-visible .section-title,
+.reveal.is-visible .work_row__title,
+.reveal.is-visible .timeline__company {
+  color: color-mix(
+    in srgb,
+    var(--accent-hover) calc(var(--reveal-progress, 0) * 70%),
+    var(--ink-strong)
+  );
+}
+
+.reveal.is-visible.home__section-lede,
+.reveal.is-visible .home__section-lede,
+.reveal.is-visible .work_row__description {
+  color: color-mix(
+    in srgb,
+    var(--ink-strong) calc(var(--reveal-progress, 0) * 45%),
+    var(--ink-muted)
+  );
+}
+
+/*
+   Stagger. A small index-based delay keeps the editorial rhythm without
+   hiding anything: the elements are already revealed by scroll progress, this
+   only offsets the transition start so rows do not move in lockstep.
+*/
+.reveal--stagger-1.is-visible {
+  transition-delay: 0.06s;
+}
+
+.reveal--stagger-2.is-visible {
+  transition-delay: 0.12s;
+}
+
+/* Nothing moves and nothing waits for a reduced-motion reader. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro__logo {
+    animation:
+      intro-pulse 1.1s ease-in-out infinite,
+      intro-drift 1.5s ease-in-out infinite;
   }
 }

@@ -1,0 +1,139 @@
+/* ==========================================================================
+   Technology signal strip. A continuous, endless horizontal loop of the real
+   tools behind this portfolio.
+   ---------------------------------------------------------------------------
+   Font Awesome brand icons only. No brand logos and no emoji are used.
+   Reduced motion yields a stationary, completely readable strip.
+   ========================================================================== */
+
+.tools {
+  position: relative;
+  width: 100%;
+  padding: var(--space-4) 0;
+  overflow: hidden;
+}
+
+/* Two stacked lanes, each scrolling its own half of the stack. */
+.tools__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: tools-loop var(--tools-loop-seconds, 40s) linear infinite;
+}
+
+.tools__track--forward {
+  --tools-loop-seconds: 40s;
+  animation-name: tools-forward;
+}
+
+.tools__track--reverse {
+  --tools-loop-seconds: 40s;
+  animation-name: tools-reverse;
+}
+
+.tools__track + .tools__track {
+  /* Clearance so the pair reads as one strip rather than two rows. */
+  margin-top: 34px;
+}
+
+/* A hovered lane holds still; the class is removed on leave, so it resumes. */
+.tools__track.is-paused {
+  animation-play-state: paused;
+}
+
+/*
+   The mark is drawn bare: no tile, border, radius or background, so the lane
+   reads as a continuous ribbon of icons rather than a row of pods.
+*/
+.tools__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  margin-right: 44px;
+  color: var(--ink-muted);
+  transition: color 0.2s linear, transform 0.2s linear;
+}
+
+.tools__item:hover {
+  color: var(--ink-strong);
+  transform: scale(1.12);
+}
+
+.tools__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tools__icon svg {
+  width: 56px;
+  height: 56px;
+}
+
+/* The tool name is available to assistive technology and on hover, not drawn. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.tools__focus {
+  display: none;
+}
+
+/*
+   One iteration moves the track by exactly half its width, which is one full
+   group. Because the second group is an identical copy of the first, the
+   content arriving at the loop boundary is identical to the content leaving
+   it, so the wrap is invisible and no icon appears twice on screen at once.
+*/
+@keyframes tools-forward {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes tools-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tools__track {
+    animation: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 993px) {
+  .tools__item {
+    width: 46px;
+    height: 46px;
+    margin-right: 34px;
+  }
+
+  .tools__icon svg {
+    width: 46px;
+    height: 46px;
+  }
+
+  .tools__track + .tools__track {
+    margin-top: 26px;
+  }
+}

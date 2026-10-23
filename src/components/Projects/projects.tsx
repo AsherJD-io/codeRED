@@ -1,21 +1,9 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { v4 as uuid } from "uuid";
-import Project from "../Utils/Project/project";
 import Helmet from "../Utils/SEO/helmet";
+import { PROJECT_LIST } from "../../constants/projects";
+import RevealHeading from "../Utils/RevealHeading/revealheading";
 import "./projects.scss";
-
-type ProjectType = {
-  id: string;
-  title: string;
-  description: string;
-  github?: string;
-  github2?: string;
-  live?: string;
-  stack: string;
-  isPrivate: boolean;
-  isLive: boolean;
-};
 
 type ProjectsProps = {
   menu?: string[];
@@ -23,49 +11,13 @@ type ProjectsProps = {
   activeMenu?: (arg: number) => void;
 };
 
-const projects: ProjectType[] = [
-  {
-    id: uuid(),
-    title: "codeRED",
-    description: "My Portfolio Website",
-    github: "https://github.com/AsherJD-io/codered",
-    live: "https://codered-azure.vercel.app",
-    stack: "React + TypeScript + SCSS + Vite",
-    isPrivate: false,
-    isLive: true,
-  },
-  {
-    id: uuid(),
-    title: "Tabs Activity Tracker",
-    description: "A desktop monitoring tool",
-    github: "https://github.com/AsherJD-io/Tabs-activity_tracker",
-    live: "",
-    stack: "Python + Google Cloud Console + Matplotlib",
-    isPrivate: false,
-    isLive: false,
-  },
-  {
-    id: uuid(),
-    title: "Snake Game",
-    description: "React Snake Game with two gameplay modes",
-    github: "https://github.com/AsherJD-io/React-Snake-Game",
-    live: "https://react-snake-game.vercel.app",
-    stack: "JavaScript + React",
-    isPrivate: false,
-    isLive: true,
-  },
-  {
-    id: uuid(),
-    title: "Undergraduate Project",
-    description: "Mini evacuator for battery cage systems",
-    github: "",
-    live: "https://drive.google.com/file/d/1CisyfMfQD1r2V7Jhl8Xh1nVor8dvulMm/view?usp=sharing",
-    stack: "Engineering Design + Fabrication + Automation",
-    isPrivate: true,
-    isLive: true,
-  },
-];
-
+/**
+ * The dedicated /projects route.
+ *
+ * The same editorial presentation as the homepage work rows: large
+ * alternating image-and-copy spreads, one per project, so the two views read
+ * as one document. There is no selector rail and no card grid.
+ */
 export default function Projects(props: ProjectsProps) {
   useEffect(() => {
     if (props.activeMenu) {
@@ -74,28 +26,113 @@ export default function Projects(props: ProjectsProps) {
   }, [props]);
 
   return (
-    <div className="project">
+    <div className="project-page">
       <Helmet
-        title="My Projects"
+        title="Projects"
         name="Selected Projects"
-        content="Selected Delebayo Asher Projects"
+        content="Selected data engineering and software projects by Delebayo Asher"
       />
 
-      <div className="group portfolio_showcase">
-        {projects.map((project) => (
-          <Project key={project.id} {...project} />
+      <header className="page-head">
+        <RevealHeading className="section-title">
+          <span className="section-title__tag">&lt;Selected work /&gt;</span>
+          <span className="section-title__rule" aria-hidden="true" />
+        </RevealHeading>
+        <p className="page-head__intro">
+          Selected work across data platforms, procurement transparency and
+          product backends. Each entry lists the stack actually used, the
+          engineering I did on it, and the state it is in now.
+        </p>
+      </header>
+
+      <div className="project-rows">
+        {PROJECT_LIST.map((project, index) => (
+          <article
+            className={`project_row${index % 2 === 1 ? " is-right" : ""}`}
+            key={project.id}
+          >
+            <a
+              className="project_row__preview"
+              href={project.live || project.github || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${project.title} preview`}
+            >
+              <img
+                src={project.preview}
+                alt={`${project.title} preview`}
+                loading="lazy"
+              />
+            </a>
+
+            <div className="project_row__info">
+              <div className="project_row__meta">
+                {project.status ? (
+                  <span
+                    className={`project_row__status project_row__status--${project.status
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                  >
+                    {project.status}
+                  </span>
+                ) : null}
+                <span className="project_row__role">{project.role}</span>
+              </div>
+
+              <h3 className="project_row__title">{project.title}</h3>
+
+              <p className="project_row__description">{project.description}</p>
+
+              <p className="project_row__contribution">
+                <strong>What I built.</strong> {project.contribution}
+              </p>
+
+              <div className="project_row__stacks">
+                {project.stack.split(" · ").map((stack) => (
+                  <span key={stack} className="project_row__stack">
+                    {stack}
+                  </span>
+                ))}
+              </div>
+
+              <div className="project_row__links">
+                {project.live ? (
+                  <a
+                    className="project_row__link"
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="far fa-eye" aria-hidden="true" />
+                    Live
+                  </a>
+                ) : null}
+                {project.github ? (
+                  <a
+                    className="project_row__link"
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fas fa-code-branch" aria-hidden="true" />
+                    Code
+                  </a>
+                ) : null}
+              </div>
+            </div>
+          </article>
         ))}
       </div>
 
-      <div className="go_button_container">
+      <div className="project_page__actions">
         <Link to="/">
           <button>
-            <b>➜ </b> Home
+            <b>&#10142; </b> Home
           </button>
         </Link>
 
         <Link to="/resume">
-          <button>Résumé ➜ </button>
+          <button>Résumé &#10142; </button>
         </Link>
       </div>
     </div>

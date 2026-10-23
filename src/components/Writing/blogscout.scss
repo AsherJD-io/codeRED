@@ -1,0 +1,240 @@
+/* ==========================================================================
+   Blogs — image-led article grid.
+
+   Three real Substack articles on desktop, one column on mobile. Every card
+   keeps the same cover ratio so the grid reads as a set rather than a pile
+   of thumbnails.
+   ---------------------------------------------------------------------------
+   Author: codeRED (cR)
+   ========================================================================== */
+
+.blogs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.blogs__status {
+  margin: var(--space-2) 0;
+  font-family: "air-light";
+  font-size: var(--normal-font);
+  line-height: 1.6;
+  color: var(--ink-muted);
+}
+
+.blogs__status a {
+  color: var(--accent-hover);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s linear;
+}
+
+.blogs__status a:hover,
+.blogs__status a:focus-visible {
+  border-bottom-color: var(--accent-hover);
+}
+
+.blogs__status--stale {
+  font-size: var(--small-font);
+}
+
+/* ----- The grid ----- */
+
+.blogs__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.blogs__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+/* Consistent cover ratio across every card. */
+.blogs__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background-color: var(--bg-elevated);
+}
+
+.blogs__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.blogs__card:hover .blogs__media img,
+.blogs__media:focus-visible img {
+  transform: scale(1.03);
+}
+
+.blogs__media:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.blogs__media-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--mono);
+  font-size: var(--semi-font);
+  color: var(--ink-faint);
+}
+
+.blogs__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex-grow: 1;
+}
+
+.blogs__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.blogs__readtime {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: var(--xsmall-font);
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+
+.blogs__readtime i {
+  font-size: 0.85em;
+}
+
+.blogs__badge {
+  padding: 1px 8px;
+  border: 1px solid var(--accent);
+  border-radius: var(--nav-radius);
+  color: var(--accent-hover);
+  font-family: var(--mono);
+  font-size: var(--xsmall-font);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.blogs__title {
+  margin: 0;
+  font-family: "air-bold";
+  font-size: var(--semi-font);
+  line-height: 1.35;
+  color: var(--ink-strong);
+  overflow-wrap: anywhere;
+}
+
+.blogs__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s linear;
+}
+
+.blogs__title a:hover,
+.blogs__title a:focus-visible {
+  color: var(--accent-hover);
+}
+
+.blogs__title a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.blogs__excerpt {
+  margin: 0;
+  font-family: "air-light";
+  font-size: var(--small-font);
+  line-height: 1.65;
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+}
+
+.blogs__read {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: var(--space-1);
+  color: var(--accent-hover);
+  font-family: var(--mono);
+  font-size: var(--xsmall-font);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s linear, color 0.2s linear;
+}
+
+.blogs__read:hover,
+.blogs__read:focus-visible {
+  color: var(--ink);
+  border-bottom-color: var(--accent-hover);
+}
+
+.blogs__read:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* ----- View all ----- */
+
+.blogs__all {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule);
+}
+
+.blogs__all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0.7rem 1.6rem;
+  border: 1px solid var(--ink-muted);
+  border-radius: var(--nav-radius);
+  color: var(--ink);
+  font-family: "air-regular";
+  font-size: var(--small-font);
+  text-decoration: none;
+  transition: border-color 0.2s linear, background-color 0.2s linear,
+    transform 0.2s linear;
+}
+
+.blogs__all-link:hover {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.blogs__all-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@media (max-width: 993px) {
+  .blogs__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .blogs__media {
+    aspect-ratio: 16 / 9;
+  }
+}

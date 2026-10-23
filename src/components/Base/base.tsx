@@ -24,15 +24,14 @@ export default function Base({ menu }: any) {
         <div className="description">
           <p>
             <span>
-              I’m a <span className="highlight">Data Engineer</span> with an
-              engineering background across{" "}
-              <span className="highlight">energy systems</span> and{" "}
-              <span className="highlight">
-                agricultural & environmental engineering
-              </span>
-              , focused on building reliable data pipelines and backend systems
-              that turn real-world operational data into analytics-ready
-              insights.
+              I build <span className="highlight">data platforms</span> and{" "}
+              <span className="highlight">software products</span> for complex,
+              real-world operations. My work spans data pipelines and
+              warehouses, streaming and orchestration, cloud-native systems,
+              backend APIs, and AI-assisted products across energy, mobility,
+              public procurement, finance, and agriculture. I bring an
+              engineering background to turning messy data and operational
+              problems into systems people can trust and use.
             </span>
           </p>
         </div>
@@ -42,6 +41,15 @@ export default function Base({ menu }: any) {
             <button className="explore">Explore ➜</button>
           </Link>
         </div>
+
+        <a
+          className="book-call"
+          href="https://cal.com/delebayo-asher-fzwdtb"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Book a call
+        </a>
       </div>
 
       <nav>
@@ -60,6 +68,24 @@ export default function Base({ menu }: any) {
               03
               <Link to="/projects">
                 <img src={navLine} alt="menu bullet" /> PROJECTS
+              </Link>
+            </small>
+          </li>
+
+          <li className={menu[4]}>
+            <small>
+              04
+              <Link to="/writing">
+                <img src={navLine} alt="menu bullet" /> WRITING
+              </Link>
+            </small>
+          </li>
+
+          <li className={menu[5]}>
+            <small>
+              05
+              <Link to="/contact">
+                <img src={navLine} alt="menu bullet" /> CONTACT
               </Link>
             </small>
           </li>

@@ -1,0 +1,33 @@
+/* ==========================================================================
+   Reveal heading
+
+   Section headings animate word by word as they enter the viewport, the same
+   treatment the reference site gives its own section titles. Each word is an
+   inline-block so it can be transformed without breaking the line.
+   ========================================================================== */
+
+.reveal-heading__word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.55em);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.section-title[data-shown="true"] .reveal-heading__word,
+h1[data-shown="true"] .reveal-heading__word,
+h2[data-shown="true"] .reveal-heading__word,
+h3[data-shown="true"] .reveal-heading__word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-heading__word {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../../assets/svgs/codered-logo.svg";
+import logo from "../../../assets/svgs/codered-mark.svg";
 import "./header.scss";
 
 export default function Header() {
@@ -13,7 +13,7 @@ export default function Header() {
       <div className="header_wrapper">
         <div className="logo_container pt 1">
           <Link to="/">
-            <img className="w-32" src={logo} alt="logo" />
+            <img className="h-14 w-auto" src={logo} alt="codeRED" />
           </Link>
         </div>
 
@@ -45,6 +45,18 @@ export default function Header() {
               <li>
                 <Link to="/resume" onClick={toggleMenu}>
                   Résumé
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/writing" onClick={toggleMenu}>
+                  Writing
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/contact" onClick={toggleMenu}>
+                  Contact
                 </Link>
               </li>
             </ul>

@@ -1,0 +1,538 @@
+/* ==========================================================================
+   Terminal hero
+
+   One hero field. The original personal introduction sits on the left; on
+   the right is a single compact terminal that types the fetch command and its
+   output, then cross-fades into the portrait in the same box, holds, fades
+   back and types again in a loop.
+   ========================================================================== */
+
+.thero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: center;
+  /* Room above and below the hero, so the page does not start flush against
+     the nav and the Work section does not crowd it. */
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+/* ----- Left column: the original introduction ----- */
+
+.thero__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  overflow-wrap: anywhere;
+}
+
+.thero__name {
+  position: relative;
+  margin: 0;
+  font-family: "air-black";
+  font-size: clamp(2.5rem, 4.2vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+/* "Hi! I'm" sits on its own line, the name beneath it and larger. */
+.thero__name-line {
+  display: block;
+}
+
+.thero__name-line--name {
+  font-size: 1.14em;
+}
+
+/* The word "Asher" is the anchor for the underline, so the scribble stays
+   under that word even if the name wraps on a narrow screen. */
+.thero__name-word {
+  position: relative;
+  display: inline-block;
+}
+
+/* The scribble: one deliberate pen stroke sitting directly on the baseline of
+   "Asher". Bottom is negative so the stroke overlaps the descender space
+   rather than floating beneath the word. */
+.thero__scribble {
+  position: absolute;
+  left: -3%;
+  right: -3%;
+  bottom: -0.12em;
+  height: 0.26em;
+  /*
+     Neutral ink, matching the page's own light text rather than the accent.
+     The accent was reading as a colour that does not exist anywhere else on
+     the page; the heading's own ink is the colour that belongs here.
+  */
+  color: #f4f4f5;
+  pointer-events: none;
+}
+
+.thero__scribble svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+   The strokes draw themselves on when the page loads.
+
+   Each path carries `pathLength="1"`, so a dasharray of 1 covers the whole
+   stroke: offset 1 hides it entirely and offset 0 reveals it completely. The
+   animation runs that offset down fast, which reads as a pen drawing the line
+   rather than a fade.
+
+   Both passes start together and run for the same time. Pass 1 is written
+   left to right and pass 2 right to left, so the two ends meet in the middle.
+   `forwards` keeps the drawn state once finished.
+*/
+.thero__scribble-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: scribble-draw 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+
+.thero__scribble-path--2 {
+  animation-duration: 0.55s;
+  animation-delay: 0.2s;
+}
+
+@keyframes scribble-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.thero__bio {
+  margin: 0;
+  max-width: 58ch;
+  font-family: "air-light";
+  font-size: var(--normal-font);
+  line-height: 1.85;
+  color: var(--ink-muted);
+}
+
+/* The original highlighted phrases. */
+.thero__bio .highlight {
+  color: var(--ink-strong);
+  font-family: "air-semibold";
+}
+
+/*
+   The action and the status line share one row, as they did originally. The
+   action sits beside the status line rather than above or below it.
+*/
+.thero__aside {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+/* "Open to work" — no card, no panel, just the words and a status dot. */
+.thero__status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  font-family: "air-regular";
+  font-size: var(--small-font);
+  color: var(--ink-strong);
+}
+
+.thero__status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #28c840;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.thero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.thero__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.4rem;
+  border: 1px solid var(--ink-muted);
+  border-radius: var(--nav-radius);
+  color: var(--ink);
+  font-family: "air-regular";
+  font-size: var(--small-font);
+  text-decoration: none;
+  transition: border-color 0.2s linear, background-color 0.2s linear,
+    transform 0.2s linear;
+}
+
+.thero__cta:hover {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.thero__cta:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* The mail action carries an envelope icon. */
+.thero__cta--mail {
+  gap: 8px;
+}
+
+.thero__cta--mail i {
+  font-size: 0.95em;
+}
+
+/* ----- Right column: one compact display ----- */
+
+/*
+   The display holds both states. It is sized to a portrait-ish box so the
+   photograph reads as the hero image when it arrives, and the terminal
+   centres its content inside the same area.
+*/
+.thero__display {
+  position: relative;
+  width: 100%;
+  height: auto;
+  min-height: 460px;
+  overflow: hidden;
+  transition: opacity 0.6s ease;
+}
+
+/* The two faces. The terminal face sets the box; the portrait face is
+   absolutely positioned inside it, so the swap is a cross-fade with no
+   layout shift between the two states. */
+.thero__face {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0s linear 0.6s;
+}
+
+.thero__face.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s ease;
+}
+
+/* ----- Terminal face: defines the box ----- */
+
+.thero__body {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background-color: rgba(16, 16, 17, 0.9);
+  overflow: hidden;
+  /* Sits at the top of the display field and takes only the height its
+     content needs, so it is a compact terminal rather than a tall empty box. */
+  align-self: flex-start;
+  width: 100%;
+}
+
+/* The familiar terminal title bar: three window circles and a title. */
+.thero__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--rule);
+  background-color: rgba(27, 27, 31, 0.94);
+  flex-shrink: 0;
+}
+
+.thero__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.thero__dot--r { background-color: #ff5f57; }
+.thero__dot--y { background-color: #febc2e; }
+.thero__dot--g { background-color: #28c840; }
+
+.thero__title {
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thero__screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: var(--space-3) var(--space-3);
+  font-family: var(--mono);
+  font-size: clamp(0.62rem, 0.82vw, 0.74rem);
+  line-height: 1.7;
+  overflow: hidden;
+}
+
+.thero__cmdline {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 0 0 6px;
+}
+
+.thero__prompt {
+  white-space: nowrap;
+}
+
+.thero__prompt-id {
+  color: #ef7e7e;
+}
+
+.thero__prompt-sep,
+.thero__prompt-sym {
+  color: #b3b9b8;
+}
+
+.thero__prompt-path {
+  color: #f4d67a;
+}
+
+.thero__command {
+  color: #96d988;
+  margin-left: 6px;
+}
+
+.thero__caret {
+  display: inline-block;
+  width: 6px;
+  height: 1em;
+  margin-left: 3px;
+  vertical-align: -2px;
+  background-color: #f8fafc;
+  animation: caret-blink 1.05s step-end infinite;
+}
+
+@keyframes caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.thero__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin: 0;
+  min-height: 1.65em;
+}
+
+.thero__label {
+  color: #67cbe7;
+  flex-shrink: 0;
+}
+
+.thero__value {
+  color: #f4d67a;
+}
+
+.thero__dot-sep {
+  color: #64748b;
+}
+
+/* The closing line: the fetch resolves, in the resolved-command green. */
+.thero__row--done {
+  margin-top: 6px;
+}
+
+.thero__done {
+  color: #96d988;
+}
+
+/*
+   The closing remark. It is not a fetch value, so it is not the yellow those
+   carry: it takes the label's cyan instead, which reads as the same channel as
+   `langs` and `github` rather than as one of their values.
+*/
+.thero__value--closing {
+  color: #67cbe7;
+}
+
+/* ----- Portrait face: the photograph alone, no terminal chrome ----- */
+
+/*
+   The portrait occupies its own narrower composition, deliberately NOT the
+   terminal's box: a portrait-shaped column, sized to the photograph's own
+   proportions rather than stretched to the display field. It keeps a distinct
+   boundary of its own so it reads as a framed object on the page.
+*/
+.thero__portrait {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+}
+
+.thero__portrait-frame {
+  position: relative;
+  /*
+     Sized from the photograph's own aspect ratio (1766x1642): the height is
+     the display's height and the width follows from the ratio, so the picture
+     keeps its own proportions and is never stretched. It is inset from the
+     display edges, which is what makes the boundary read as a frame rather
+     than as the edge of the layout.
+  */
+  height: 88%;
+  max-height: 88%;
+  aspect-ratio: 1766 / 1642;
+  width: auto;
+  border-radius: 14px;
+  overflow: hidden;
+  /*
+     A deliberate, visible boundary: a 2px rule on the image edge, then a
+     second 2px rule set further out.
+     The outer rule is a `box-shadow` ring rather than an `outline`, because a
+     CSS outline is always a rectangle and ignores border-radius: on a rounded
+     photo it leaves square corners that cut across the curve and break the
+     boundary. A box-shadow is painted from the element's own (rounded) box, so
+     the ring follows the corners and reads as complete all the way round.
+  */
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 0 0 7px rgba(17, 17, 18, 0.9),
+    0 0 0 9px rgba(255, 255, 255, 0.3),
+    0 30px 70px rgba(0, 0, 0, 0.7);
+  background-color: var(--bg-elevated);
+}
+
+/*
+   The photograph fills its frame completely and is never cropped. The frame's
+   aspect ratio is the photograph's own, and `contain` guarantees the whole
+   image is shown; the frame's background only shows if a ratio ever drifts.
+
+   The photograph carries a dark band on its own left and right edges (the plant
+   and the wall art), which against the dark page reads as a gap between the
+   picture and the inner ring. Scaling it slightly larger than the frame and
+   letting the frame's own `overflow: hidden` clip the excess pushes those dark
+   bands outside the ring, so the picture meets the boundary instead of
+   appearing to float inside it.
+*/
+.thero__portrait-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  transform: scale(1.06);
+  transform-origin: center center;
+}
+
+/* ----- Mobile: display first, then the introduction ----- */
+
+@media (max-width: 993px) {
+  .thero {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .thero__display {
+    order: 1;
+    /* A phone keeps the display at a stable height while typing so the box
+       does not collapse to a single line and the portrait has a box to fill. */
+    height: 460px;
+    min-height: 0;
+  }
+
+  .thero__face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /*
+    The photograph is sized from its own aspect ratio rather than stretched to
+    the display's height, so the boundary hugs the image instead of floating
+    around a letterboxed box. It is inset from the display edges, exactly as on
+    desktop: that inset is what gives the outer rule room to be seen, because
+    the display clips anything that touches its edge.
+  */
+  .thero__portrait-frame {
+    height: auto;
+    max-height: 100%;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1766 / 1642;
+    /* The inset that lets the outer ring render on a phone. */
+    margin: auto;
+    max-width: 82%;
+    max-height: 82%;
+  }
+
+  .thero__body {
+    align-self: flex-start;
+    /* The terminal hugs its own text, as it does on a desktop, rather than
+       being stretched to fill the display: the phone was showing a tall empty
+       box around a compact terminal. */
+    flex-grow: 0;
+  }
+
+  .thero__intro {
+    order: 2;
+  }
+
+  .thero__name {
+    font-size: clamp(1.9rem, 8vw, 2.4rem);
+  }
+
+  .thero__bio {
+    max-width: 100%;
+  }
+}
+
+/* ----- Reduced motion ----- */
+
+@media (prefers-reduced-motion: reduce) {
+  .thero__caret {
+    animation: none;
+  }
+
+  .thero__status-dot {
+    animation: none;
+  }
+
+  /* No drawing: the strokes are shown complete from the start. */
+  .thero__scribble-path {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  .thero__face,
+  .thero__display {
+    transition: none;
+  }
+}

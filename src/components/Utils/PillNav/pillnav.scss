@@ -1,0 +1,127 @@
+/* Mobile menu toggle — hidden on desktop where the links are always visible. */
+.pill-nav__toggle {
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  border-radius: var(--nav-radius);
+  background: none;
+  cursor: pointer;
+}
+
+.pill-nav__toggle-line {
+  display: block;
+  height: 1px;
+  width: 22px;
+  background-color: var(--ink-muted);
+}
+
+.pill-nav__toggle-line:first-child {
+  width: 28px;
+}
+
+.pill-nav__toggle:focus-visible {
+  outline: 2px solid var(--ink-muted);
+  outline-offset: 2px;
+}
+
+/* The booking CTA is its own pill, inside the right-anchored group. */
+.pill-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--nav-radius);
+  background-color: var(--accent);
+  color: var(--ink);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.2s linear, border-color 0.2s linear;
+}
+
+/*
+   The booking entry inside the menu. Desktop shows the standalone CTA pill
+   instead, so this copy is hidden there and only appears in the mobile menu.
+*/
+.pill-nav__link--cta {
+  display: none;
+}
+
+.pill-nav__cta:hover,
+.pill-nav__cta:focus-visible {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.pill-nav__cta:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@media (max-width: 993px) {
+  /* On a phone the nav collapses to a small pill top-right with a toggle, and
+     the booking action moves inside the menu rather than sitting in the
+     corner beside the toggle. */
+  .pill-nav {
+    height: 34px;
+    padding: 3px;
+  }
+
+  .pill-nav__toggle {
+    display: flex;
+    height: 28px;
+    width: 34px;
+    padding: 0 8px;
+  }
+
+  .pill-nav__links {
+    display: none;
+  }
+
+  .pill-nav__links[data-open="true"] {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 42px;
+    right: 0;
+    left: auto;
+    width: 186px;
+    height: auto;
+    padding: var(--space-1);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    background-color: var(--bg-elevated);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .pill-nav__links[data-open="true"] .pill-nav__link {
+    height: 42px;
+    padding: 0 13px;
+  }
+
+  /* The booking entry is part of the menu on a phone. */
+  .pill-nav__links[data-open="true"] .pill-nav__link--cta {
+    display: flex;
+    height: 42px;
+    align-items: center;
+    margin-top: 4px;
+    border: 1px solid var(--accent);
+    border-radius: var(--nav-radius);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* The standalone corner CTA is not shown on a phone; the menu carries it. */
+  .pill-nav__cta {
+    display: none;
+  }
+}

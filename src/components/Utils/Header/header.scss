@@ -108,6 +108,22 @@
         a {
             color: inherit;
             text-decoration: none;
+            transition: color 0.2s linear;
+        }
+
+        a:hover,
+        a:focus-visible {
+            color: var(--accent-hover);
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--ink-muted);
+            outline-offset: 3px;
+        }
+
+        /* Burgundy for the current page */
+        li a[aria-current="page"] {
+            color: var(--accent-hover);
         }
     }
     

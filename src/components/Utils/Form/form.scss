@@ -1,12 +1,12 @@
 form {
     display: flex;
     flex-direction: column;
-  
+
     .form_section {
         display: flex;
         flex-direction: column;
         margin: 1rem 0;
-  
+
         label {
             width: 100%;
             display: flex;
@@ -14,51 +14,65 @@ form {
             line-height: var(--h3-font);
             font-size: var(--semi-font);
         }
-        
-        label input, textarea {
-            background: #16161A;
-            color: lightgray;
-            border: 1px solid transparent;
+
+        /* Tailwind preflight sets border-color on every element; hold the
+           design-system rule explicitly so the fields stay quiet until focus. */
+        label input,
+        textarea {
+            background: var(--bg-elevated);
+            color: var(--ink-strong);
+            border: 1px solid var(--rule);
+            border-radius: 12px;
             padding: 0.9rem;
             margin-top: 7px;
             font-family: 'air-regular';
         }
-        
-        label input:focus, textarea:focus {
-            border-color: rgb(75, 75, 75);
+
+        label input:focus,
+        textarea:focus {
+            border-color: var(--accent);
             outline: none;
         }
-        
-        label input::placeholder, textarea::placeholder  {
-            color: #777778;
+
+        label input::placeholder,
+        textarea::placeholder {
+            color: var(--ink-faint);
             font-size: var(--small-font);
             line-height: 2;
             font-family: 'air-regular';
         }
-        
+
         button {
-            background-color: #16161A;
-            color: #fff;
-            border: none;
-            padding: 0.9rem;
-            font-size: var(--semi-font);
+            background-color: var(--accent);
+            color: var(--ink);
+            border: 1px solid var(--accent);
+            border-radius: var(--nav-radius);
+            padding: 0.9rem 1.4rem;
+            font-size: var(--normal-font);
             font-family: 'air-regular';
+            cursor: pointer;
+            transition: background-color 0.2s linear, border-color 0.2s linear;
         }
-        
-        button:focus {
-            outline: none;
-            border: none;
+
+        button:hover {
+            background-color: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        button:focus-visible {
+            outline: 2px solid var(--ink);
+            outline-offset: 3px;
         }
     }
-    
+
     input:-webkit-autofill,
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus, 
-    input:-webkit-autofill:active  {
-        border-color: rgb(75, 75, 75);
-        box-shadow: 0 0 0 30px #16161A inset !important;
-        -webkit-box-shadow: 0 0 0 30px #16161A inset !important; 
-        -webkit-text-fill-color: #777778;
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 30px var(--bg-elevated) inset !important;
+        -webkit-box-shadow: 0 0 0 30px var(--bg-elevated) inset !important;
+        -webkit-text-fill-color: var(--ink-strong);
     }
 }
 
@@ -69,30 +83,30 @@ form {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #101011;
+    background-color: var(--bg);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10%;
-  
+
     h1 {
         font-size: 700%;
         margin: 0;
         text-align: center;
     }
-    
+
     h2 {
         margin: 0;
         text-align: center;
         position: relative;
         top: -10px;
     }
-    
+
     p {
         margin: 0;
         text-align: center;
         position: relative;
-        color: #777778;
+        color: var(--ink-muted);
         line-height: 1.5;
     }
 }
