@@ -288,6 +288,21 @@
   font-size: var(--small-font);
 }
 
+/*
+   The label above the scrolling tool strip. Smaller than a section title,
+   because it names the strip rather than introducing a page section, and it
+   is deliberately not offered in the navigation.
+*/
+.home__tools-heading {
+  margin: 0 0 var(--space-2);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-hover);
+}
+
 /* The restored phrase, in its original class names. */
 .home__about .highlight,
 .resume .highlight {
@@ -496,21 +511,28 @@
   display: inline-flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--rule);
   border-radius: var(--nav-radius);
-  background-color: var(--accent);
-  color: var(--ink);
+  background: transparent;
+  color: var(--ink-muted);
   font-family: "air-regular";
   font-size: var(--xsmall-font);
   text-decoration: none;
   white-space: nowrap;
-  transition: background-color 0.2s linear, border-color 0.2s linear;
+  transition: color 0.2s linear, border-color 0.2s linear,
+    background-color 0.2s linear;
 }
 
+/*
+   The booking action is the quiet one and the submit is the loud one, so the
+   single obvious action in the card is sending the message. The accent is
+   reserved for the filled submit.
+*/
 .home__contact-book:hover,
 .home__contact-book:focus-visible {
-  background-color: var(--accent-hover);
-  border-color: var(--accent-hover);
+  border-color: var(--ink-muted);
+  color: var(--ink);
+  background-color: var(--bg-elevated);
 }
 
 .home__contact-book:focus-visible {
@@ -535,9 +557,18 @@
   color: var(--ink-muted);
 }
 
-/* The submit is full width, as in the reference. */
+/* The submit is full width and the loud action, as in the reference. */
 .home__contact-card button[type="submit"] {
   width: 100%;
+  border-color: var(--ink);
+  background-color: var(--ink);
+  color: var(--bg);
+}
+
+.home__contact-card button[type="submit"]:hover,
+.home__contact-card button[type="submit"]:focus-visible {
+  background-color: #ffffff;
+  border-color: #ffffff;
 }
 
 .home__social {

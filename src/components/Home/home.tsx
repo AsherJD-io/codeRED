@@ -157,6 +157,14 @@ export default function Home() {
         <div className="home__about">
           <BioParagraphs />
         </div>
+
+        {/*
+          The strip gets its own heading. It is a label for the tools below
+          the about copy, not a page section, so it is not offered in the nav.
+        */}
+        <h3 className="home__tools-heading reveal">
+          <span className="section-title__tag">Skills &amp; tools</span>
+        </h3>
         <ToolStrip />
       </section>
 
@@ -171,9 +179,8 @@ export default function Home() {
       >
         <h2 className="home__contact-heading reveal">
           <span className="reveal-heading__word">Let&apos;s</span>{" "}
-          <span className="reveal-heading__word">make</span>{" "}
-          <span className="reveal-heading__word">it</span>{" "}
-          <span className="reveal-heading__word">happen.</span>
+          <span className="reveal-heading__word">build</span>{" "}
+          <span className="reveal-heading__word">it.</span>
         </h2>
 
         <div className="home__contact-card">

@@ -16,25 +16,31 @@ import "./toolstrip.scss";
 /* Load all icon definitions once; the module-level call is safe in Vite. */
 library.add(fab, fas);
 
-/* The actual tool inventory, drawn from the resume data model. */
+/*
+ * The actual tool inventory, taken from the profile generator's curated stack
+ * (AsherJD-io/main.py), so the strip and the README name the same tools.
+ *
+ * Font Awesome brand icons only. No brand logos and no emoji are used.
+ */
 const TOOLS = [
   { name: "Python", icon: "fab fa-python" as IconProp },
   { name: "SQL", icon: "fas fa-database" as IconProp },
+  { name: "TypeScript", icon: "fab fa-typescript" as IconProp },
+  { name: "PostgreSQL", icon: "fas fa-database" as IconProp },
   { name: "BigQuery", icon: "fab fa-google" as IconProp },
   { name: "dbt", icon: "fas fa-code-branch" as IconProp },
-  { name: "Kafka", icon: "fab fa-docker" as IconProp },
-  { name: "Kestra", icon: "fab fa-cloud" as IconProp },
-  { name: "Terraform", icon: "fab fa-server" as IconProp },
+  { name: "Kestra", icon: "fas fa-cloud" as IconProp },
+  { name: "PySpark", icon: "fas fa-fire" as IconProp },
+  { name: "Kafka", icon: "fas fa-stream" as IconProp },
+  { name: "Flink", icon: "fas fa-bolt" as IconProp },
   { name: "Docker", icon: "fab fa-docker" as IconProp },
-  { name: "Kubernetes", icon: "fab fa-kubernetes" as IconProp },
+  { name: "Terraform", icon: "fas fa-server" as IconProp },
+  { name: "Kubernetes", icon: "fas fa-dharmachakra" as IconProp },
   { name: "Linux", icon: "fab fa-linux" as IconProp },
+  { name: "Next.js", icon: "fab fa-react" as IconProp },
   { name: "React", icon: "fab fa-react" as IconProp },
-  { name: "TypeScript", icon: "fab fa-typescript" as IconProp },
   { name: "Node.js", icon: "fab fa-node-js" as IconProp },
-  { name: "FastAPI", icon: "fab fa-python" as IconProp },
   { name: "GitHub", icon: "fab fa-github" as IconProp },
-  { name: "LinkedIn", icon: "fab fa-linkedin" as IconProp },
-  { name: "X", icon: "fab fa-x-twitter" as IconProp },
 ];
 
 /* Slow-out, slow-in easing for a natural, calm loop. */
