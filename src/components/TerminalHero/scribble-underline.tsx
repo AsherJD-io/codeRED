@@ -10,12 +10,15 @@
  * Two overlapping passes with an irregular, wobbling path, so it reads as a
  * deliberate pen stroke rather than a straight rule.
  *
- * The animated highlight is a second, transparent path laid exactly over the
- * first. It carries a neutral gradient (the page's own light and muted ink)
- * and is masked by its own stroke; the CSS animates that mask's
- * `background-position` so a band of light travels along the stroke, the same
- * mechanism the reference site uses for its animated text effects. That reads
- * as the pen drawing itself rather than a dash appearing.
+ * Each path carries `pathLength="1"`, so a dasharray of 1 covers the whole
+ * stroke: offset 1 hides it entirely, offset 0 reveals it completely. The CSS
+ * animation runs that offset down quickly, so the strokes draw themselves on
+ * from nothing when the page loads, rather than appearing already complete.
+ *
+ * The two passes are the same kind of curve but written in opposite
+ * directions: pass 1 runs left to right, pass 2 right to left. They start
+ * together and meet in the middle, which is what makes the pair read as one
+ * scribble being drawn rather than two separate lines.
  */
 export default function ScribbleUnderline() {
   return (
@@ -26,58 +29,29 @@ export default function ScribbleUnderline() {
       focusable="false"
       preserveAspectRatio="none"
     >
-      <defs>
-        <linearGradient id="thero-scribble-sheen" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#f4f4f5" stopOpacity="0" />
-          <stop offset="42%" stopColor="#f4f4f5" stopOpacity="0" />
-          <stop offset="50%" stopColor="#f4f4f5" stopOpacity="0.95" />
-          <stop offset="58%" stopColor="#f4f4f5" stopOpacity="0" />
-          <stop offset="100%" stopColor="#f4f4f5" stopOpacity="0" />
-        </linearGradient>
-        <mask id="thero-scribble-mask">
-          <path
-            d="M6 11.5 C 28 6.5, 50 17.5, 74 10 C 96 3.5, 118 17, 142 9.5 C 164 3, 184 12, 196 7.5"
-            stroke="#ffffff"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M16 15.5 C 40 11.5, 68 20, 98 13.5 C 126 8.5, 154 16.5, 186 11"
-            stroke="#ffffff"
-            strokeWidth="4"
-            strokeLinecap="round"
-          />
-        </mask>
-      </defs>
-
-      {/* The base stroke: the static ink, always visible. */}
+      {/* Pass 1: drawn left to right. */}
       <path
         d="M6 11.5 C 28 6.5, 50 17.5, 74 10 C 96 3.5, 118 17, 142 9.5 C 164 3, 184 12, 196 7.5"
+        pathLength="1"
+        className="thero__scribble-path thero__scribble-path--1"
         stroke="currentColor"
         strokeWidth="4.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+      {/*
+        Pass 2: the same shape written backwards, so it draws right to left.
+        The control points of each segment are swapped with its end point.
+      */}
       <path
-        d="M16 15.5 C 40 11.5, 68 20, 98 13.5 C 126 8.5, 154 16.5, 186 11"
+        d="M186 11 C 154 16.5, 126 8.5, 98 13.5 C 68 20, 40 11.5, 16 15.5"
+        pathLength="1"
+        className="thero__scribble-path thero__scribble-path--2"
         stroke="currentColor"
         strokeWidth="2.5"
         strokeLinecap="round"
         opacity="0.8"
       />
-
-      {/* The travelling highlight, masked to the strokes above. */}
-      <g mask="url(#thero-scribble-mask)">
-        <rect
-          className="thero__scribble-sheen"
-          x="0"
-          y="0"
-          width="200"
-          height="22"
-          fill="url(#thero-scribble-sheen)"
-        />
-      </g>
     </svg>
   );
 }

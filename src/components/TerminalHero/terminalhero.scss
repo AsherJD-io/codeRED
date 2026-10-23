@@ -79,26 +79,31 @@
 }
 
 /*
-   The strokes draw themselves on when the page opens.
+   The strokes draw themselves on when the page loads.
 
-   The travelling highlight is a rect carrying a neutral gradient, clipped by
-   the stroke mask in the SVG. Animating the rect's background-position moves a
-   band of light along the ink, which reads as the pen drawing the line. That
-   is the same mechanism the reference site uses for its animated text.
+   Each path carries `pathLength="1"`, so a dasharray of 1 covers the whole
+   stroke: offset 1 hides it entirely and offset 0 reveals it completely. The
+   animation runs that offset down fast, which reads as a pen drawing the line
+   rather than a fade.
 
-   The stroke itself stays static and always visible, so the underline is never
-   dependent on the animation having run.
+   Both passes start together and run for the same time. Pass 1 is written
+   left to right and pass 2 right to left, so the two ends meet in the middle.
+   `forwards` keeps the drawn state once finished.
 */
-.thero__scribble-sheen {
-  animation: scribble-sheen 2.6s cubic-bezier(0.65, 0, 0.35, 1) 0.5s both;
+.thero__scribble-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: scribble-draw 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
 }
 
-@keyframes scribble-sheen {
-  from {
-    transform: translateX(-100%);
-  }
+.thero__scribble-path--2 {
+  animation-duration: 0.55s;
+  animation-delay: 0.2s;
+}
+
+@keyframes scribble-draw {
   to {
-    transform: translateX(100%);
+    stroke-dashoffset: 0;
   }
 }
 
@@ -487,10 +492,11 @@
     animation: none;
   }
 
-  /* No travelling highlight: the stroke is shown complete from the start. */
-  .thero__scribble-sheen {
+  /* No drawing: the strokes are shown complete from the start. */
+  .thero__scribble-path {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
     animation: none;
-    transform: none;
   }
 
   .thero__face,
