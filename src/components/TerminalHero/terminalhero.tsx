@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import myPic from "../../assets/imgs/my-pic.jpg";
-import scribble from "../../assets/svgs/scribble-underline.svg";
+import ScribbleUnderline from "./scribble-underline";
 import "./terminalhero.scss";
 
 /**
@@ -154,7 +154,7 @@ export default function TerminalHero() {
             <span className="thero__name-word">
               Asher
               <span className="thero__scribble" aria-hidden="true">
-                <img src={scribble} alt="" />
+                <ScribbleUnderline />
               </span>
             </span>
           </span>
@@ -175,8 +175,13 @@ export default function TerminalHero() {
           </p>
         </div>
 
-        {/* The action sits beside the status line, as it was originally. */}
+        {/* Open to work first, then the action beside it. */}
         <div className="thero__aside">
+          <p className="thero__status">
+            <span className="thero__status-dot" aria-hidden="true" />
+            Open to work
+          </p>
+
           <div className="thero__actions">
             <a
               className="thero__cta thero__cta--mail"
@@ -186,11 +191,6 @@ export default function TerminalHero() {
               Email me
             </a>
           </div>
-
-          <p className="thero__status">
-            <span className="thero__status-dot" aria-hidden="true" />
-            Open to work
-          </p>
         </div>
       </div>
 

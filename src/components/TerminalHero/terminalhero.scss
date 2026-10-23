@@ -67,7 +67,7 @@
   pointer-events: none;
 }
 
-.thero__scribble img {
+.thero__scribble svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -361,21 +361,26 @@
      display edges, which is what makes the boundary read as a frame rather
      than as the edge of the layout.
   */
-  height: 100%;
-  max-height: 100%;
+  height: 88%;
+  max-height: 88%;
   aspect-ratio: 1766 / 1642;
   width: auto;
   border-radius: 14px;
   overflow: hidden;
   /*
      A deliberate, visible boundary: a 2px rule on the image edge, then a
-     second 2px rule set further out, with the page background showing between
-     the two so the frame reads as a distinct object rather than a soft edge.
+     second 2px rule set further out.
+     The outer rule is a `box-shadow` ring rather than an `outline`, because a
+     CSS outline is always a rectangle and ignores border-radius: on a rounded
+     photo it leaves square corners that cut across the curve and break the
+     boundary. A box-shadow is painted from the element's own (rounded) box, so
+     the ring follows the corners and reads as complete all the way round.
   */
-  border: 2px solid rgba(255, 255, 255, 0.55);
-  outline: 2px solid rgba(255, 255, 255, 0.28);
-  outline-offset: 7px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 0 0 7px rgba(17, 17, 18, 0.9),
+    0 0 0 9px rgba(255, 255, 255, 0.3),
+    0 30px 70px rgba(0, 0, 0, 0.7);
   background-color: var(--bg-elevated);
 }
 
@@ -419,8 +424,9 @@
   /* The photograph keeps the display's height but is clamped to the viewport
      width, so it never overflows a phone. */
   .thero__portrait-frame {
-    max-width: 100%;
+    height: 100%;
     max-height: 100%;
+    max-width: 100%;
   }
 
   .thero__body {
