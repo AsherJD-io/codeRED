@@ -148,8 +148,8 @@ export default function Home() {
           <span className="section-title__rule" aria-hidden="true" />
         </RevealHeading>
         <p className="home__section-lede reveal">
-          My unscripted ripples and waves on systems, life in tech and everything
-          alike.
+          My unscripted ripples and waves on systems, life in tech and
+          everything alike.
         </p>
         <BlogScout />
       </section>
