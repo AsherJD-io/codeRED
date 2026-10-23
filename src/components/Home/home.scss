@@ -402,46 +402,150 @@
   border-top: 1px solid var(--rule);
 }
 
-.home__contact-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-4);
+/*
+   The big centred line above the form, as in the reference. The words carry
+   the same word-reveal treatment as the section headings, but at the
+   reference's scale rather than the section-title size.
+
+   The words are shown once the section has been revealed by the page's scroll
+   reveal. Without that they would sit at the reveal-heading's hidden start
+   state and never appear.
+*/
+.home__contact-heading {
+  margin: 0 0 var(--space-5);
+  font-family: "air-black";
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--ink);
 }
 
-.home__primary {
+/* The section's own reveal drives the words. */
+.home__section--contact.is-visible .home__contact-heading .reveal-heading__word,
+.home__contact-heading.is-visible .reveal-heading__word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*
+   Without a reveal signal the words are shown anyway. The reveal is driven by
+   an IntersectionObserver, which needs rendering frames; in a hidden tab
+   those stop and the words would otherwise stay invisible for the session.
+*/
+.home__contact-heading .reveal-heading__word {
+  animation: contact-heading-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home__contact-heading .reveal-heading__word:nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.home__contact-heading .reveal-heading__word:nth-child(4) {
+  animation-delay: 180ms;
+}
+
+@keyframes contact-heading-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home__contact-heading .reveal-heading__word {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+   The form is the contact section, matching the reference: one centred card
+   holding the fields, with the booking action sitting at its top-right corner
+   and the socials centred beneath the card.
+*/
+.home__contact-card {
+  position: relative;
+  width: 100%;
+  max-width: 40rem;
+  margin: var(--space-4) auto var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  background-color: var(--bg-elevated);
+}
+
+.home__contact-card-title {
+  margin: 0 0 var(--space-3);
+  font-family: "air-semibold";
+  font-size: var(--h3-font);
+  text-align: center;
+  color: var(--ink-strong);
+}
+
+/* Top-right corner of the card, clear of the heading. */
+.home__contact-book {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.7rem 1.6rem;
-  border: 1px solid var(--ink-muted);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
   border-radius: var(--nav-radius);
+  background-color: var(--accent);
   color: var(--ink);
-  font-size: var(--small-font);
+  font-family: "air-regular";
+  font-size: var(--xsmall-font);
   text-decoration: none;
-  transition: border-color 0.2s linear, background-color 0.2s linear,
-    transform 0.2s linear;
+  white-space: nowrap;
+  transition: background-color 0.2s linear, border-color 0.2s linear;
 }
 
-.home__primary:hover {
-  border-color: var(--ink);
-  background-color: var(--surface);
-  transform: translateY(-1px);
+.home__contact-book:hover,
+.home__contact-book:focus-visible {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
-.home__primary:focus-visible {
+.home__contact-book:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
+}
+
+/* The fields sit directly under the "Say hello" heading. */
+.home__contact-card form {
+  margin-top: 0;
+}
+
+.home__contact-card .form_section {
+  margin: 0 0 var(--space-3);
+}
+
+.home__contact-card .form_section:last-child {
+  margin-bottom: 0;
+}
+
+.home__contact-card label span {
+  color: var(--ink-muted);
+}
+
+/* The submit is full width, as in the reference. */
+.home__contact-card button[type="submit"] {
+  width: 100%;
 }
 
 .home__social {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3);
+  justify-content: center;
+  gap: var(--space-4);
   margin-top: var(--space-4);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--rule);
 }
 
 .home__social-link {
@@ -467,6 +571,19 @@
   .home__section {
     padding-top: var(--space-5);
     margin-top: var(--space-5);
+  }
+
+  /* On a phone the booking action moves below the heading rather than
+     crowding it in the card's corner. */
+  .home__contact-book {
+    position: static;
+    display: flex;
+    width: fit-content;
+    margin: 0 auto var(--space-3);
+  }
+
+  .home__contact-card {
+    padding: var(--space-3);
   }
 
   .home__about p,

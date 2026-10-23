@@ -181,16 +181,20 @@
     padding: var(--space-3);
   }
 
+  /* The icon and the label stay together on a phone. Hiding the label left
+     the download control as a lone 16px glyph, which read as a stray icon. */
   .resume_container .top_row .buttons {
     align-self: unset;
 
-    span {
-      display: none;
-    }
-
     a {
       margin: 7px;
-      font-size: 20px;
+      font-size: 16px;
+    }
+
+    small {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
   }
 }

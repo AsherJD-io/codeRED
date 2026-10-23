@@ -1,11 +1,11 @@
 import { useSubstackFeed } from "../../hooks/useSubstackFeed";
-import { Link } from "react-router-dom";
 import TerminalHero from "../TerminalHero/terminalhero";
 import Experience from "../Experience/experience";
 import ToolStrip from "../Utils/ToolStrip/toolstrip";
 import BlogScout from "../Writing/blogscout";
 import BioParagraphs from "../Utils/BioParagraph/bioparagraph";
 import RevealHeading from "../Utils/RevealHeading/revealheading";
+import Form from "../Utils/Form/form";
 import { PROJECT_LIST } from "../../constants/projects";
 import "./home.scss";
 
@@ -160,29 +160,37 @@ export default function Home() {
         <ToolStrip />
       </section>
 
-      {/* f. Contact and booking. */}
-      <section className="home__section home__section--contact" id="contact">
-        <RevealHeading className="section-title">
-          <span className="section-title__tag">&lt;Contact /&gt;</span>
-          <span className="section-title__rule" aria-hidden="true" />
-        </RevealHeading>
-        <p className="home__section-lede">
-          For data engineering, platform builds, advisory or collaboration, the
-          fastest route is a message or a call.
-        </p>
-        <div className="home__contact-actions">
-          <Link className="home__primary" to="/contact">
-            Send a message
-          </Link>
+      {/* f. Contact — the form is the section, as in the reference: a big
+             centred line above a centred card holding the fields, the booking
+             action at the card's top-right corner, and the socials centred
+             beneath it. The section id stays so the nav's Contact link still
+             scrolls here; there is no <Contact /> heading of its own. */}
+      <section
+        className="home__section home__section--contact reveal"
+        id="contact"
+      >
+        <h2 className="home__contact-heading reveal">
+          <span className="reveal-heading__word">Let&apos;s</span>{" "}
+          <span className="reveal-heading__word">make</span>{" "}
+          <span className="reveal-heading__word">it</span>{" "}
+          <span className="reveal-heading__word">happen.</span>
+        </h2>
+
+        <div className="home__contact-card">
+          <h3 className="home__contact-card-title">Say hello</h3>
+
           <a
-            className="book-call"
+            className="home__contact-book"
             href={BOOKING_URL}
             target="_blank"
             rel="noopener noreferrer"
           >
             Book a call
           </a>
+
+          <Form />
         </div>
+
         <div className="home__social">
           {SOCIALS.map((social) => (
             <a

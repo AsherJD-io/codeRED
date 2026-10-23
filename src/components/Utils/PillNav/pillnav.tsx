@@ -23,9 +23,9 @@ const LINKS: NavLink[] = [
   { to: "/", section: "experience", label: "Experience" },
   { to: "/", section: "blogs", label: "Blogs" },
   { to: "/", section: "about", label: "About" },
-  // Contact is a real route, so it has no homepage anchor; it is still tracked
-  // so the highlight follows the homepage contact section.
-  { to: "/contact", section: "contact", label: "Contact" },
+  // Contact is the homepage section, not the /contact route: the nav takes the
+  // visitor to the <Contact /> heading on the page, where the form sits.
+  { to: "/", section: "contact", label: "Contact" },
 ];
 
 const SECTION_IDS = LINKS.map((l) => l.section).filter((s): s is string =>
@@ -131,6 +131,38 @@ export default function PillNav() {
   }, [pathname]);
 
   /*
+   * The element that actually scrolls the page.
+   *
+   * Only a box whose own height is the viewport and whose overflow allows
+   * scrolling can move. Every wrapper here (.mobile_container, .App, main,
+   * .page-column) is as tall as the whole document with `overflow: visible`,
+   * so calling `scrollTo` on any of them is a no-op and the page stays put.
+   * The real scroller is the document root.
+   */
+  const scroller = (): HTMLElement =>
+    document.scrollingElement instanceof HTMLElement
+      ? document.scrollingElement
+      : document.documentElement;
+
+  /** Bring an element to the top of the visible area. */
+  const scrollToElement = (el: HTMLElement | null) => {
+    if (!el) return;
+    const sc = scroller();
+    const top =
+      el.getBoundingClientRect().top +
+      (sc.scrollTop || window.scrollY) -
+      sc.getBoundingClientRect().top;
+
+    /*
+     * An instant jump, not a smooth one. A smooth scroll is animated, and in a
+     * hidden or backgrounded tab there are no animation frames for it to run
+     * on, so it never lands and the page stays where it was. Jumping also
+     * suits a section-to-section move better than an animated glide.
+     */
+    window.scrollTo({ top, behavior: "auto" });
+  };
+
+  /*
    * Clicking a destination. On the homepage the browser's own hash navigation
    * handles it and the scroll listener updates the highlight. From another
    * route we get home first, then scroll to the anchor once the section is
@@ -150,11 +182,9 @@ export default function PillNav() {
         link.section ? `#${link.section}` : "/",
       );
       if (link.section) {
-        document
-          .getElementById(link.section)
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        scrollToElement(document.getElementById(link.section));
       } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: "auto" });
       }
       return;
     }
@@ -167,9 +197,9 @@ export default function PillNav() {
         : null;
       if (target || attempts > 40) {
         if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          scrollToElement(target);
         } else {
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: "auto" });
         }
         return;
       }

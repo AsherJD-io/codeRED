@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import Helmet from "../Utils/SEO/helmet";
 import Form from "../Utils/Form/form";
 import "./contact.scss";
@@ -27,6 +26,8 @@ export default function Contact(props: ContactProps) {
         content="Reach out to Delebayo Asher"
       />
 
+      {/* The heading, then the form, then booking. Nothing else belongs here;
+          the old-build footer links are removed (see contact.scss). */}
       <div className="contact_container">
         <header className="contact_head">
           <h2 className="section-title">
@@ -52,18 +53,6 @@ export default function Contact(props: ContactProps) {
             Book a call
           </a>
         </div>
-      </div>
-
-      <div className="go_button_container">
-        <Link to="/resume">
-          <button>
-            <b>&#10142; </b> Résumé
-          </button>
-        </Link>
-
-        <Link to="/">
-          <button> Home &#10142; </button>
-        </Link>
       </div>
     </div>
   );

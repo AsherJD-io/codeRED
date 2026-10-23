@@ -56,12 +56,23 @@ export default function RevealHeading({
     const el = ref.current;
     if (!el) return;
 
+    /*
+     * Reveal immediately if the heading is already on screen. The observer
+     * alone is not enough: it needs rendering frames, and in a hidden or
+     * backgrounded tab those stop, which would leave the heading invisible
+     * for the rest of the session.
+     */
+    const reveal = () => {
+      setShown(true);
+      observer.disconnect();
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setShown(true);
-            observer.disconnect();
+            reveal();
+            return;
           }
         }
       },
@@ -69,7 +80,31 @@ export default function RevealHeading({
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+
+    /*
+     * A heading already inside the viewport on mount is revealed straight
+     * away rather than waiting for an intersection callback.
+     */
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      reveal();
+    }
+
+    /*
+     * Backstop. If no intersection callback has arrived within a moment and
+     * the heading is anywhere near the viewport, show it anyway, so the
+     * heading can never stay hidden because the environment stopped
+     * producing frames.
+     */
+    const timer = window.setTimeout(() => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 1.5) reveal();
+    }, 1200);
+
+    return () => {
+      window.clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [reduced]);
 
   /* Every animated unit gets a delay from its own position, so the sequence
