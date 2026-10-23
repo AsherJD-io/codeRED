@@ -31,8 +31,6 @@ export type ProjectType = {
   live?: string;
   /** Real capture of the project, used by the editorial work rows. */
   preview: string;
-  /** Short label for the preview caption. */
-  previewLabel: string;
 };
 
 export const PROJECT_LIST: ProjectType[] = [
@@ -46,10 +44,9 @@ export const PROJECT_LIST: ProjectType[] = [
     stack:
       "Python · SQL · PostgreSQL · BigQuery · dbt · PySpark · Kestra · Terraform · Docker",
     status: "Private",
-    year: "2024",
+    year: "2026",
     role: "Data engineering",
     preview: energyDssPreview,
-    previewLabel: "System overview dashboard",
   },
   {
     id: "ordaciti",
@@ -60,12 +57,11 @@ export const PROJECT_LIST: ProjectType[] = [
       "Normalised the OCDS releases into one comparable shape, then wrote the signal layer that relates projects to each other and to the places they touch. The evidence is shown for human review rather than turned into a verdict.",
     stack: "Python · Next.js · TypeScript · OCDS",
     status: "Live",
-    year: "2024",
+    year: "2025",
     role: "Full stack",
     github: "https://github.com/AsherJD-io/ordaciti",
     live: "https://ordaciti.vercel.app",
     preview: ordacitiPreview,
-    previewLabel: "Project explorer",
   },
   {
     id: "nyc-taxi",
@@ -77,11 +73,10 @@ export const PROJECT_LIST: ProjectType[] = [
     stack:
       "Docker · Terraform · Kestra · BigQuery · dbt · Spark · Kafka · PyFlink",
     status: "In progress",
-    year: "2024",
+    year: "2026",
     role: "Data platform",
     github: "https://github.com/AsherJD-io/nyc-taxi-data-platform",
     preview: nycTaxiPreview,
-    previewLabel: "Streaming job dashboard",
   },
   {
     id: "trading-analytics",
@@ -92,10 +87,9 @@ export const PROJECT_LIST: ProjectType[] = [
       "Modelled trades and equity so positioning, drawdown and risk-adjusted measures are computed from one consistent grain, then surfaced them as a readable performance view rather than a raw table dump.",
     stack: "Python · dbt · BigQuery · Kestra · Streamlit · Docker",
     status: "Private",
-    year: "2023",
+    year: "2026",
     role: "Analytics engineering",
     preview: tradingPreview,
-    previewLabel: "Performance analytics",
   },
   {
     id: "thesie",
@@ -110,7 +104,6 @@ export const PROJECT_LIST: ProjectType[] = [
     role: "Backend",
     live: "https://thesie.vercel.app",
     preview: thesiePreview,
-    previewLabel: "Service landing",
   },
   {
     id: "codered",
@@ -126,6 +119,5 @@ export const PROJECT_LIST: ProjectType[] = [
     github: "https://github.com/AsherJD-io/codeRED",
     live: "https://codered-azure.vercel.app",
     preview: coderedPreview,
-    previewLabel: "This site",
   },
 ];

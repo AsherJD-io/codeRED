@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Helmet from "../Utils/SEO/helmet";
 import { PROJECT_LIST } from "../../constants/projects";
+import RevealHeading from "../Utils/RevealHeading/revealheading";
 import "./projects.scss";
 
 type ProjectsProps = {
@@ -33,10 +34,10 @@ export default function Projects(props: ProjectsProps) {
       />
 
       <header className="page-head">
-        <h2 className="section-title">
-          <span className="section-title__tag">Work</span>
+        <RevealHeading className="section-title">
+          <span className="section-title__tag">&lt;Selected work /&gt;</span>
           <span className="section-title__rule" aria-hidden="true" />
-        </h2>
+        </RevealHeading>
         <p className="page-head__intro">
           Selected work across data platforms, procurement transparency and
           product backends. Each entry lists the stack actually used, the
@@ -59,12 +60,9 @@ export default function Projects(props: ProjectsProps) {
             >
               <img
                 src={project.preview}
-                alt={`${project.previewLabel} for ${project.title}`}
+                alt={`${project.title} preview`}
                 loading="lazy"
               />
-              <span className="project_row__preview-caption">
-                {project.previewLabel}
-              </span>
             </a>
 
             <div className="project_row__info">

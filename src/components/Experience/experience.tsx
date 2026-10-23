@@ -29,18 +29,27 @@ export default function Experience() {
     if (!list) return;
 
     const scroller = list.closest(".App") ?? document.scrollingElement;
+    /*
+     * The reference line is a fraction of the VIEWPORT. `.App` spans the whole
+     * document, so both its `height` and its `clientHeight` are the full
+     * document height; using either put the line thousands of pixels below the
+     * visible area and the fill could never grow. `window.innerHeight` is the
+     * area the visitor is actually reading.
+     */
+    const viewHeight = window.innerHeight;
+
     const scrollerRect = scroller
       ? scroller.getBoundingClientRect()
       : ({
           top: 0,
-          height: window.innerHeight,
-          bottom: window.innerHeight,
+          height: viewHeight,
+          bottom: viewHeight,
         } as DOMRect);
 
     const listRect = list.getBoundingClientRect();
-    // Reference line: a fraction of the scroller height, so the active node
+    // Reference line: a fraction of the visible height, so the active node
     // moves continuously instead of locking to the top or bottom.
-    const reference = scrollerRect.top + scrollerRect.height * 0.32;
+    const reference = scrollerRect.top + viewHeight * 0.32;
 
     const fill = fillRef.current;
     if (fill) {
@@ -84,8 +93,16 @@ export default function Experience() {
     window.addEventListener("load", onScroll);
     document.fonts?.ready.then(() => measure()).catch(() => {});
 
+    /*
+     * A short poll backs up the rAF-driven measurement. rAF is throttled to
+     * zero in a backgrounded or hidden tab, which would otherwise leave the
+     * fill and the active node frozen at their first reading.
+     */
+    const timer = window.setInterval(measure, 250);
+
     return () => {
       cancelAnimationFrame(frame.current);
+      window.clearInterval(timer);
       scroller?.removeEventListener("scroll", onScroll);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
@@ -112,7 +129,6 @@ export default function Experience() {
         <span className="section-title__tag">&lt;Experience /&gt;</span>
         <span className="section-title__rule" aria-hidden="true" />
       </h2>
-
       <ol className="timeline" ref={listRef}>
         <span className="timeline__track" aria-hidden="true">
           <span className="timeline__fill" ref={fillRef} />

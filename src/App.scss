@@ -481,16 +481,25 @@ html {
 /* Scroll reveal — a single deliberate device, from Syph Software.
    `--reveal-progress` runs 0 -> 1 as the element travels from the bottom of
    the viewport to a viewport-height above it, so the opacity, the lift and the
-   ink colour are all functions of scroll position rather than a one-shot fade. */
+   ink colour are all functions of scroll position rather than a one-shot fade.
+
+   The floor is a var rather than a literal. A literal floor meant anything
+   whose progress was never painted (content below the fold when the page
+   loads, or a section reached without a scroll event) sat at 0.08 and read as
+   missing. With the var, the default is fully opaque and only a real
+   `--reveal-progress` pulls it back. */
 .reveal {
-  opacity: calc(var(--reveal-progress, 0) * 0.9 + 0.08);
+  --reveal-floor: 1;
+  opacity: calc(var(--reveal-progress, 0) * (1 - var(--reveal-floor)) + var(--reveal-floor));
   transform: translateY(calc((1 - var(--reveal-progress, 0)) * 22px));
   transition: color 0.18s linear;
   will-change: transform, opacity;
 }
 
 .reveal.is-visible {
-  opacity: calc(var(--reveal-progress, 0) * 0.92 + 0.08);
+  /* Once revealed, the scroll-driven floor applies. */
+  --reveal-floor: 0.08;
+  opacity: calc(var(--reveal-progress, 0) * 0.92 + var(--reveal-floor));
 }
 
 /* Headings and body copy shift toward the accent as they settle, which is the

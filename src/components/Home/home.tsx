@@ -5,6 +5,7 @@ import Experience from "../Experience/experience";
 import ToolStrip from "../Utils/ToolStrip/toolstrip";
 import BlogScout from "../Writing/blogscout";
 import BioParagraphs from "../Utils/BioParagraph/bioparagraph";
+import RevealHeading from "../Utils/RevealHeading/revealheading";
 import { PROJECT_LIST } from "../../constants/projects";
 import "./home.scss";
 
@@ -40,10 +41,10 @@ export default function Home() {
 
       {/* b. Work — wide editorial rows, alternating image and text. */}
       <section className="home__section" id="work">
-        <h2 className="section-title reveal">
-          <span className="section-title__tag">Work</span>
+        <RevealHeading className="section-title reveal">
+          <span className="section-title__tag">&lt;Work /&gt;</span>
           <span className="section-title__rule" aria-hidden="true" />
-        </h2>
+        </RevealHeading>
         <p className="home__section-lede reveal">
           Selected work across data platforms, procurement transparency and
           product backends. Each entry lists the stack actually used and the
@@ -67,12 +68,9 @@ export default function Home() {
               >
                 <img
                   src={project.preview}
-                  alt={`${project.previewLabel} for ${project.title}`}
+                  alt={`${project.title} preview`}
                   loading="lazy"
                 />
-                <span className="work_row__preview-caption">
-                  {project.previewLabel}
-                </span>
               </a>
 
               <div className="work_row__info">
@@ -139,10 +137,10 @@ export default function Home() {
 
       {/* d. Blogs — image-led grid of three articles. */}
       <section className="home__section" id="blogs">
-        <h2 className="section-title">
-          <span className="section-title__tag">Blogs</span>
+        <RevealHeading className="section-title">
+          <span className="section-title__tag">&lt;Blogs /&gt;</span>
           <span className="section-title__rule" aria-hidden="true" />
-        </h2>
+        </RevealHeading>
         <p className="home__section-lede">
           Latest writing on data engineering, systems and building in the open.
         </p>
@@ -151,10 +149,10 @@ export default function Home() {
 
       {/* e. About and skills. */}
       <section className="home__section" id="about">
-        <h2 className="section-title">
-          <span className="section-title__tag">About</span>
+        <RevealHeading className="section-title">
+          <span className="section-title__tag">&lt;About /&gt;</span>
           <span className="section-title__rule" aria-hidden="true" />
-        </h2>
+        </RevealHeading>
         <div className="home__about">
           <BioParagraphs />
         </div>
@@ -163,10 +161,10 @@ export default function Home() {
 
       {/* f. Contact and booking. */}
       <section className="home__section home__section--contact" id="contact">
-        <h2 className="section-title">
-          <span className="section-title__tag">Contact</span>
+        <RevealHeading className="section-title">
+          <span className="section-title__tag">&lt;Contact /&gt;</span>
           <span className="section-title__rule" aria-hidden="true" />
-        </h2>
+        </RevealHeading>
         <p className="home__section-lede">
           For data engineering, platform builds, advisory or collaboration, the
           fastest route is a message or a call.
