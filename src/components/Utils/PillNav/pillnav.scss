@@ -54,6 +54,14 @@
   transition: background-color 0.2s linear, border-color 0.2s linear;
 }
 
+/*
+   The booking entry inside the menu. Desktop shows the standalone CTA pill
+   instead, so this copy is hidden there and only appears in the mobile menu.
+*/
+.pill-nav__link--cta {
+  display: none;
+}
+
 .pill-nav__cta:hover,
 .pill-nav__cta:focus-visible {
   background-color: var(--accent-hover);
@@ -67,8 +75,8 @@
 
 @media (max-width: 993px) {
   /* On a phone the nav collapses to a small pill top-right with a toggle, and
-     the booking CTA becomes a separate small pill top-left. They sit on
-     opposite corners so they cannot overlap. */
+     the booking action moves inside the menu rather than sitting in the
+     corner beside the toggle. */
   .pill-nav {
     left: auto;
     right: 10px;
@@ -110,12 +118,20 @@
     padding: 0 13px;
   }
 
+  /* The booking entry is part of the menu on a phone. */
+  .pill-nav__links[data-open="true"] .pill-nav__link--cta {
+    display: flex;
+    height: 42px;
+    align-items: center;
+    margin-top: 4px;
+    border: 1px solid var(--accent);
+    border-radius: var(--nav-radius);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* The standalone corner CTA is not shown on a phone; the menu carries it. */
   .pill-nav__cta {
-    top: 12px;
-    left: 10px;
-    right: auto;
-    height: 32px;
-    padding: 0 11px;
-    font-size: 10px;
+    display: none;
   }
 }

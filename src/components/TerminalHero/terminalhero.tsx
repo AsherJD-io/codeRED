@@ -67,7 +67,7 @@ const ROWS: Row[] = [
     values: ["Python", "TypeScript", "JavaScript"],
   },
   { label: "", values: ["Shell", "CSS"] },
-  { label: "", values: ["Welcome to my page."] },
+  { label: "", values: ["Welcome to my space."] },
 ];
 
 const TYPE_CHAR_MS = 46;
@@ -175,7 +175,7 @@ export default function TerminalHero() {
           </p>
         </div>
 
-        {/* The action, then the status line beneath it. */}
+        {/* The action sits beside the status line, as it was originally. */}
         <div className="thero__aside">
           <div className="thero__actions">
             <a

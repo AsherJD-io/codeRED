@@ -208,6 +208,21 @@ export default function PillNav() {
               </Link>
             );
           })}
+
+          {/*
+            On a phone the booking action lives inside the menu rather than in
+            the corner: the corner is where the menu toggle is, and a second
+            pill there crowds it. Hidden on desktop, where the CTA is its own
+            pill beside the nav.
+          */}
+          <a
+            className="pill-nav__link pill-nav__link--cta"
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Book a call
+          </a>
         </div>
       </nav>
 

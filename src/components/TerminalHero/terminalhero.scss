@@ -89,13 +89,13 @@
 }
 
 /*
-   The status line and the action are stacked, left aligned. Each sits on its
-   own line, so nothing hangs beside or below the other.
+   The action and the status line share one row, as they did originally. The
+   action sits beside the status line rather than above or below it.
 */
 .thero__aside {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-3);
   width: 100%;
   margin-top: var(--space-2);
