@@ -67,14 +67,15 @@ export default function Projects(props: ProjectsProps) {
 
             <div className="project_row__info">
               <div className="project_row__meta">
-                <span className="project_row__year">{project.year}</span>
-                <span
-                  className={`project_row__status project_row__status--${project.status
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")}`}
-                >
-                  {project.status}
-                </span>
+                {project.status ? (
+                  <span
+                    className={`project_row__status project_row__status--${project.status
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                  >
+                    {project.status}
+                  </span>
+                ) : null}
                 <span className="project_row__role">{project.role}</span>
               </div>
 

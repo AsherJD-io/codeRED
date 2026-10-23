@@ -24,8 +24,8 @@ export type ProjectType = {
   /** What the reader should take away from the engineering, not the pitch. */
   contribution: string;
   stack: string;
-  status: string;
-  year: string;
+  /** Shown as a small badge. Omit it for work with no public state. */
+  status?: string;
   role: string;
   github?: string;
   live?: string;
@@ -44,7 +44,6 @@ export const PROJECT_LIST: ProjectType[] = [
     stack:
       "Python · SQL · PostgreSQL · BigQuery · dbt · PySpark · Kestra · Terraform · Docker",
     status: "Private",
-    year: "2026",
     role: "Data engineering",
     preview: energyDssPreview,
   },
@@ -57,7 +56,6 @@ export const PROJECT_LIST: ProjectType[] = [
       "Normalised the OCDS releases into one comparable shape, then wrote the signal layer that relates projects to each other and to the places they touch. The evidence is shown for human review rather than turned into a verdict.",
     stack: "Python · Next.js · TypeScript · OCDS",
     status: "Live",
-    year: "2025",
     role: "Full stack",
     github: "https://github.com/AsherJD-io/ordaciti",
     live: "https://ordaciti.vercel.app",
@@ -72,8 +70,6 @@ export const PROJECT_LIST: ProjectType[] = [
       "Ran the same trip data through a batch and a streaming path: orchestrated ingestion, incremental processing, and windowed stream queries, then modelled the result for trip-level analysis. The streaming jobs and the warehouse models are both part of the delivery.",
     stack:
       "Docker · Terraform · Kestra · BigQuery · dbt · Spark · Kafka · PyFlink",
-    status: "In progress",
-    year: "2026",
     role: "Data platform",
     github: "https://github.com/AsherJD-io/nyc-taxi-data-platform",
     preview: nycTaxiPreview,
@@ -87,7 +83,6 @@ export const PROJECT_LIST: ProjectType[] = [
       "Modelled trades and equity so positioning, drawdown and risk-adjusted measures are computed from one consistent grain, then surfaced them as a readable performance view rather than a raw table dump.",
     stack: "Python · dbt · BigQuery · Kestra · Streamlit · Docker",
     status: "Private",
-    year: "2026",
     role: "Analytics engineering",
     preview: tradingPreview,
   },
@@ -99,10 +94,8 @@ export const PROJECT_LIST: ProjectType[] = [
     contribution:
       "Designed the service and data model for consent-led information sharing, then migrated the relational schema underneath it with Alembic. The public service is deployed and reports its own health.",
     stack: "Python · FastAPI · SQLAlchemy · PostgreSQL · Alembic",
-    status: "In development",
-    year: "2025",
+    status: "Private",
     role: "Backend",
-    live: "https://thesie.vercel.app",
     preview: thesiePreview,
   },
   {
@@ -114,7 +107,6 @@ export const PROJECT_LIST: ProjectType[] = [
       "Built the site itself: the design system, the animated terminal hero, the editorial work rows, and the Substack feed integration that keeps the writing section in step with the publication.",
     stack: "React · TypeScript · SCSS · Vite",
     status: "Live",
-    year: "2025",
     role: "Frontend",
     github: "https://github.com/AsherJD-io/codeRED",
     live: "https://codered-azure.vercel.app",

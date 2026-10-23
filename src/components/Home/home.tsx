@@ -75,14 +75,15 @@ export default function Home() {
 
               <div className="work_row__info">
                 <div className="work_row__meta">
-                  <span className="work_row__year">{project.year}</span>
-                  <span
-                    className={`work_row__status work_row__status--${project.status
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}`}
-                  >
-                    {project.status}
-                  </span>
+                  {project.status ? (
+                    <span
+                      className={`work_row__status work_row__status--${project.status
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}`}
+                    >
+                      {project.status}
+                    </span>
+                  ) : null}
                   <span className="work_row__role">{project.role}</span>
                 </div>
 
