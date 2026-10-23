@@ -21,7 +21,6 @@ const LINKS: NavLink[] = [
   { to: "/", label: "Home" },
   { to: "/", section: "work", label: "Work" },
   { to: "/", section: "experience", label: "Experience" },
-  { to: "/", section: "blogs", label: "Blogs" },
   { to: "/", section: "about", label: "About" },
   // Contact is the homepage section, not the /contact route: the nav takes the
   // visitor to the <Contact /> heading on the page, where the form sits.

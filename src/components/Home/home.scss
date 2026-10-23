@@ -603,15 +603,23 @@
   font-size: var(--semi-font);
 }
 
-.home__social-link i:last-child {
-  font-size: 0.7em;
-  color: var(--accent-hover);
-  transition: transform 0.2s linear;
+/*
+   The slanting arrow from the revamped build, used here rather than a Font
+   Awesome glyph so the outward-link mark is the same one the rest of the page
+   uses.
+*/
+.home__social-arrow {
+  width: 12px;
+  height: 12px;
+  margin-left: 2px;
+  opacity: 0.75;
+  transition: transform 0.2s linear, opacity 0.2s linear;
 }
 
-.home__social-link:hover i:last-child,
-.home__social-link:focus-visible i:last-child {
-  transform: translateX(3px);
+.home__social-link:hover .home__social-arrow,
+.home__social-link:focus-visible .home__social-arrow {
+  transform: translate(2px, -2px);
+  opacity: 1;
 }
 
 .home__social-link:hover,

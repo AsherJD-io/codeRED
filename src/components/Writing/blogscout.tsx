@@ -83,9 +83,12 @@ export default function BlogScout() {
 
             <div className="blogs__body">
               <p className="blogs__meta">
-                {post.displayDate && (
-                  <span className="blogs__date">{post.displayDate}</span>
-                )}
+                {post.readMinutes ? (
+                  <span className="blogs__readtime">
+                    <i className="far fa-clock" aria-hidden="true" />
+                    {post.readMinutes} min read
+                  </span>
+                ) : null}
                 {post.featured && (
                   <span className="blogs__badge">Featured</span>
                 )}

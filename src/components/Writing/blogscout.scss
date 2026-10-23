@@ -107,11 +107,18 @@
   margin: 0;
 }
 
-.blogs__date {
+.blogs__readtime {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--mono);
   font-size: var(--xsmall-font);
   letter-spacing: 0.08em;
   color: var(--ink-faint);
+}
+
+.blogs__readtime i {
+  font-size: 0.85em;
 }
 
 .blogs__badge {

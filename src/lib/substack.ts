@@ -10,6 +10,12 @@ export type SubstackPost = {
   date: string | null;
   /** Human readable date, e.g. "26 Sep 2026". */
   displayDate: string;
+  /**
+   * Estimated reading time in minutes, or null when the article body is too
+   * short to estimate. Derived from the article body rather than published, so
+   * it stays a property of the writing.
+   */
+  readMinutes: number | null;
   excerpt: string;
   image: string | null;
   featured: boolean;
@@ -180,6 +186,20 @@ function excerptFromBody(body: string, max = 180): string {
   return truncate(stripHtml(decodeEntities(body)), max);
 }
 
+/**
+ * Estimate a reading time in minutes from the article body.
+ *
+ * The common 200 words per minute is used, floored at one minute so a short
+ * post still reads as "1 min read" rather than "0 min read". Returns null when
+ * there is no usable body, so the card can omit the marker instead of showing
+ * a meaningless number.
+ */
+export function estimateReadMinutes(body: string): number | null {
+  const words = stripHtml(decodeEntities(body)).split(/\s+/).filter(Boolean);
+  if (words.length < 20) return null;
+  return Math.max(1, Math.round(words.length / 200));
+}
+
 export type ParsedFeed = {
   posts: SubstackPost[];
   feedTitle: string;
@@ -223,6 +243,7 @@ export function parseSubstackFeed(xml: string): ParsedFeed {
         url,
         date: hasDate ? parsedDate!.toISOString() : null,
         displayDate: hasDate ? formatDisplayDate(parsedDate!) : "",
+        readMinutes: estimateReadMinutes(body),
         excerpt,
         image: isAllowedImageUrl(enclosure) ? enclosure : null,
         featured: url

@@ -10,11 +10,12 @@
 
 /*
    The Experience section is its own stage, so it carries the same divider as
-   the other sections rather than relying on its own margins.
+   the other sections. The margin above it matches theirs, otherwise the
+   divider sits flush against the work rows instead of with the same gap.
 */
 .experience {
   position: relative;
-  margin: 0;
+  margin: var(--space-6) 0 0;
   padding-top: var(--space-6);
   border-top: 1px solid var(--rule);
 }
@@ -24,6 +25,53 @@
   margin: 0;
   padding: 0 0 0 var(--space-3);
   list-style: none;
+}
+
+/*
+   The résumé download. It sits above the section's rule line, at the right
+   edge, so it reads as an action on the section rather than a row in the
+   timeline. Pulled up over the heading's rule with a negative margin so it
+   never collides with the tag or the line.
+*/
+.experience__download {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--nav-radius);
+  background-color: transparent;
+  color: var(--ink-muted);
+  font-family: "air-regular";
+  font-size: var(--xsmall-font);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s linear, border-color 0.2s linear,
+    background-color 0.2s linear;
+}
+
+.experience__download i {
+  font-size: 0.85em;
+}
+
+.experience__download:hover,
+.experience__download:focus-visible {
+  border-color: var(--ink-muted);
+  color: var(--ink);
+  background-color: var(--bg-elevated);
+}
+
+.experience__download:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* The heading keeps room for the download on the right. */
+.experience .section-title {
+  padding-right: 12rem;
 }
 
 /* The track sits in the gutter, clear of the text. */

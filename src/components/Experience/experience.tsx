@@ -2,6 +2,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { resume } from "../../constants/resume";
 import "./experience.scss";
 
+/** The résumé on Drive, the same file the Resume route links to. */
+const RESUME_URL =
+  "https://drive.google.com/file/d/1dJoSM0Dksn_k4PwfquTXXvDvndGEYCeC/view?usp=sharing";
+
 /* ==========================================================================
    Work-experience timeline.
    One vertical track, a fill that grows on scroll, one node per entry. The
@@ -129,6 +133,21 @@ export default function Experience() {
         <span className="section-title__tag">&lt;Experience /&gt;</span>
         <span className="section-title__rule" aria-hidden="true" />
       </h2>
+
+      {/*
+        The résumé download sits above the divider line, at the section's
+        right-hand edge, so it reads as an action on the section rather than
+        part of the timeline.
+      */}
+      <a
+        className="experience__download"
+        href={RESUME_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i className="fas fa-download" aria-hidden="true" />
+        <span>Download CV</span>
+      </a>
       <ol className="timeline" ref={listRef}>
         <span className="timeline__track" aria-hidden="true">
           <span className="timeline__fill" ref={fillRef} />

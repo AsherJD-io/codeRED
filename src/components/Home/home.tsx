@@ -6,6 +6,7 @@ import BlogScout from "../Writing/blogscout";
 import BioParagraphs from "../Utils/BioParagraph/bioparagraph";
 import RevealHeading from "../Utils/RevealHeading/revealheading";
 import Form from "../Utils/Form/form";
+import arrow from "../../assets/svgs/arrow.svg";
 import { PROJECT_LIST } from "../../constants/projects";
 import "./home.scss";
 
@@ -223,7 +224,12 @@ export default function Home() {
             >
               <i className={social.icon} aria-hidden="true" />
               <span>{social.label}</span>
-              <i className="fas fa-arrow-right" aria-hidden="true" />
+              {/*
+                The slanting arrow from the revamped build, not a Font Awesome
+                glyph: it is the mark the rest of the page uses for an outward
+                link.
+              */}
+              <img className="home__social-arrow" src={arrow} alt="" />
             </a>
           ))}
         </div>

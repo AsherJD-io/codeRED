@@ -65,11 +65,18 @@ const TOOLS: Array<{ name: string; icon: IconProp }> = [
 ];
 
 /*
- * A full loop is one copy of the list. The track holds the list twice, and the
- * animation moves exactly one copy's width, so the second copy lands where the
- * first started and the loop can repeat with no visible seam or jump back to
- * the beginning.
+ * One continuous thread folded over itself. The list runs left to right on the
+ * first row and continues right to left on the second, so it reads as a single
+ * ribbon rather than the same stack shown twice. The rows travel in opposite
+ * directions, so the fold keeps moving and the thread never repeats a tool in
+ * the same place.
+ *
+ * Each row holds the list twice so it can wrap seamlessly. The clearance
+ * between rows is set in CSS, not here.
  */
+const ROWS = 2;
+
+/* Space between pills, and the same space carried as the gap property. */
 const ITEM_GAP = 24;
 
 export default function ToolStrip() {
@@ -85,7 +92,7 @@ export default function ToolStrip() {
 
     let raf = 0;
     let start = 0;
-    let halfWidth = 0;
+    let copyWidth = 0;
 
     const measure = () => {
       const track = forwardRef.current;
@@ -95,8 +102,7 @@ export default function ToolStrip() {
       /*
        * One copy's width: from the start of the first item to the start of the
        * first item in the second copy. Measured rather than assumed, so the
-       * loop stays seamless whatever the item widths and gap turn out to be.
-       * Both lanes hold the same list, so one measurement covers them.
+       * wrap stays seamless whatever the item widths and gap turn out to be.
        */
       const first = items[0].getBoundingClientRect();
       const second = items[items.length / 2].getBoundingClientRect();
@@ -105,16 +111,15 @@ export default function ToolStrip() {
 
     const tick = (now: number) => {
       if (!start) start = now;
-      if (!halfWidth) halfWidth = measure();
+      if (!copyWidth) copyWidth = measure();
 
       /*
        * A steady 50px per second, endless. The modulo keeps the offset inside
-       * one copy, so neither lane drifts and neither snaps back to zero.
-       * The lanes share the offset and apply it in opposite directions.
+       * one copy, so neither row drifts and neither snaps back to zero.
        */
       const elapsed = now - start;
       const raw = (elapsed / 1000) * 50;
-      setOffset(halfWidth > 0 ? raw % halfWidth : 0);
+      setOffset(copyWidth > 0 ? raw % copyWidth : 0);
 
       raf = requestAnimationFrame(tick);
     };
@@ -130,63 +135,49 @@ export default function ToolStrip() {
     };
   }, [reduced]);
 
-  /*
-   * Two lanes, each holding the list twice so a lane can loop seamlessly. The
-   * reverse lane is pre-shifted by one copy so the two rows are never showing
-   * the same tool in the same place.
-   */
-  const laneItems = [...TOOLS, ...TOOLS];
+  const rowItems = [...TOOLS, ...TOOLS];
+
+  const renderRow = (keyPrefix: string) =>
+    rowItems.map((tool, index) => (
+      <div key={`${keyPrefix}-${tool.name}-${index}`} className="tools__item">
+        <span className="tools__icon">
+          <FontAwesomeIcon icon={tool.icon} aria-hidden="true" fixedWidth />
+        </span>
+        <span className="tools__label">{tool.name}</span>
+      </div>
+    ));
 
   return (
     <div
       className={`tools${reduced ? " is-static" : ""}`}
       aria-label="Technologies used"
     >
-      <div
-        ref={forwardRef}
-        className="tools__track tools__track--forward"
-        style={
-          reduced
-            ? undefined
-            : { gap: ITEM_GAP, transform: `translateX(-${offset}px)` }
-        }
-      >
-        {laneItems.map((tool, index) => (
-          <div key={`${tool.name}-${index}`} className="tools__item">
-            <span className="tools__icon">
-              <FontAwesomeIcon icon={tool.icon} aria-hidden="true" fixedWidth />
-            </span>
-            <span className="tools__label">{tool.name}</span>
-          </div>
-        ))}
-      </div>
-
-      <div
-        ref={reverseRef}
-        className="tools__track tools__track--reverse"
-        style={
-          reduced
-            ? undefined
-            : {
-                gap: ITEM_GAP,
-                /*
-                 * Pre-shifted by one copy, then moved right by the same
-                 * offset the top lane moves left by, so the rows travel in
-                 * opposite directions and stay out of step with each other.
-                 */
-                transform: `translateX(calc(-50% + ${offset}px))`,
-              }
-        }
-      >
-        {laneItems.map((tool, index) => (
-          <div key={`${tool.name}-b-${index}`} className="tools__item">
-            <span className="tools__icon">
-              <FontAwesomeIcon icon={tool.icon} aria-hidden="true" fixedWidth />
-            </span>
-            <span className="tools__label">{tool.name}</span>
-          </div>
-        ))}
-      </div>
+      {/*
+        Row 1 travels left. Row 2 travels right and is pre-shifted by half a
+        copy, so the fold sits away from the row's start and the two rows are
+        never showing the same tool in the same place.
+      */}
+      {Array.from({ length: ROWS }).map((_, row) => (
+        <div
+          key={row}
+          ref={row === 0 ? forwardRef : reverseRef}
+          className={`tools__track tools__track--${
+            row === 0 ? "forward" : "reverse"
+          }`}
+          style={
+            reduced
+              ? undefined
+              : row === 0
+                ? { gap: ITEM_GAP, transform: `translateX(-${offset}px)` }
+                : {
+                    gap: ITEM_GAP,
+                    transform: `translateX(calc(-50% + ${offset}px))`,
+                  }
+          }
+        >
+          {renderRow(row === 0 ? "f" : "r")}
+        </div>
+      ))}
     </div>
   );
 }

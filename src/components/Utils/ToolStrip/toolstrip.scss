@@ -20,7 +20,8 @@
 }
 
 .tools__track + .tools__track {
-  margin-top: var(--space-2);
+  /* Clearance so the upper row does not sit directly on the one below it. */
+  margin-top: var(--space-3);
 }
 
 .tools__item {
