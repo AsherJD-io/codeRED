@@ -267,6 +267,11 @@
 
 /* ----- About and skills ----- */
 
+/*
+   The about copy spans the section like every other block on the page. The
+   paragraphs were capped at a measure, which left the strip below them
+   starting further right than the copy above it.
+*/
 .home__about {
   display: flex;
   flex-direction: column;
@@ -280,11 +285,9 @@
   font-size: var(--normal-font);
   line-height: 1.75;
   color: var(--ink-muted);
-  max-width: 72ch;
 }
 
 .home__about--signal {
-  max-width: 68ch;
   font-size: var(--small-font);
 }
 
@@ -430,11 +433,25 @@
   color: var(--ink);
 }
 
+/*
+   The words are separate inline-blocks, so the literal spaces between them in
+   the markup collapse to nothing once they become blocks. A real gap is needed
+   or "build it." reads as "buildit."
+*/
+.home__contact-heading .reveal-heading__word + .reveal-heading__word {
+  margin-left: 0.18em;
+}
+
 /* The section's own reveal drives the words. */
 .home__section--contact.is-visible .home__contact-heading .reveal-heading__word,
 .home__contact-heading.is-visible .reveal-heading__word {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* "build" carries the emphasis, in the heading's own italic. */
+.home__contact-heading-em {
+  font-style: italic;
 }
 
 /*
@@ -499,10 +516,9 @@
 
 /* Top-right corner of the card, clear of the heading. */
 .home__contact-book {
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
+  margin: 0 auto var(--space-3);
   align-items: center;
   padding: 0.5rem 1rem;
   border: 1px solid var(--rule);
@@ -587,6 +603,17 @@
   font-size: var(--semi-font);
 }
 
+.home__social-link i:last-child {
+  font-size: 0.7em;
+  color: var(--accent-hover);
+  transition: transform 0.2s linear;
+}
+
+.home__social-link:hover i:last-child,
+.home__social-link:focus-visible i:last-child {
+  transform: translateX(3px);
+}
+
 .home__social-link:hover,
 .home__social-link:focus-visible {
   color: var(--ink);
@@ -598,15 +625,7 @@
     margin-top: var(--space-5);
   }
 
-  /* On a phone the booking action moves below the heading rather than
-     crowding it in the card's corner. */
-  .home__contact-book {
-    position: static;
-    display: flex;
-    width: fit-content;
-    margin: 0 auto var(--space-3);
-  }
-
+  /* On a phone the card keeps its tighter padding. */
   .home__contact-card {
     padding: var(--space-3);
   }

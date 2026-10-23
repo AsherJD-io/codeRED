@@ -72,12 +72,12 @@ const bio: Bio[] = [
     segments: [
       {
         kind: "text",
-        text: "I’m open to opportunities to apply data engineering across agriculture, energy and sustainability. Reach out today. The world is",
+        text: "I’m open to opportunities to apply data engineering across agriculture, energy and sustainability. Reach out today. The world is ",
       },
       { kind: "highlight", text: "just a code away" },
       {
         kind: "text",
-        text: "from the next meaningful innovation!",
+        text: " from the next meaningful innovation!",
       },
     ],
   },

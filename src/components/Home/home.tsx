@@ -22,7 +22,11 @@ const SOCIALS = [
     label: "GitHub",
     icon: "fab fa-github",
   },
-  { href: "https://x.com/23asher_io", label: "X", icon: "fab fa-x-twitter" },
+  {
+    href: "https://x.com/23asher_io",
+    label: "Twitter",
+    icon: "fab fa-x-twitter",
+  },
 ];
 
 /**
@@ -182,13 +186,20 @@ export default function Home() {
       >
         <h2 className="home__contact-heading reveal">
           <span className="reveal-heading__word">Let&apos;s</span>{" "}
-          <span className="reveal-heading__word">build</span>{" "}
+          <span className="reveal-heading__word home__contact-heading-em">
+            build
+          </span>{" "}
           <span className="reveal-heading__word">it.</span>
         </h2>
 
         <div className="home__contact-card">
           <h3 className="home__contact-card-title">Say hello</h3>
 
+          {/*
+            The booking action sits directly under the heading rather than in
+            the card's corner: a filled pill in the corner competed with the
+            filled submit button and made the card read as two equal actions.
+          */}
           <a
             className="home__contact-book"
             href={BOOKING_URL}
@@ -212,6 +223,7 @@ export default function Home() {
             >
               <i className={social.icon} aria-hidden="true" />
               <span>{social.label}</span>
+              <i className="fas fa-arrow-right" aria-hidden="true" />
             </a>
           ))}
         </div>

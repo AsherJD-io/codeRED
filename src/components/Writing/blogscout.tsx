@@ -98,16 +98,6 @@ export default function BlogScout() {
               </h3>
 
               {post.excerpt && <p className="blogs__excerpt">{post.excerpt}</p>}
-
-              <a
-                className="blogs__read"
-                href={post.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Read on Substack
-                <i className="fas fa-arrow-right" aria-hidden="true" />
-              </a>
             </div>
           </article>
         ))}

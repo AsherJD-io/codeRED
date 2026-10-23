@@ -8,8 +8,15 @@
    so the section reads identically with motion disabled.
    ========================================================================== */
 
+/*
+   The Experience section is its own stage, so it carries the same divider as
+   the other sections rather than relying on its own margins.
+*/
 .experience {
-  margin: var(--space-5) 0;
+  position: relative;
+  margin: 0;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--rule);
 }
 
 .timeline {

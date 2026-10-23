@@ -73,7 +73,8 @@ const TOOLS: Array<{ name: string; icon: IconProp }> = [
 const ITEM_GAP = 24;
 
 export default function ToolStrip() {
-  const trackRef = useRef<HTMLDivElement | null>(null);
+  const forwardRef = useRef<HTMLDivElement | null>(null);
+  const reverseRef = useRef<HTMLDivElement | null>(null);
   const [offset, setOffset] = useState(0);
   const reduced =
     typeof window !== "undefined" &&
@@ -87,7 +88,7 @@ export default function ToolStrip() {
     let halfWidth = 0;
 
     const measure = () => {
-      const track = trackRef.current;
+      const track = forwardRef.current;
       if (!track) return 0;
       const items = Array.from(track.children) as HTMLElement[];
       if (items.length < 2) return 0;
@@ -95,6 +96,7 @@ export default function ToolStrip() {
        * One copy's width: from the start of the first item to the start of the
        * first item in the second copy. Measured rather than assumed, so the
        * loop stays seamless whatever the item widths and gap turn out to be.
+       * Both lanes hold the same list, so one measurement covers them.
        */
       const first = items[0].getBoundingClientRect();
       const second = items[items.length / 2].getBoundingClientRect();
@@ -106,11 +108,12 @@ export default function ToolStrip() {
       if (!halfWidth) halfWidth = measure();
 
       /*
-       * A steady 60px per second, endless. The modulo keeps the offset inside
-       * one copy, so the strip never drifts and never snaps back to zero.
+       * A steady 50px per second, endless. The modulo keeps the offset inside
+       * one copy, so neither lane drifts and neither snaps back to zero.
+       * The lanes share the offset and apply it in opposite directions.
        */
       const elapsed = now - start;
-      const raw = (elapsed / 1000) * 60;
+      const raw = (elapsed / 1000) * 50;
       setOffset(halfWidth > 0 ? raw % halfWidth : 0);
 
       raf = requestAnimationFrame(tick);
@@ -127,7 +130,12 @@ export default function ToolStrip() {
     };
   }, [reduced]);
 
-  const items = [...TOOLS, ...TOOLS];
+  /*
+   * Two lanes, each holding the list twice so a lane can loop seamlessly. The
+   * reverse lane is pre-shifted by one copy so the two rows are never showing
+   * the same tool in the same place.
+   */
+  const laneItems = [...TOOLS, ...TOOLS];
 
   return (
     <div
@@ -135,17 +143,43 @@ export default function ToolStrip() {
       aria-label="Technologies used"
     >
       <div
-        ref={trackRef}
-        className="tools__track"
+        ref={forwardRef}
+        className="tools__track tools__track--forward"
         style={
           reduced
             ? undefined
             : { gap: ITEM_GAP, transform: `translateX(-${offset}px)` }
         }
-        data-static={reduced ? "true" : undefined}
       >
-        {items.map((tool, index) => (
+        {laneItems.map((tool, index) => (
           <div key={`${tool.name}-${index}`} className="tools__item">
+            <span className="tools__icon">
+              <FontAwesomeIcon icon={tool.icon} aria-hidden="true" fixedWidth />
+            </span>
+            <span className="tools__label">{tool.name}</span>
+          </div>
+        ))}
+      </div>
+
+      <div
+        ref={reverseRef}
+        className="tools__track tools__track--reverse"
+        style={
+          reduced
+            ? undefined
+            : {
+                gap: ITEM_GAP,
+                /*
+                 * Pre-shifted by one copy, then moved right by the same
+                 * offset the top lane moves left by, so the rows travel in
+                 * opposite directions and stay out of step with each other.
+                 */
+                transform: `translateX(calc(-50% + ${offset}px))`,
+              }
+        }
+      >
+        {laneItems.map((tool, index) => (
+          <div key={`${tool.name}-b-${index}`} className="tools__item">
             <span className="tools__icon">
               <FontAwesomeIcon icon={tool.icon} aria-hidden="true" fixedWidth />
             </span>

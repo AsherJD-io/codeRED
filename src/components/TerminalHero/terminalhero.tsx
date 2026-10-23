@@ -165,12 +165,8 @@ export default function TerminalHero() {
             <span>
               I build <span className="highlight">data platforms</span> and{" "}
               <span className="highlight">software products</span> for complex,
-              real-world operations. My work spans data pipelines and
-              warehouses, streaming and orchestration, cloud-native systems,
-              backend APIs, and AI-assisted products across energy, mobility,
-              public procurement, finance, and agriculture. I bring an
-              engineering background to turning messy data and operational
-              problems into systems people can trust and use.
+              real-world operations, turning messy data and operational problems
+              into systems people can trust and use.
             </span>
           </p>
         </div>

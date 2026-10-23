@@ -12,11 +12,15 @@
   overflow: hidden;
 }
 
+/* Two stacked lanes, each scrolling the same list in opposite directions. */
 .tools__track {
   display: flex;
-  gap: var(--space-6);
   will-change: transform;
   transform: translateX(0);
+}
+
+.tools__track + .tools__track {
+  margin-top: var(--space-2);
 }
 
 .tools__item {
