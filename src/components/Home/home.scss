@@ -289,18 +289,12 @@
 }
 
 /*
-   The label above the scrolling tool strip. Smaller than a section title,
-   because it names the strip rather than introducing a page section, and it
-   is deliberately not offered in the navigation.
+   The label above the scrolling tool strip. It uses the same treatment as the
+   other section headings so it reads as one system, but sits inside the About
+   section rather than being a section of its own, so it is not in the nav.
 */
 .home__tools-heading {
-  margin: 0 0 var(--space-2);
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent-hover);
+  margin-top: var(--space-5);
 }
 
 /* The restored phrase, in its original class names. */

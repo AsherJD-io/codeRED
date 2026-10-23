@@ -162,9 +162,12 @@ export default function Home() {
           The strip gets its own heading. It is a label for the tools below
           the about copy, not a page section, so it is not offered in the nav.
         */}
-        <h3 className="home__tools-heading reveal">
-          <span className="section-title__tag">Skills &amp; tools</span>
-        </h3>
+        <RevealHeading className="section-title">
+          <span className="section-title__tag">
+            &lt;Skills &amp; tools /&gt;
+          </span>
+          <span className="section-title__rule" aria-hidden="true" />
+        </RevealHeading>
         <ToolStrip />
       </section>
 

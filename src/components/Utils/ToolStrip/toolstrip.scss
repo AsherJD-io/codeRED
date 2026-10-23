@@ -59,16 +59,7 @@
 }
 
 .tools__focus {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 40vw;
-  border: 1px solid var(--accent);
-  border-radius: 24px;
-  opacity: 0.35;
-  pointer-events: none;
-  transform: translateX(50%);
+  display: none;
 }
 
 .tools.is-static .tools__track {
@@ -87,9 +78,5 @@
 
   .tools__label {
     font-size: var(--small-font);
-  }
-
-  .tools__focus {
-    width: 56vw;
   }
 }
