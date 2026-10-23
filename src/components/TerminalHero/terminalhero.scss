@@ -63,7 +63,12 @@
   right: -3%;
   bottom: -0.12em;
   height: 0.26em;
-  color: var(--accent-hover);
+  /*
+     Neutral ink, matching the page's own light text rather than the accent.
+     The accent was reading as a colour that does not exist anywhere else on
+     the page; the heading's own ink is the colour that belongs here.
+  */
+  color: #f4f4f5;
   pointer-events: none;
 }
 
@@ -71,6 +76,30 @@
   display: block;
   width: 100%;
   height: 100%;
+}
+
+/*
+   The strokes draw themselves on when the page opens.
+
+   The travelling highlight is a rect carrying a neutral gradient, clipped by
+   the stroke mask in the SVG. Animating the rect's background-position moves a
+   band of light along the ink, which reads as the pen drawing the line. That
+   is the same mechanism the reference site uses for its animated text.
+
+   The stroke itself stays static and always visible, so the underline is never
+   dependent on the animation having run.
+*/
+.thero__scribble-sheen {
+  animation: scribble-sheen 2.6s cubic-bezier(0.65, 0, 0.35, 1) 0.5s both;
+}
+
+@keyframes scribble-sheen {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
 
 .thero__bio {
@@ -456,6 +485,12 @@
 
   .thero__status-dot {
     animation: none;
+  }
+
+  /* No travelling highlight: the stroke is shown complete from the start. */
+  .thero__scribble-sheen {
+    animation: none;
+    transform: none;
   }
 
   .thero__face,
