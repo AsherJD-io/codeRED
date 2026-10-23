@@ -50,24 +50,26 @@ const COMMAND = "fetch.sh -u asher";
  *   - repositories owned: 16
  *   - pull requests authored: 26
  *   - stars received: 15
- *   - languages: the account's own language signal by repo count, top three
- *     (Python, TypeScript, JavaScript), with the rest carried on a second row.
+ *   - languages: every language GitHub reports across the account's own
+ *     repositories, ordered by the account's byte share (TypeScript, Python,
+ *     CSS, JavaScript, Shell, SCSS, HTML, Dockerfile, Makefile), the first five
+ *     on one row and the rest on the next.
  *
  * The fetch output comes first, then the welcome note closes it. None of it
  * repeats the page's own copy: the left column states who he is and what he
  * works on, and the Work section below lists the projects.
  */
-type Row = { label?: string; values: string[] };
+type Row = { label?: string; values: string[]; closing?: boolean };
 
 const ROWS: Row[] = [
   { label: "github", values: ["16 repos"] },
   { label: "", values: ["26 PRs", "15 stars"] },
   {
     label: "langs",
-    values: ["Python", "TypeScript", "JavaScript"],
+    values: ["TypeScript", "Python", "CSS", "JavaScript", "Shell"],
   },
-  { label: "", values: ["Shell", "CSS"] },
-  { label: "", values: ["Welcome to my space."] },
+  { label: "", values: ["SCSS", "HTML", "Dockerfile", "Makefile"] },
+  { label: "", values: ["Welcome to my space."], closing: true },
 ];
 
 const TYPE_CHAR_MS = 46;
@@ -221,7 +223,10 @@ export default function TerminalHero() {
               </p>
 
               {ROWS.slice(0, rowCount).map((row, i) => (
-                <p className="thero__row" key={i}>
+                <p
+                  className={`thero__row${row.closing ? " thero__row--closing" : ""}`}
+                  key={i}
+                >
                   {row.label ? (
                     <span className="thero__label">
                       {row.label.padEnd(6, " ")}
@@ -230,7 +235,10 @@ export default function TerminalHero() {
                     <span className="thero__label">{" ".repeat(6)}</span>
                   )}
                   {row.values.map((value, j) => (
-                    <span className="thero__value" key={j}>
+                    <span
+                      className={`thero__value${row.closing ? " thero__value--closing" : ""}`}
+                      key={j}
+                    >
                       {j > 0 ? (
                         <span className="thero__dot-sep"> · </span>
                       ) : null}

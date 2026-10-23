@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { resume } from "../../constants/resume";
+import RevealHeading from "../Utils/RevealHeading/revealheading";
 import "./experience.scss";
 
 /** The résumé on Drive, the same file the Resume route links to. */
@@ -126,10 +127,10 @@ export default function Experience() {
       id="experience"
       aria-labelledby="experience-heading"
     >
-      <h2 className="section-title" id="experience-heading">
+      <RevealHeading className="section-title reveal" id="experience-heading">
         <span className="section-title__tag">&lt;Experience /&gt;</span>
         <span className="section-title__rule" aria-hidden="true" />
-      </h2>
+      </RevealHeading>
 
       {/*
         The résumé download. It sits ABOVE the heading's rule line, at the

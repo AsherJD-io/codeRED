@@ -140,17 +140,83 @@ p {
 }
 
 /* ==========================================================================
-   Floating / inset pill navigation
-   Darshan Solanki: fixed at top-left-centre ("fixed left-1/2 top-6"),
-   stays fixed on scroll, inset from the screen edges with a backdrop.
+   Floating pill navigation
+   The pill and the booking CTA share one right-anchored group at the top of
+   the viewport, so they sit side by side and cannot overlap. The brand mark is
+   pinned to the top-left.
    ========================================================================== */
 
+/*
+   The top row. It is a real row in the content flow, inset to the reading
+   column so its left and right edges line up with the hero's. In the flow
+   rather than pinned to the viewport, so the row scrolls away with the page
+   instead of floating over the content.
+*/
+.site-header {
+  width: 100%;
+  max-width: min(92vw, 1360px);
+  margin: 0 auto;
+  padding: 14px var(--space-5) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/*
+   The right-anchored group: pill on the left, CTA on the right.
+
+   A stacking context of its own, and one high enough to sit above the hero
+   display. The header is an ordinary in-flow row and the display is a positioned
+   sibling, so without this the mobile menu is painted in DOM order behind the
+   terminal and every click lands on the portrait instead of the link.
+*/
+.pill-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  /* Anchors the mobile menu dropdown, which is absolutely positioned. */
+  position: relative;
+  z-index: 1000;
+}
+
+/*
+   The brand mark sits at the left edge of the row, aligned with the left edge
+   of the reading column where the hero begins.
+*/
+.pill-brand {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  /* A button, not a link: it replays the intro rather than navigating. */
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+.pill-brand:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill-bar,
+  .pill-brand {
+    transition: opacity 0.15s linear;
+  }
+}
+
+.pill-brand img {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+
 .pill-nav {
-  position: fixed;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 200;
   display: flex;
   align-items: center;
   height: 36px;
@@ -283,7 +349,6 @@ p {
    ========================================================================== */
 
 html {
-  scroll-behavior: smooth;
   /*
      The root must be exactly the viewport height, not the document height.
      With `height: auto` the root grows to fit all content, its own scrollable
@@ -296,6 +361,15 @@ html {
   min-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  /*
+     No `scroll-behavior: smooth` here. The browser's own anchor navigation
+     respects it, and a smooth anchor jump is animated: in a headless or
+     backgrounded context there are no animation frames for it to run on, so it
+     never lands and a direct hash load leaves the page at the top with the
+     target section off screen. Section-to-section moves are smooth because the
+     nav calls `scrollTo` with an explicit behaviour, which does not depend on
+     this property.
+  */
 }
 
 body {
@@ -358,38 +432,20 @@ body {
     padding: 0;
   }
 
-  /* On mobile the pill nav becomes a compact bar with a menu toggle */
+  /* On mobile the pill nav becomes a compact bar top-right with a menu toggle,
+     and the brand mark stays at the top-left, both inside the row. */
+  .site-header {
+    padding: 12px var(--space-3) 0;
+    gap: 10px;
+  }
+
+  .pill-brand img {
+    height: 32px;
+  }
+
   .pill-nav {
-    top: 10px;
-    right: 16px;
-    left: auto;
-    transform: none;
-    height: 44px;
-  }
-
-  .pill-nav__links {
-    display: none;
-  }
-
-  .pill-nav__links[data-open="true"] {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 52px;
-    right: 0;
-    left: auto;
-    width: 200px;
-    height: auto;
-    padding: var(--space-1);
-    border: 1px solid var(--rule);
-    border-radius: 16px;
-    background-color: var(--bg-elevated);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-  }
-
-  .pill-nav__links[data-open="true"] .pill-nav__link {
-    height: 44px;
-    padding: 0 14px;
+    height: 34px;
+    padding: 3px;
   }
 }
 
@@ -478,15 +534,52 @@ body {
    Motion — restrained, and disabled under prefers-reduced-motion
    ========================================================================== */
 
-@keyframes slide {
-  from {
-    transform: scale(1);
-    opacity: 0;
-  }
+/*
+   The loading intro. The codeRED mark appears and drifts gently from side to
+   side while it pulses, then the main page is revealed. The animation is
+   finite so the intro always finishes and cannot trap the visitor.
+*/
+.intro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background-color: var(--bg);
+}
 
-  to {
-    transform: scale(2);
+.intro__logo {
+  display: block;
+  width: clamp(140px, 22vw, 220px);
+  height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro__logo {
+    animation:
+      intro-pulse 1.1s ease-in-out infinite,
+      intro-drift 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes intro-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
     opacity: 1;
+  }
+}
+
+@keyframes intro-drift {
+  0%,
+  100% {
+    transform: translateX(-8px);
+  }
+  50% {
+    transform: translateX(8px);
   }
 }
 
@@ -566,7 +659,9 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .loader {
-    animation: slide infinite 1.5s linear;
+  .intro__logo {
+    animation:
+      intro-pulse 1.1s ease-in-out infinite,
+      intro-drift 1.5s ease-in-out infinite;
   }
 }

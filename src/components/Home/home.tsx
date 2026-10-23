@@ -143,23 +143,24 @@ export default function Home() {
 
       {/* d. Blogs — image-led grid of three articles. */}
       <section className="home__section" id="blogs">
-        <RevealHeading className="section-title">
+        <RevealHeading className="section-title reveal">
           <span className="section-title__tag">&lt;Blogs /&gt;</span>
           <span className="section-title__rule" aria-hidden="true" />
         </RevealHeading>
-        <p className="home__section-lede">
-          Latest writing on data engineering, systems and building in the open.
+        <p className="home__section-lede reveal">
+          My unscripted ripples and waves on systems, life in tech and everything
+          alike.
         </p>
         <BlogScout />
       </section>
 
       {/* e. About and skills. */}
       <section className="home__section" id="about">
-        <RevealHeading className="section-title">
+        <RevealHeading className="section-title reveal">
           <span className="section-title__tag">&lt;About /&gt;</span>
           <span className="section-title__rule" aria-hidden="true" />
         </RevealHeading>
-        <div className="home__about">
+        <div className="home__about reveal">
           <BioParagraphs />
         </div>
 
@@ -170,13 +171,18 @@ export default function Home() {
           It carries the same top divider as every other section heading, so
           the strip is not a heading without a line above it.
         */}
-        <RevealHeading className="section-title home__tools-heading">
-          <span className="section-title__tag">
-            &lt;Skills &amp; tools /&gt;
-          </span>
+        <RevealHeading className="section-title home__tools-heading reveal">
+          <span className="section-title__tag">&lt;My stack /&gt;</span>
           <span className="section-title__rule" aria-hidden="true" />
         </RevealHeading>
-        <ToolStrip />
+        {/*
+          The nav's Skills & Tools entry targets this anchor. The heading names
+          the strip rather than being a page section of its own, so the anchor
+          is a thin marker around the strip rather than a heading of its own.
+        */}
+        <div id="skills" className="home__skills-anchor">
+          <ToolStrip />
+        </div>
       </section>
 
       {/* f. Contact — the form is the section, as in the reference: a big

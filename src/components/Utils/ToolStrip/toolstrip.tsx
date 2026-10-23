@@ -5,7 +5,7 @@
    Font Awesome brand icons only. No brand logos and no emoji are used.
    Reduced motion yields a stationary, completely readable strip.
    ========================================================================== */
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
@@ -28,16 +28,16 @@ library.add(fab, fas);
 const TOOLS: Array<{ name: string; icon: IconProp }> = [
   { name: "Python", icon: "fab fa-python" as IconProp },
   { name: "SQL", icon: "fas fa-database" as IconProp },
-  { name: "TypeScript", icon: "fas fa-code" as IconProp },
-  { name: "JavaScript", icon: "fas fa-file-code" as IconProp },
-  { name: "PostgreSQL", icon: "fas fa-database" as IconProp },
+  { name: "TypeScript", icon: "fas fa-file-code" as IconProp },
+  { name: "JavaScript", icon: "fab fa-js" as IconProp },
+  { name: "PostgreSQL", icon: "fas fa-table-cells" as IconProp },
   { name: "BigQuery", icon: "fab fa-google" as IconProp },
   { name: "dbt", icon: "fas fa-code-branch" as IconProp },
   { name: "Kestra", icon: "fas fa-cloud" as IconProp },
   { name: "PySpark", icon: "fas fa-fire" as IconProp },
   { name: "Kafka", icon: "fas fa-stream" as IconProp },
   { name: "Redpanda", icon: "fas fa-fish" as IconProp },
-  { name: "Flink", icon: "fas fa-bolt" as IconProp },
+  { name: "Flink", icon: "fas fa-bolt-lightning" as IconProp },
   { name: "Docker", icon: "fab fa-docker" as IconProp },
   { name: "Docker Compose", icon: "fas fa-cubes" as IconProp },
   { name: "Kubernetes", icon: "fas fa-dharmachakra" as IconProp },
@@ -50,11 +50,12 @@ const TOOLS: Array<{ name: string; icon: IconProp }> = [
   { name: "FastAPI", icon: "fas fa-bolt" as IconProp },
   { name: "SQLAlchemy", icon: "fas fa-link" as IconProp },
   { name: "Alembic", icon: "fas fa-arrows-rotate" as IconProp },
+  { name: "Vercel", icon: "fas fa-cloud-upload" as IconProp },
   { name: "Streamlit", icon: "fas fa-chart-line" as IconProp },
-  { name: "Vite", icon: "fas fa-bolt" as IconProp },
+  { name: "Vite", icon: "fas fa-rocket" as IconProp },
   { name: "SCSS", icon: "fas fa-palette" as IconProp },
   { name: "REST APIs", icon: "fas fa-plug" as IconProp },
-  { name: "ETL/ELT", icon: "fas fa-arrows-rotate" as IconProp },
+  { name: "ETL/ELT", icon: "fas fa-right-left" as IconProp },
   { name: "Parquet", icon: "fas fa-table" as IconProp },
   { name: "Data modelling", icon: "fas fa-diagram-project" as IconProp },
   { name: "Arduino", icon: "fas fa-microchip" as IconProp },
@@ -65,119 +66,77 @@ const TOOLS: Array<{ name: string; icon: IconProp }> = [
 ];
 
 /*
- * One continuous thread folded over itself. The list runs left to right on the
- * first row and continues right to left on the second, so it reads as a single
- * ribbon rather than the same stack shown twice. The rows travel in opposite
- * directions, so the fold keeps moving and the thread never repeats a tool in
- * the same place.
+ * Two lanes, each carrying one half of the stack.
  *
- * Each row holds the list twice so it can wrap seamlessly. The clearance
- * between rows is set in CSS, not here.
+ * The halves are disjoint: a tool appears in exactly one lane, so no icon is
+ * ever shown twice on screen at the same time, and no lane repeats a tool
+ * within itself. Each lane lays its own half out twice and the CSS animation
+ * advances the track by exactly one half-width per iteration, so the content
+ * at the loop boundary is identical to the content it replaces and the wrap
+ * is invisible.
  */
-const ROWS = 2;
-
-/* Space between pills, and the same space carried as the gap property. */
-const ITEM_GAP = 24;
+const HALF = Math.ceil(TOOLS.length / 2);
+const GROUP_A = TOOLS.slice(0, HALF);
+const GROUP_B = TOOLS.slice(HALF);
 
 export default function ToolStrip() {
-  const forwardRef = useRef<HTMLDivElement | null>(null);
-  const reverseRef = useRef<HTMLDivElement | null>(null);
-  const [offset, setOffset] = useState(0);
-  const reduced =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /*
+   * Hovering a lane pauses it. The pause is a CSS class rather than a state
+   * value driving the transform, so the lane holds its current position and
+   * resumes from there, and it can never be left frozen.
+   */
+  const [paused, setPaused] = useState<[boolean, boolean]>([false, false]);
 
-  useEffect(() => {
-    if (reduced) return;
+  const toggle = (row: number, value: boolean) =>
+    setPaused((current) =>
+      current[row] === value
+        ? current
+        : (current.map((v, i) => (i === row ? value : v)) as [
+            boolean,
+            boolean,
+          ]),
+    );
 
-    let raf = 0;
-    let start = 0;
-    let copyWidth = 0;
-
-    const measure = () => {
-      const track = forwardRef.current;
-      if (!track) return 0;
-      const items = Array.from(track.children) as HTMLElement[];
-      if (items.length < 2) return 0;
-      /*
-       * One copy's width: from the start of the first item to the start of the
-       * first item in the second copy. Measured rather than assumed, so the
-       * wrap stays seamless whatever the item widths and gap turn out to be.
-       */
-      const first = items[0].getBoundingClientRect();
-      const second = items[items.length / 2].getBoundingClientRect();
-      return Math.abs(second.left - first.left) || track.scrollWidth / 2;
-    };
-
-    const tick = (now: number) => {
-      if (!start) start = now;
-      if (!copyWidth) copyWidth = measure();
-
-      /*
-       * A steady 50px per second, endless. The modulo keeps the offset inside
-       * one copy, so neither row drifts and neither snaps back to zero.
-       */
-      const elapsed = now - start;
-      const raw = (elapsed / 1000) * 50;
-      setOffset(copyWidth > 0 ? raw % copyWidth : 0);
-
-      raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-
-    /* Re-measure on resize: the copy width changes with the viewport. */
-    window.addEventListener("resize", measure);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", measure);
-    };
-  }, [reduced]);
-
-  const rowItems = [...TOOLS, ...TOOLS];
-
-  const renderRow = (keyPrefix: string) =>
-    rowItems.map((tool, index) => (
-      <div key={`${keyPrefix}-${tool.name}-${index}`} className="tools__item">
+  const renderLane = (group: typeof TOOLS, keyPrefix: string) =>
+    /*
+     * Two identical copies of the group. The second copy is what the track
+     * slides into as the first runs off, which is what makes the loop seamless
+     * without any duplicated icon being visible at once.
+     */
+    [...group, ...group].map((tool, index) => (
+      <div
+        key={`${keyPrefix}-${tool.name}-${index}`}
+        className="tools__item"
+        title={tool.name}
+      >
         <span className="tools__icon">
           <FontAwesomeIcon icon={tool.icon} aria-hidden="true" fixedWidth />
         </span>
-        <span className="tools__label">{tool.name}</span>
+        <span className="sr-only">{tool.name}</span>
       </div>
     ));
 
   return (
-    <div
-      className={`tools${reduced ? " is-static" : ""}`}
-      aria-label="Technologies used"
-    >
-      {/*
-        Row 1 travels left. Row 2 travels right and is pre-shifted by half a
-        copy, so the fold sits away from the row's start and the two rows are
-        never showing the same tool in the same place.
-      */}
-      {Array.from({ length: ROWS }).map((_, row) => (
-        <div
-          key={row}
-          ref={row === 0 ? forwardRef : reverseRef}
-          className={`tools__track tools__track--${
-            row === 0 ? "forward" : "reverse"
-          }`}
-          style={
-            reduced
-              ? undefined
-              : row === 0
-                ? { gap: ITEM_GAP, transform: `translateX(-${offset}px)` }
-                : {
-                    gap: ITEM_GAP,
-                    transform: `translateX(calc(-50% + ${offset}px))`,
-                  }
-          }
-        >
-          {renderRow(row === 0 ? "f" : "r")}
-        </div>
-      ))}
+    <div className="tools" aria-label="Technologies used">
+      <div
+        className={`tools__track tools__track--forward${
+          paused[0] ? " is-paused" : ""
+        }`}
+        onMouseEnter={() => toggle(0, true)}
+        onMouseLeave={() => toggle(0, false)}
+      >
+        {renderLane(GROUP_A, "a")}
+      </div>
+
+      <div
+        className={`tools__track tools__track--reverse${
+          paused[1] ? " is-paused" : ""
+        }`}
+        onMouseEnter={() => toggle(1, true)}
+        onMouseLeave={() => toggle(1, false)}
+      >
+        {renderLane(GROUP_B, "b")}
+      </div>
     </div>
   );
 }

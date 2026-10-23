@@ -38,9 +38,11 @@ function splitWords(text: string): string[] {
 export default function RevealHeading({
   children,
   className,
+  id,
 }: {
   children: ReactNode;
   className?: string;
+  id?: string;
 }) {
   const ref = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);
@@ -56,18 +58,44 @@ export default function RevealHeading({
     const el = ref.current;
     if (!el) return;
 
-    /*
-     * Reveal immediately if the heading is already on screen. The observer
-     * alone is not enough: it needs rendering frames, and in a hidden or
-     * backgrounded tab those stop, which would leave the heading invisible
-     * for the rest of the session.
-     */
-    const reveal = () => {
-      setShown(true);
-      observer.disconnect();
-    };
+    let done = false;
+    let frame = 0;
+    let observer: IntersectionObserver | null = null;
+    let timer = 0;
 
-    const observer = new IntersectionObserver(
+    /*
+     * The observer is the primary trigger, but it is not sufficient on its
+     * own. IntersectionObserver notifications are delivered asynchronously and
+     * coalesced, so a heading that travels from below the root to above it
+     * between two notification cycles is reported as never having
+     * intersected. A fast or jump scroll does exactly that, and the heading
+     * then stays invisible for the rest of the session with nothing left to
+     * catch it.
+     *
+     * The scroll listener is the backstop: it reveals the heading as soon as
+     * its top crosses into the viewport, which is the same condition the
+     * observer was meant to catch. Both paths converge on `reveal`, and
+     * `done` makes it idempotent, so the first one to arrive wins.
+     */
+    function reveal() {
+      if (done) return;
+      done = true;
+      setShown(true);
+      observer?.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    }
+
+    function onScroll() {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const r = el?.getBoundingClientRect();
+        if (r && r.top < window.innerHeight) reveal();
+      });
+    }
+
+    observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
@@ -80,6 +108,7 @@ export default function RevealHeading({
     );
 
     observer.observe(el);
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     /*
      * A heading already inside the viewport on mount is revealed straight
@@ -91,19 +120,22 @@ export default function RevealHeading({
     }
 
     /*
-     * Backstop. If no intersection callback has arrived within a moment and
-     * the heading is anywhere near the viewport, show it anyway, so the
-     * heading can never stay hidden because the environment stopped
-     * producing frames.
+     * Backstop for an environment that stopped producing frames: if the
+     * heading is anywhere near the viewport, show it rather than leaving it
+     * hidden for the session.
      */
-    const timer = window.setTimeout(() => {
+    timer = window.setTimeout(() => {
       const r = el.getBoundingClientRect();
       if (r.top < window.innerHeight * 1.5) reveal();
     }, 1200);
 
+    onScroll();
+
     return () => {
       window.clearTimeout(timer);
-      observer.disconnect();
+      observer?.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
     };
   }, [reduced]);
 
@@ -122,6 +154,7 @@ export default function RevealHeading({
   const wrapText = (text: string): ReactNode =>
     splitWords(text).map((word) => {
       const delay = step++ * WORD_MS;
+
       return (
         <span
           key={`${word}-${delay}`}
@@ -165,6 +198,7 @@ export default function RevealHeading({
     <h2
       ref={ref as never}
       className={className}
+      id={id}
       data-shown={shown ? "true" : "false"}
     >
       {render(children)}

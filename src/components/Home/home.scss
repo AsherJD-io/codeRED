@@ -296,13 +296,15 @@
    other section headings so it reads as one system, but sits inside the About
    section rather than being a section of its own, so it is not in the nav.
 
-   It carries the same top divider as the other section headings. It is a
-   heading in the page's own language, so it gets the line above it too, with
-   the same clearance the other headings have.
+   It carries the same top divider as the other section headings, and the same
+   clearance above that divider. The other sections reach their rule through a
+   margin and a padding that add up to 96px; this one was at 64px, so its line
+   sat noticeably closer to the about copy than every other line on the page
+   sits to its predecessor.
 */
 .home__tools-heading {
-  margin-top: var(--space-5);
-  padding-top: var(--space-5);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
   border-top: 1px solid var(--rule);
 }
 
@@ -408,6 +410,15 @@
 .home__credential-link:hover,
 .home__credential-link:focus-visible {
   border-bottom-color: var(--accent-hover);
+}
+
+/*
+   The nav's Skills & Tools entry targets this anchor, which wraps the strip.
+   It is a plain wrapper so the anchor scrolls to the strip without adding a
+   second heading or disturbing the About section's rhythm.
+*/
+.home__skills-anchor {
+  display: block;
 }
 
 /* Tool strip. */
@@ -612,11 +623,12 @@
 /*
    The slanting arrow from the revamped build, used here rather than a Font
    Awesome glyph so the outward-link mark is the same one the rest of the page
-   uses.
+   uses. It is drawn at the same height as the brand glyph beside it, so the
+   pair reads as one unit instead of a mark floating smaller than its icon.
 */
 .home__social-arrow {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   margin-left: 2px;
   opacity: 0.75;
   transition: transform 0.2s linear, opacity 0.2s linear;

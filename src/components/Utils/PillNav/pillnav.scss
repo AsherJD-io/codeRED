@@ -30,14 +30,8 @@
   outline-offset: 2px;
 }
 
-/* The booking CTA is its own pill, separate from and outside the nav pill. */
+/* The booking CTA is its own pill, inside the right-anchored group. */
 .pill-nav__cta {
-  position: fixed;
-  top: 14px;
-  /* Sit clear of the nav pill: the pill is centred, so anchor the CTA to the
-     right of the viewport with enough inset that it never overlaps. */
-  right: max(16px, calc(50% - 320px));
-  z-index: 201;
   display: inline-flex;
   align-items: center;
   height: 36px;
@@ -78,10 +72,6 @@
      the booking action moves inside the menu rather than sitting in the
      corner beside the toggle. */
   .pill-nav {
-    left: auto;
-    right: 10px;
-    transform: none;
-    top: 12px;
     height: 34px;
     padding: 3px;
   }

@@ -368,6 +368,15 @@
   color: #96d988;
 }
 
+/*
+   The closing remark. It is not a fetch value, so it is not the yellow those
+   carry: it takes the label's cyan instead, which reads as the same channel as
+   `langs` and `github` rather than as one of their values.
+*/
+.thero__value--closing {
+  color: #67cbe7;
+}
+
 /* ----- Portrait face: the photograph alone, no terminal chrome ----- */
 
 /*
@@ -422,6 +431,13 @@
    The photograph fills its frame completely and is never cropped. The frame's
    aspect ratio is the photograph's own, and `contain` guarantees the whole
    image is shown; the frame's background only shows if a ratio ever drifts.
+
+   The photograph carries a dark band on its own left and right edges (the plant
+   and the wall art), which against the dark page reads as a gap between the
+   picture and the inner ring. Scaling it slightly larger than the frame and
+   letting the frame's own `overflow: hidden` clip the excess pushes those dark
+   bands outside the ring, so the picture meets the boundary instead of
+   appearing to float inside it.
 */
 .thero__portrait-img {
   display: block;
@@ -429,6 +445,8 @@
   height: 100%;
   object-fit: contain;
   object-position: center center;
+  transform: scale(1.06);
+  transform-origin: center center;
 }
 
 /* ----- Mobile: display first, then the introduction ----- */
@@ -455,17 +473,31 @@
     flex-direction: column;
   }
 
-  /* The photograph keeps the display's height but is clamped to the viewport
-     width, so it never overflows a phone. */
+  /*
+    The photograph is sized from its own aspect ratio rather than stretched to
+    the display's height, so the boundary hugs the image instead of floating
+    around a letterboxed box. It is inset from the display edges, exactly as on
+    desktop: that inset is what gives the outer rule room to be seen, because
+    the display clips anything that touches its edge.
+  */
   .thero__portrait-frame {
-    height: 100%;
+    height: auto;
     max-height: 100%;
+    width: 100%;
     max-width: 100%;
+    aspect-ratio: 1766 / 1642;
+    /* The inset that lets the outer ring render on a phone. */
+    margin: auto;
+    max-width: 82%;
+    max-height: 82%;
   }
 
   .thero__body {
-    flex-grow: 1;
-    justify-content: center;
+    align-self: flex-start;
+    /* The terminal hugs its own text, as it does on a desktop, rather than
+       being stretched to fill the display: the phone was showing a tall empty
+       box around a compact terminal. */
+    flex-grow: 0;
   }
 
   .thero__intro {

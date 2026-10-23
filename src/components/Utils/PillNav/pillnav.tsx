@@ -1,15 +1,17 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../../../assets/imgs/codered-mark.png";
+import { titleFor } from "../../../lib/tabTitle";
 import "./pillnav.scss";
 
 const BOOKING_URL = "https://cal.com/delebayo-asher-fzwdtb";
 
 /*
- * The five agreed destinations, in the order they appear down the page.
+ * The destinations, in the order they appear down the page.
  * `to` is the react-router target and `section` is the homepage anchor id
- * that is scrolled to and highlighted. Blogs and Contact are real routes;
- * they keep their `section` so the highlight still follows the homepage
- * anchor when they are visited from there.
+ * that is scrolled to and highlighted. Contact is the homepage section, not
+ * the /contact route: the nav takes the visitor to the contact heading on the
+ * page, where the form sits.
  */
 type NavLink = {
   to: string;
@@ -57,10 +59,10 @@ function orderedSections(): HTMLElement[] {
 }
 
 /**
- * The floating pill navigation.
+ * The header navigation.
  *
- * Five links in one compact pill, with the booking action as a separate pill
- * outside it. No logo and no brand text.
+ * One header row: the brand mark on the left, the section links and the
+ * booking action grouped on the right. The brand, links and CTA share the row.
  *
  * Active state is derived from scroll position on the homepage, and the pill
  * is driven by a plain scroll listener rather than an IntersectionObserver:
@@ -69,11 +71,60 @@ function orderedSections(): HTMLElement[] {
  * a click. The listener is removed on unmount and re-armed when the route
  * changes.
  */
-export default function PillNav() {
+export default function PillNav({ onHomeClick }: { onHomeClick: () => void }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const reduced =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /*
+   * The menu collapses itself when it is no longer in use, so it never sits
+   * open over the reading surface:
+   *  - a click anywhere outside the menu closes it;
+   *  - Escape closes it;
+   *  - scrolling the page closes it, since the menu is anchored to the header
+   *    and would otherwise float detached from the links it belongs to.
+   *
+   * The toggle itself is excluded from the outside-click test, otherwise its
+   * own click would immediately re-open the menu it just opened.
+   */
+  useEffect(() => {
+    if (!open) return;
+
+    const isInside = (target: unknown) => {
+      if (typeof target !== "object" || target === null) return false;
+      const node = target as Record<string, unknown>;
+      if (typeof node.closest !== "function") return false;
+      return Boolean(
+        node.closest(".pill-nav") || node.closest(".pill-nav__links"),
+      );
+    };
+
+    const onPointerDown = (event: { target: unknown }) => {
+      if (!isInside(event.target)) setOpen(false);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    const onScroll = () => setOpen(false);
+
+    document.addEventListener("mousedown", onPointerDown, true);
+    document.addEventListener("touchstart", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown, true);
+      document.removeEventListener("touchstart", onPointerDown, true);
+      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [open]);
 
   /* Active section from scroll position. */
   useEffect(() => {
@@ -108,24 +159,45 @@ export default function PillNav() {
     };
 
     /*
+     * The tab title follows the same signal as the highlight, so it is correct
+     * after a click, a direct hash load, a refresh, and back/forward navigation
+     * alike. It is driven from the same poll rather than from the click handler,
+     * so it cannot disagree with the visible section.
+     */
+    const applyTitle = () => {
+      const title = titleFor(last);
+      if (document.title !== title) document.title = title;
+    };
+
+    const tick = () => {
+      update();
+      applyTitle();
+    };
+
+    /*
      * Polled rather than only rAF-driven. rAF is throttled to zero when the tab
      * is hidden, which would freeze the highlight; a short interval keeps it
      * correct in that case too, and the early-exit on an unchanged result
      * keeps the cost negligible.
      */
     const loop = () => {
-      update();
-      timer = window.setInterval(update, 250);
+      tick();
+      timer = window.setInterval(tick, 250);
     };
     loop();
 
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
+    window.addEventListener("scroll", tick, { passive: true });
+    window.addEventListener("resize", tick);
+
+    /* A back/forward move can change the scroll position without a scroll
+       event, so the history API is listened to as well. */
+    window.addEventListener("popstate", tick);
 
     return () => {
       window.clearInterval(timer);
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", tick);
+      window.removeEventListener("resize", tick);
+      window.removeEventListener("popstate", tick);
     };
   }, [pathname]);
 
@@ -143,23 +215,152 @@ export default function PillNav() {
       ? document.scrollingElement
       : document.documentElement;
 
-  /** Bring an element to the top of the visible area. */
+  /*
+   * How much room the fixed header takes, plus breathing space below it. The
+   * offset is measured from the header rather than assumed, so the target
+   * heading always lands clear of the bar instead of behind it.
+   */
+  const headerOffset = () => {
+    const header = document.querySelector<HTMLElement>(".site-header");
+    return (header?.offsetHeight ?? 52) + 16;
+  };
+
+  /**
+   * Bring an element to the top of the visible area, clear of the fixed
+   * header.
+   */
   const scrollToElement = (el: HTMLElement | null) => {
     if (!el) return;
     const sc = scroller();
     const top =
       el.getBoundingClientRect().top +
       (sc.scrollTop || window.scrollY) -
-      sc.getBoundingClientRect().top;
+      sc.getBoundingClientRect().top -
+      headerOffset();
 
     /*
-     * An instant jump, not a smooth one. A smooth scroll is animated, and in a
-     * hidden or backgrounded tab there are no animation frames for it to run
-     * on, so it never lands and the page stays where it was. Jumping also
-     * suits a section-to-section move better than an animated glide.
+     * An instant jump rather than an animated one. The reading line that drives
+     * the highlight and the tab title advances with the scroll position, and an
+     * animated smooth scroll takes several frames to travel: the highlight then
+     * trails the page and the active section can disagree with the URL. A jump
+     * makes the landed section and the highlight agree immediately.
      */
     window.scrollTo({ top, behavior: "auto" });
   };
+
+  /*
+   * The tab title follows the active section, so it is correct after a click,
+   * a direct hash load, a refresh, and back/forward navigation alike. It is
+   * driven from the same state as the highlight rather than from a click
+   * handler, so it cannot disagree with the visible section.
+   */
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const title = titleFor(active);
+    if (document.title !== title) document.title = title;
+  }, [active, pathname]);
+
+  /*
+   * The browser's own anchor navigation is not dependable here: with the root
+   * pinned to the viewport and the document overflowing it, a direct hash load
+   * or a refresh on a hash does not reliably move the page, and the browser's
+   * scroll restoration is asynchronous. Reading the hash explicitly and
+   * scrolling to the matching section makes a direct load, a refresh, and a
+   * back/forward move all land on the right section.
+   *
+   * Restoration is disabled first, so the browser's own attempt cannot override
+   * the explicit jump that follows it.
+   *
+   * `scrollToElement` is read from a ref rather than listed as a dependency: it
+   * closes over `reduced`, and re-running the effect on every reduced-motion
+   * change would re-jump the page. The ref keeps the latest implementation
+   * without re-arming the listeners.
+   */
+  if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+    window.history.scrollRestoration = "manual";
+  }
+  const scrollToElementRef = useRef(scrollToElement);
+  scrollToElementRef.current = scrollToElement;
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    let cancelled = false;
+
+    /*
+     * The highlight and the tab title follow the reading line, which only
+     * advances once the page has actually moved. The scroll is an instant jump,
+     * so the reading line is already at its resting place by the next frame;
+     * one more frame makes sure the layout has settled before the state is
+     * written, so the active link and the title agree with the section on
+     * screen.
+     */
+    const settle = () => {
+      if (cancelled) return;
+      window.setTimeout(() => {
+        if (cancelled) return;
+        const line = window.innerHeight * 0.3;
+        let current: string | null = null;
+        for (const section of orderedSections()) {
+          if (section.getBoundingClientRect().top <= line) current = section.id;
+        }
+        setActive(current);
+      }, 60);
+    };
+
+    /*
+     * The document is still laying out when this first runs: the intro clears,
+     * images and fonts arrive, and the document height changes several times in
+     * the first second. A scroll computed from a geometry reading taken during
+     * that window lands in the wrong place, and re-reading while it is still
+     * moving chases the moving target.
+     *
+     * Wait until the document height has been stable for a few frames, then
+     * scroll once from a settled reading.
+     */
+    const jump = () => {
+      const id = window.location.hash.slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      let stable = 0;
+      let previousHeight = 0;
+      let waited = 0;
+
+      const attempt = () => {
+        if (cancelled) return;
+
+        const height = document.documentElement.scrollHeight;
+        if (height === previousHeight) {
+          stable += 1;
+        } else {
+          stable = 0;
+          previousHeight = height;
+        }
+
+        /* Three unchanged readings, or a bounded wait if the layout settles
+           early. */
+        if (stable < 3 && waited < 60) {
+          waited += 1;
+          window.requestAnimationFrame(attempt);
+          return;
+        }
+
+        scrollToElementRef.current(target);
+        settle();
+      };
+
+      attempt();
+    };
+
+    jump();
+    window.addEventListener("hashchange", jump);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("hashchange", jump);
+    };
+  }, [pathname]);
 
   /*
    * Clicking a destination. On the homepage the browser's own hash navigation
@@ -183,7 +384,7 @@ export default function PillNav() {
       if (link.section) {
         scrollToElement(document.getElementById(link.section));
       } else {
-        window.scrollTo({ top: 0, behavior: "auto" });
+        window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
       }
       return;
     }
@@ -198,7 +399,7 @@ export default function PillNav() {
         if (target) {
           scrollToElement(target);
         } else {
-          window.scrollTo({ top: 0, behavior: "auto" });
+          window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
         }
         return;
       }
@@ -209,60 +410,88 @@ export default function PillNav() {
   };
 
   return (
-    <>
-      <nav className="pill-nav" aria-label="Primary">
-        <button
-          type="button"
-          className="pill-nav__toggle"
-          aria-label="Toggle navigation"
-          aria-expanded={open}
-          onClick={() => setOpen((value) => !value)}
-        >
-          <span className="pill-nav__toggle-line" aria-hidden="true" />
-          <span className="pill-nav__toggle-line" aria-hidden="true" />
-        </button>
-
-        <div className="pill-nav__links" data-open={open}>
-          {LINKS.map((link) => {
-            const key = link.section ?? "home";
-            return (
-              <Link
-                key={key}
-                className="pill-nav__link"
-                to={link.section ? `/#${link.section}` : link.to}
-                aria-current={active === link.section ? "page" : undefined}
-                onClick={(event) => onClick(event, link)}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-
-          {/*
-            On a phone the booking action lives inside the menu rather than in
-            the corner: the corner is where the menu toggle is, and a second
-            pill there crowds it. Hidden on desktop, where the CTA is its own
-            pill beside the nav.
-          */}
-          <a
-            className="pill-nav__link pill-nav__link--cta"
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Book a call
-          </a>
-        </div>
-      </nav>
-
-      <a
-        className="pill-nav__cta"
-        href={BOOKING_URL}
-        target="_blank"
-        rel="noopener noreferrer"
+    /*
+      One row spanning the reading column: the brand mark at its left edge,
+      the pill and the booking CTA grouped at its right edge. Because it sits
+      in the content flow rather than being pinned to the viewport, the whole
+      row scrolls away with the page instead of staying fixed over the content.
+    */
+    <div className="site-header">
+      {/*
+        The brand mark, top-left. It is outside the pill so the pill keeps its
+        own shape. Clicking it replays the codeRED intro, which then opens the
+        page again, rather than jumping straight to the top.
+      */}
+      <button
+        type="button"
+        className="pill-brand"
+        aria-label="codeRED home"
+        onClick={onHomeClick}
       >
-        Book a call
-      </a>
-    </>
+        <img src={logo} alt="codeRED" />
+      </button>
+
+      {/*
+        One right-anchored group holding the navigation pill and the booking CTA
+        side by side. Sharing a container is what keeps them from overlapping:
+        the pill no longer has to guess the CTA's width.
+      */}
+      <div className="pill-bar">
+        <nav className="pill-nav" aria-label="Primary">
+          <button
+            type="button"
+            className="pill-nav__toggle"
+            aria-label="Toggle navigation"
+            aria-expanded={open}
+            onClick={() => setOpen((value) => !value)}
+          >
+            <span className="pill-nav__toggle-line" aria-hidden="true" />
+            <span className="pill-nav__toggle-line" aria-hidden="true" />
+          </button>
+
+          <div className="pill-nav__links" data-open={open}>
+            {LINKS.map((link) => {
+              const key = link.section ?? "home";
+              return (
+                <Link
+                  key={key}
+                  className="pill-nav__link"
+                  to={link.to}
+                  state={{ section: link.section }}
+                  aria-current={active === link.section ? "page" : undefined}
+                  onClick={(event) => onClick(event, link)}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+
+            {/*
+              On a phone the booking action lives inside the menu rather than in
+              the corner: the corner is where the menu toggle is, and a second
+              pill there crowds it. Hidden on desktop, where the CTA is its own
+              pill beside the nav.
+            */}
+            <a
+              className="pill-nav__link pill-nav__link--cta"
+              href={BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Book a call
+            </a>
+          </div>
+        </nav>
+
+        <a
+          className="pill-nav__cta"
+          href={BOOKING_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Book a call
+        </a>
+      </div>
+    </div>
   );
 }

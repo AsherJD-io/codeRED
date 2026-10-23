@@ -11,6 +11,7 @@ import Resume from "./components/Resume/resume";
 import Writing from "./components/Writing/writing";
 import Contact from "./components/Contact/contact";
 import Error404 from "./components/Error/error404";
+import logo from "./assets/imgs/codered-logo.png";
 
 /**
  * Wraps a route tree so any `.reveal` descendant fades in once it enters the
@@ -187,12 +188,56 @@ function BackToTop() {
 }
 
 export default function App() {
-  const [isLoading, setLoading] = useState(true);
+  const [intro, setIntro] = useState<"loading" | "revealed">("loading");
+
+  /*
+   * The intro is a fixed duration rather than an infinite animation, so it
+   * always finishes and never traps the visitor on a loading screen. Reduced
+   * motion skips it entirely.
+   */
+  const reduced =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /*
+   * Whether a replay is in progress. The timer is armed by a click, not by an
+   * effect: an effect would re-arm on every re-render, including the one caused
+   * by unmounting the shell, which is what produced the infinite loop.
+   */
+  const replaying = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
+    if (reduced) {
+      setIntro("revealed");
+      return;
+    }
+    const timer = setTimeout(() => setIntro("revealed"), 1500);
     return () => clearTimeout(timer);
+    // Run once, on mount only. The intro is the page's opening, not something
+    // every re-render restarts.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /*
+   * Replay the intro. The brand mark is a link home on both viewports, so the
+   * natural way back is through the mark itself: clicking it shows the codeRED
+   * intro again, and once it settles the page opens normally.
+   */
+  const replayIntro = () => {
+    if (replaying.current) return;
+    replaying.current = true;
+
+    window.scrollTo({ top: 0, behavior: "auto" });
+    setIntro("loading");
+
+    window.setTimeout(
+      () => {
+        replaying.current = false;
+        setIntro("revealed");
+      },
+      reduced ? 0 : 1500,
+    );
+  };
 
   return (
     <div className="App">
@@ -200,14 +245,14 @@ export default function App() {
         Skip to main content
       </a>
 
-      {isLoading ? (
-        <div className="flex justify-center align-middle h-full w-full">
-          <div className="loader" />
+      {intro === "loading" ? (
+        <div className="intro">
+          <img className="intro__logo loader" src={logo} alt="codeRED" />
         </div>
       ) : (
         <BrowserRouter>
           <BackgroundField />
-          <Shell />
+          <Shell onReplayIntro={replayIntro} />
         </BrowserRouter>
       )}
     </div>
@@ -215,14 +260,14 @@ export default function App() {
 }
 
 /**
- /* A single shared shell: one pill nav above one vertical content column.
-  * The same route tree serves every viewport, so the page structure does not
-  * change between desktop and mobile.
-  */
-function Shell() {
+ * A single shared shell: one pill nav above one vertical content column.
+ * The same route tree serves every viewport, so the page structure does not
+ * change between desktop and mobile.
+ */
+function Shell({ onReplayIntro }: { onReplayIntro: () => void }) {
   return (
     <div className="mobile_container">
-      <PillNav />
+      <PillNav onHomeClick={onReplayIntro} />
 
       <main id="main-content">
         <div className="page-column">

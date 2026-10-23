@@ -1,6 +1,9 @@
 import { useSubstackFeed } from "../../hooks/useSubstackFeed";
 import Helmet from "../Utils/SEO/helmet";
-import { SUBSTACK_PUBLICATION_URL } from "../../lib/substack";
+import {
+  readingMinutesFor,
+  SUBSTACK_PUBLICATION_URL,
+} from "../../lib/substack";
 import "./blogscout.scss";
 
 /* ==========================================================================
@@ -21,7 +24,7 @@ export default function BlogScout() {
 
   if (!hasPosts) {
     return (
-      <div className="blogs blogs--empty">
+      <div className="blogs blogs--empty reveal">
         {loading && <p className="blogs__status">Loading posts&hellip;</p>}
         {error && (
           <p className="blogs__status">Could not load posts: {error}</p>
@@ -57,8 +60,11 @@ export default function BlogScout() {
       />
 
       <div className="blogs__grid">
-        {shown.map((post) => (
-          <article className="blogs__card" key={post.id}>
+        {shown.map((post, index) => (
+          <article
+            className={`blogs__card reveal reveal--stagger-${index % 3}`}
+            key={post.id}
+          >
             <a
               className="blogs__media"
               href={post.url}
@@ -83,10 +89,10 @@ export default function BlogScout() {
 
             <div className="blogs__body">
               <p className="blogs__meta">
-                {post.readMinutes ? (
+                {readingMinutesFor(post) ? (
                   <span className="blogs__readtime">
                     <i className="far fa-clock" aria-hidden="true" />
-                    {post.readMinutes} min read
+                    {readingMinutesFor(post)} min read
                   </span>
                 ) : null}
                 {post.featured && (
@@ -106,7 +112,7 @@ export default function BlogScout() {
         ))}
       </div>
 
-      <div className="blogs__all">
+      <div className="blogs__all reveal">
         <a
           className="blogs__all-link"
           href={SUBSTACK_PUBLICATION_URL}

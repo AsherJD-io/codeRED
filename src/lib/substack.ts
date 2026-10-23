@@ -187,6 +187,31 @@ function excerptFromBody(body: string, max = 180): string {
 }
 
 /**
+ * The reading time shown for each of the three posts the homepage features, in
+ * display order. The estimate derived from the article body is not what the
+ * cards show: these are the times the writing actually took, set per post so a
+ * featured essay reads as long as it is and a short post does not.
+ *
+ * Keyed by post url rather than by position, so a card keeps its own time if the
+ * featured list is ever reordered or a post is added.
+ */
+const FEATURED_READ_MINUTES: Record<string, number> = {
+  "https://23asher.substack.com/p/in-the-beninging": 2,
+  "https://23asher.substack.com/p/keeping-the-stone-rolling-down-the": 3,
+  "https://23asher.substack.com/p/54100-82100-what-changed-between": 5,
+};
+
+/**
+ * Resolve the reading time for a post. A featured post carries its own set time;
+ * anything else keeps the estimate derived from its body, so the two never
+ * disagree about the same post.
+ */
+export function readingMinutesFor(post: SubstackPost): number | null {
+  const set = FEATURED_READ_MINUTES[post.url];
+  return set ?? post.readMinutes;
+}
+
+/**
  * Estimate a reading time in minutes from the article body.
  *
  * The common 200 words per minute is used, floored at one minute so a short
