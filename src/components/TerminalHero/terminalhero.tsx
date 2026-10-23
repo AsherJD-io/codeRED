@@ -41,9 +41,6 @@ const PROMPT = {
 /* The command the terminal types out. */
 const COMMAND = "fetch.sh -u asher";
 
-/* Booking lives in the nav as well; the hero carries the same link. */
-const BOOKING_URL = "https://cal.com/delebayo-asher-fzwdtb";
-
 /*
  * The terminal output, in the README's own key/value shape: a dim label, a
  * readable value, nothing decorative.
@@ -56,16 +53,13 @@ const BOOKING_URL = "https://cal.com/delebayo-asher-fzwdtb";
  *   - languages: the account's own language signal by repo count, top three
  *     (Python, TypeScript, JavaScript), with the rest carried on a second row.
  *
- * The first two rows are the welcome note for a first-time visitor. The rest is
- * the fetch output. None of it repeats the page's own copy: the left column
- * states who he is and what he works on, and the Work section below lists the
- * projects.
+ * The fetch output comes first, then the welcome note closes it. None of it
+ * repeats the page's own copy: the left column states who he is and what he
+ * works on, and the Work section below lists the projects.
  */
 type Row = { label?: string; values: string[] };
 
 const ROWS: Row[] = [
-  { label: "", values: ["Welcome to my page."] },
-  { label: "", values: ["Delebayo Asher — data engineering & software."] },
   { label: "github", values: ["16 repos"] },
   { label: "", values: ["26 PRs", "15 stars"] },
   {
@@ -73,6 +67,7 @@ const ROWS: Row[] = [
     values: ["Python", "TypeScript", "JavaScript"],
   },
   { label: "", values: ["Shell", "CSS"] },
+  { label: "", values: ["Welcome to my page."] },
 ];
 
 const TYPE_CHAR_MS = 46;
@@ -180,14 +175,8 @@ export default function TerminalHero() {
           </p>
         </div>
 
-        {/* Status and actions share one row, so the actions sit beside the
-            status line instead of hanging below it. */}
+        {/* The action, then the status line beneath it. */}
         <div className="thero__aside">
-          <p className="thero__status">
-            <span className="thero__status-dot" aria-hidden="true" />
-            Open to work
-          </p>
-
           <div className="thero__actions">
             <a
               className="thero__cta thero__cta--mail"
@@ -196,11 +185,12 @@ export default function TerminalHero() {
               <i className="far fa-envelope" aria-hidden="true" />
               Email me
             </a>
-            <a className="thero__cta thero__cta--call" href={BOOKING_URL}>
-              <i className="far fa-calendar" aria-hidden="true" />
-              Book a call
-            </a>
           </div>
+
+          <p className="thero__status">
+            <span className="thero__status-dot" aria-hidden="true" />
+            Open to work
+          </p>
         </div>
       </div>
 

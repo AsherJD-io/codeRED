@@ -12,6 +12,9 @@
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
   gap: var(--space-5);
   align-items: center;
+  /* Room above and below the hero, so the page does not start flush against
+     the nav and the Work section does not crowd it. */
+  padding-top: var(--space-5);
   padding-bottom: var(--space-6);
 }
 
@@ -86,17 +89,16 @@
 }
 
 /*
-   Status and actions share one row. The status line reads as a small
-   annotation on the left; the actions sit beside it rather than dropping to a
-   second line, so the block does not hang loose under the write-up.
+   The status line and the action are stacked, left aligned. Each sits on its
+   own line, so nothing hangs beside or below the other.
 */
 .thero__aside {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-3);
   width: 100%;
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
 }
 
 /* "Open to work" — no card, no panel, just the words and a status dot. */
@@ -355,9 +357,9 @@
   /*
      Sized from the photograph's own aspect ratio (1766x1642): the height is
      the display's height and the width follows from the ratio, so the picture
-     keeps its own proportions and is never stretched or cropped. It is inset
-     from the display edges, which is what makes the boundary read as a frame
-     rather than as the edge of the layout.
+     keeps its own proportions and is never stretched. It is inset from the
+     display edges, which is what makes the boundary read as a frame rather
+     than as the edge of the layout.
   */
   height: 100%;
   max-height: 100%;
@@ -366,26 +368,27 @@
   border-radius: 14px;
   overflow: hidden;
   /*
-     A distinct boundary: a hairline rule on the image edge, a second rule
-     outside it, and a soft shadow so the photograph sits off the page.
+     A deliberate, visible boundary: a 2px rule on the image edge, then a
+     second 2px rule set further out, with the page background showing between
+     the two so the frame reads as a distinct object rather than a soft edge.
   */
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  outline: 1px solid var(--ink-faint);
-  outline-offset: 6px;
-  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.65);
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  outline: 2px solid rgba(255, 255, 255, 0.28);
+  outline-offset: 7px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
   background-color: var(--bg-elevated);
 }
 
 /*
-   The photograph fills its frame completely. The frame's own aspect ratio is
-   the photograph's, so cover fills it with no band inside and no visible
-   crop of the subject.
+   The photograph fills its frame completely and is never cropped. The frame's
+   aspect ratio is the photograph's own, and `contain` guarantees the whole
+   image is shown; the frame's background only shows if a ratio ever drifts.
 */
 .thero__portrait-img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
 }
 
