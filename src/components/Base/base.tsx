@@ -41,6 +41,15 @@ export default function Base({ menu }: any) {
             <button className="explore">Explore ➜</button>
           </Link>
         </div>
+
+        <a
+          className="book-call"
+          href="https://cal.com/delebayo-asher-fzwdtb"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Book a call
+        </a>
       </div>
 
       <nav>

@@ -10,8 +10,34 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   width: 100%;
+}
+
+/* ===== Design Tokens ===== */
+
+:root {
+  /* Brand accent — deliberate burgundy, previously absent from active CSS */
+  --accent: #7a203a;
+  --accent-hover: #9a2b4c;
+
+  /* Neutrals */
+  --bg: #101011;
+  --surface: #16161a;
+  --ink: #ffffff;
+  --ink-muted: #a6a6a7;
+  --ink-faint: #777778;
+  --rule: #3a3a3d;
+
+  /* Type scale */
+  --h1-font: 2.5rem;
+  --h2-font: 36px;
+  --h3-font: 22px;
+  --semi-font: 16px;
+  --normal-font: 14px;
+  --small-font: 13px;
+  --xsmall-font: 12px;
 }
 
 /* ===== Base Typography ===== */
@@ -24,8 +50,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: #101011;
-  color: #ffffff;
+  background-color: var(--bg);
+  color: var(--ink);
 }
 
 /* ===== Root Containers ===== */
@@ -39,4 +65,42 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas,
     "Courier New", monospace;
+}
+
+/* ===== Accessibility ===== */
+
+/* Visually hidden until focused, then revealed as a bar. */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: 1000;
+  padding: 10px 16px;
+  background-color: var(--accent);
+  color: var(--ink);
+  font-size: var(--normal-font);
+  text-decoration: none;
+  transition: top 0.2s linear;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: none;
+}
+
+.skip-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ===== Reduced Motion =====
+   Phase 1: honour prefers-reduced-motion for the loader and any transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

@@ -7,46 +7,69 @@
 .writing_container {
   display: flex;
   flex-direction: column;
-  background-color: #16161A;
-  padding: 5%;
   flex-grow: 1;
+  margin: calc(var(--nav-h) + 40px) 0 var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  background-color: var(--bg-elevated);
 
   .top_row {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: var(--space-2);
+  }
 
-    h2 {
-      font-size: var(--h2-font);
-      line-height: 47px;
-      margin: 0;
-    }
+  .buttons {
+    display: flex;
+    align-self: flex-start;
+  }
 
-    .buttons {
-      display: flex;
-      align-self: flex-start;
-    }
+  .buttons a {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border: 1px solid var(--rule);
+    border-radius: var(--nav-radius);
+    color: var(--ink);
+    font-size: var(--small-font);
+    text-decoration: none;
+    transition: border-color 0.2s linear, color 0.2s linear;
+  }
 
-    .buttons a {
-      margin: 5px;
-      color: inherit;
-      text-decoration: none;
-      font-size: var(--normal-font);
-    }
+  .buttons a:hover,
+  .buttons a:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent-hover);
+  }
+
+  .buttons a:focus-visible {
+    outline: 2px solid var(--ink-muted);
+    outline-offset: 3px;
+  }
+
+  .writing_lede {
+    margin: var(--space-2) 0 var(--space-4);
+    font-family: "air-light";
+    font-size: var(--normal-font);
+    line-height: 1.65;
+    color: var(--ink-muted);
+    max-width: 62ch;
   }
 
   .status {
-    margin: 20px 0;
-    color: #777778;
-    font-size: var(--normal-font);
+    margin: var(--space-2) 0;
     font-family: "air-light";
+    font-size: var(--normal-font);
+    color: var(--ink-muted);
 
     &.error {
-      color: #cfcfcf;
+      color: var(--ink-strong);
     }
 
     &.stale {
-      color: #cfcfcf;
       font-size: var(--small-font);
     }
   }
@@ -54,11 +77,11 @@
   .post_list {
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
+    margin-top: var(--space-1);
   }
 
   .post {
-    border-bottom: 1px solid #777778;
+    border-bottom: 1px solid var(--rule);
 
     &:last-child {
       border-bottom: none;
@@ -68,35 +91,37 @@
   .post_link {
     display: flex;
     align-items: center;
-    padding: 22px 0;
+    padding: var(--space-3) 0;
     text-decoration: none;
     color: inherit;
-    transition: opacity 0.2s linear;
-
-    &:hover {
-      opacity: 0.75;
-    }
-
-    &:focus-visible {
-      outline: 1px solid #a6a6a7;
-      outline-offset: 6px;
-    }
+    transition: transform 0.2s linear;
   }
 
+  .post_link:hover {
+    transform: translateX(2px);
+  }
+
+  .post_link:focus-visible {
+    outline: 2px solid var(--ink-muted);
+    outline-offset: 6px;
+  }
+
+  /* A real cover image at a consistent ratio. */
   .post_image {
-    width: 26%;
-    min-width: 96px;
-    margin-right: 5%;
-    border-radius: 2px;
+    width: 32%;
+    min-width: 150px;
+    margin-right: var(--space-4);
+    border-radius: 12px;
     overflow: hidden;
-    background-color: #101011;
+    border: 1px solid var(--rule);
+    background-color: var(--bg);
     flex-shrink: 0;
 
     img {
       display: block;
       width: 100%;
       height: auto;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 16 / 10;
       object-fit: cover;
     }
   }
@@ -106,15 +131,17 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    aspect-ratio: 16 / 9;
-    color: #777778;
+    aspect-ratio: 16 / 10;
+    font-family: var(--mono);
     font-size: var(--semi-font);
+    color: var(--ink-faint);
   }
 
   .post_body {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    min-width: 0;
   }
 
   .post_meta {
@@ -124,42 +151,48 @@
   }
 
   .post_date {
-    color: #777778;
-    font-size: var(--small-font);
-    font-family: "air-light";
+    font-family: var(--mono);
+    font-size: var(--xsmall-font);
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
   }
 
   .post_badge {
-    margin-left: 10px;
-    padding: 0 6px;
-    border: 1px solid #777778;
-    color: #cfcfcf;
+    margin-left: var(--space-2);
+    padding: 1px 8px;
+    border: 1px solid var(--accent);
+    border-radius: var(--nav-radius);
+    color: var(--accent-hover);
+    font-family: var(--mono);
     font-size: var(--xsmall-font);
-    font-family: "air-light";
+    letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
   .post_title {
     margin: 0;
-    color: #ffffff;
+    font-family: "air-bold";
     font-size: var(--semi-font);
-    line-height: 1.5;
-    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-strong);
+    overflow-wrap: anywhere;
   }
 
   .post_excerpt {
     margin: 8px 0 0;
-    color: #777778;
-    font-size: var(--normal-font);
-    line-height: 1.5;
     font-family: "air-light";
+    font-size: var(--normal-font);
+    line-height: 1.65;
+    color: var(--ink-muted);
+    overflow-wrap: anywhere;
   }
 
   .post_more {
-    margin-top: 10px;
-    color: #cfcfcf;
-    font-size: var(--small-font);
-    font-family: "air-light";
+    margin-top: var(--space-2);
+    font-family: var(--mono);
+    font-size: var(--xsmall-font);
+    letter-spacing: 0.04em;
+    color: var(--accent-hover);
   }
 }
 
@@ -169,7 +202,8 @@
 
 @media (max-width: 993px) {
   .writing_container {
-    margin: 30px 0;
+    margin: calc(var(--nav-h) + 28px) 0 var(--space-3);
+    padding: var(--space-3);
   }
 
   .writing .post_link {
@@ -178,7 +212,7 @@
 
   .writing .post_image {
     width: 34%;
-    margin-right: 6%;
+    margin-right: var(--space-3);
   }
 
   .writing .post_title {

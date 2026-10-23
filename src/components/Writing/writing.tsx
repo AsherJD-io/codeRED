@@ -1,25 +1,37 @@
 import { Link } from "react-router-dom";
 import Helmet from "../Utils/SEO/helmet";
 import { useSubstackFeed } from "../../hooks/useSubstackFeed";
+import { SUBSTACK_PUBLICATION_URL } from "../../lib/substack";
 import "./writing.scss";
 
+/**
+ * The dedicated /writing route.
+ *
+ * Labelled Blogs in both the heading and the navigation. The real Substack
+ * feed, rendered as an image-led list with a consistent cover ratio. There is
+ * no selector rail, no carousel and no featured panel.
+ */
 export default function Writing() {
   const { posts, loading, error, stale } = useSubstackFeed();
 
   return (
     <div className="writing">
       <Helmet
-        title="Writing"
-        name="Delebayo Asher Writing"
+        title="Blogs"
+        name="Delebayo Asher Blogs"
         content="Notes and essays by Delebayo Asher on data engineering, systems and building in the open."
       />
 
       <div className="writing_container">
         <div className="top_row">
-          <h2>Writing</h2>
+          <h2 className="section-title">
+            <span className="section-title__tag">Blogs</span>
+            <span className="section-title__rule" aria-hidden="true" />
+          </h2>
+
           <div className="buttons">
             <a
-              href="https://23asher.substack.com/"
+              href={SUBSTACK_PUBLICATION_URL}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -29,6 +41,10 @@ export default function Writing() {
             </a>
           </div>
         </div>
+
+        <p className="writing_lede">
+          Latest writing on data engineering, systems and building in the open.
+        </p>
 
         {loading && posts.length === 0 && (
           <p className="status">Loading posts&hellip;</p>

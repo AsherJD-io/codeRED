@@ -1,0 +1,30 @@
+/* ==========================================================================
+   Living background
+
+   Full-bleed, pointer-transparent field behind all content. The canvas
+   draws the node field. There is no extra markup above the canvas, so the
+   background never adds decoration. The page content is not constrained by
+   the background.
+   ========================================================================== */
+
+.bg-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-field__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-field__canvas {
+    /* The field draws a single static frame; no transition to animate. */
+  }
+}

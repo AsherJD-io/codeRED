@@ -41,7 +41,7 @@
     line-height: 2;
 
     span {
-      color: #777778;
+      color: var(--ink-muted);
     }
 
     span.highlight {
@@ -78,7 +78,7 @@ nav {
     width: fit-content;
     margin: 10px 0;
     padding: 0;
-    color: #777778;
+    color: var(--ink-muted);
   }
 
   ul li small {
@@ -107,6 +107,27 @@ nav {
     opacity: 1;
     transition: all 0.3s linear;
     color: #fff;
+  }
+
+  /* Burgundy marker for the active nav item */
+  ul li.active_menu small::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background-color: var(--accent);
+  }
+
+  ul li a:hover,
+  ul li a:focus-visible {
+    color: var(--accent-hover);
+  }
+
+  ul li a:focus-visible {
+    outline: 2px solid var(--ink-muted);
+    outline-offset: 3px;
   }
 
   ul li.active_menu a img {
@@ -178,7 +199,7 @@ nav {
 
   p {
     font-size: var(--xsmall-font) !important;
-    color: #777778;
+    color: var(--ink-muted);
   }
 
   p:first-child {

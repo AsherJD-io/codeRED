@@ -1,0 +1,95 @@
+/* ==========================================================================
+   Technology signal strip. A continuous, slow horizontal loop of the real
+   tools behind this portfolio.
+   ---------------------------------------------------------------------------
+   Font Awesome brand icons only. Reduced motion yields a stationary,
+   completely readable strip.
+   ========================================================================== */
+.tools {
+  position: relative;
+  width: 100%;
+  padding: var(--space-4) 0;
+  overflow: hidden;
+}
+
+.tools__track {
+  display: flex;
+  gap: var(--space-6);
+  will-change: transform;
+  transform: translateX(0);
+}
+
+.tools__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 6px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: rgba(22, 22, 26, 0.82);
+  transition: border-color 0.2s linear, background-color 0.2s linear;
+}
+
+.tools__item:hover {
+  border-color: var(--accent);
+  background: rgba(27, 27, 31, 0.9);
+}
+
+.tools__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--ink-muted);
+}
+
+.tools__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.tools__label {
+  font-family: var(--mono);
+  font-size: var(--xsmall-font);
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.tools__focus {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40vw;
+  border: 1px solid var(--accent);
+  border-radius: 24px;
+  opacity: 0.35;
+  pointer-events: none;
+  transform: translateX(50%);
+}
+
+.tools.is-static .tools__track {
+  transform: none !important;
+}
+
+.tools.is-static .tools__item {
+  background: var(--surface);
+}
+
+@media (max-width: 993px) {
+  .tools__item {
+    padding: 4px 8px;
+    gap: 6px;
+  }
+
+  .tools__label {
+    font-size: var(--small-font);
+  }
+
+  .tools__focus {
+    width: 56vw;
+  }
+}

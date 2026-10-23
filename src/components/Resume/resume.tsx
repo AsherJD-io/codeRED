@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Helmet from "../Utils/SEO/helmet";
 import { resume } from "../../constants/resume";
+import BioParagraphs from "../Utils/BioParagraph/bioparagraph";
 import "./resume.scss";
 
 type ResumeProps = {
@@ -43,9 +44,7 @@ export default function Resume(props: ResumeProps) {
         </div>
 
         <div className="summary">
-          {resume.bio.map((paragraph, key) => (
-            <p key={key} dangerouslySetInnerHTML={{ __html: paragraph }} />
-          ))}
+          <BioParagraphs />
         </div>
 
         <div className="divider">

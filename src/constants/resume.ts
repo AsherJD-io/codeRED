@@ -32,9 +32,20 @@ export type Language = {
   level: string;
 };
 
+export type BioSegment =
+  | { kind: "text"; text: string }
+  | { kind: "highlight"; text: string };
+
+export type Bio = {
+  /** Plain text, rendered as-is. */
+  text?: string;
+  /** Rich text: plain runs interleaved with the highlighted phrase. */
+  segments?: BioSegment[];
+};
+
 export type Resume = {
   name: string;
-  bio: string[];
+  bio: Bio[];
   workExperiences: WorkExperience[];
   skills: Skill[];
   educations: Education[];
@@ -45,10 +56,31 @@ export type Resume = {
 
 const name = "Delebayo Asher";
 
-const bio = [
-  "My background combines Agricultural and Environmental Engineering with six years in energy and infrastructure work, including diesel power systems, smart metering, field operations, and facility management. I now work across data engineering and software product development, building pipelines and analytical layers, orchestrated data workflows, backend APIs, and systems that make operational and public data useful.",
-  "My projects span energy, mobility, public procurement, finance, and agricultural technology, alongside work in cloud-native systems and embedded data acquisition. I approach each project from the actual operational problem, not from a preferred framework.",
-  "I’m open to opportunities to apply data engineering across agriculture, energy and sustainability. Reach out today. The world is&nbsp;&nbsp;<span class='highlight font-bold italic animate-pulse'>just a code away</span>&nbsp;&nbsp;from the next meaningful innovation!",
+/**
+ * The bio. The third paragraph carries the original highlighted phrase as a
+ * structured run rather than an HTML string, so every surface renders it as
+ * markup and no surface can leak a literal `<span>` into the text.
+ */
+const bio: Bio[] = [
+  {
+    text: "My background combines Agricultural and Environmental Engineering with six years in energy and infrastructure work, including diesel power systems, smart metering, field operations, and facility management. I now work across data engineering and software product development, building pipelines and analytical layers, orchestrated data workflows, backend APIs, and systems that make operational and public data useful.",
+  },
+  {
+    text: "My projects span energy, mobility, public procurement, finance, and agricultural technology, alongside work in cloud-native systems and embedded data acquisition. I approach each project from the actual operational problem, not from a preferred framework.",
+  },
+  {
+    segments: [
+      {
+        kind: "text",
+        text: "I’m open to opportunities to apply data engineering across agriculture, energy and sustainability. Reach out today. The world is",
+      },
+      { kind: "highlight", text: "just a code away" },
+      {
+        kind: "text",
+        text: "from the next meaningful innovation!",
+      },
+    ],
+  },
 ];
 
 const workExperiences: WorkExperience[] = [
