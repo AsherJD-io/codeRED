@@ -7,7 +7,7 @@ import {
   SUBSTACK_PUBLICATION_URL,
   orderPostsForDisplay,
   parseSubstackFeed,
-} from "../src/lib/substack";
+} from "../src/lib/substack.js";
 
 const CACHE_CONTROL = `public, s-maxage=${FEED_CACHE_SECONDS}, stale-while-revalidate=${FEED_STALE_SECONDS}`;
 const ERROR_CACHE_CONTROL = "public, s-maxage=30";
