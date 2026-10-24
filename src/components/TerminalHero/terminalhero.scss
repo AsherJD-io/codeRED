@@ -456,6 +456,9 @@
     grid-template-columns: 1fr;
     gap: var(--space-4);
     align-items: start;
+    /* No extra top padding: the header row already sits above this, and the
+       old 64px left a dead band between the nav and the display. */
+    padding-top: 0;
   }
 
   .thero__display {

@@ -45,8 +45,14 @@ function RevealHost({ children }: { children: ReactNode }) {
 
     const rootBottom = () => {
       // The page scrolls, so the visible bottom edge is the viewport's.
+      //
+      // The trigger sits at 55% of the viewport rather than near its bottom.
+      // At the bottom edge, content only started appearing once it had been
+      // scrolled almost to the top of the screen, which read as content being
+      // invisible until you had scrolled past it. A higher line means a section
+      // reveals as it approaches the middle of the screen instead.
       const height = window.innerHeight;
-      return height - height * 0.08;
+      return height * 0.55;
     };
 
     /**

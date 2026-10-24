@@ -425,7 +425,12 @@ body {
 
 @media (max-width: 993px) {
   .page-column {
-    padding: calc(var(--nav-h) + 24px) var(--space-3) var(--space-4);
+    /*
+      Tight top padding on a phone. The header is an in-flow row rather than a
+      fixed bar, so the old nav-height allowance left a large empty band above
+      the hero: 76px of padding, then the header, then the hero's own padding.
+    */
+    padding: 12px var(--space-3) var(--space-4);
   }
 
   .mobile_container {
