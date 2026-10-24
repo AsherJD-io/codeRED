@@ -470,13 +470,13 @@
        old 64px left a dead band between the nav and the display. */
     padding-top: 0;
     /*
-      Pulls the hero up so the display begins near the top of the screen, while
-      still clearing the header row, which occupies the first 38px. The header
-      is transparent and the page column's top padding is 0, so a 10px start
-      places the display just below the header rather than under it.
+      No negative margin. The previous -28px pulled the display up into the
+      header row, so the terminal's title bar sat under the logo and the menu
+      button. At 0 the display starts at y=38, exactly the header's bottom edge,
+      so the terminal clears it.
       Spacing only: no image dimension is touched.
     */
-    margin-top: -28px;
+    margin-top: 0;
   }
 
   .thero__display {
