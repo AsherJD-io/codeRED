@@ -483,6 +483,18 @@
     desktop: that inset is what gives the outer rule room to be seen, because
     the display clips anything that touches its edge.
   */
+  /*
+    The photograph sits toward the top of the display rather than centred.
+    Centring left a dead band above the picture, and that band is what should
+    absorb the space freed by moving the hero up. The portrait keeps its own
+    width and aspect ratio, and the frame's `overflow: hidden` still clips the
+    scaled edge, so only its position within the box changes.
+  */
+  .thero__portrait {
+    justify-content: flex-start;
+    padding-top: 6%;
+  }
+
   .thero__portrait-frame {
     height: auto;
     max-height: 100%;
@@ -490,7 +502,7 @@
     max-width: 100%;
     aspect-ratio: 1766 / 1642;
     /* The inset that lets the outer ring render on a phone. */
-    margin: auto;
+    margin: 0 auto;
     max-width: 82%;
     max-height: 82%;
   }
