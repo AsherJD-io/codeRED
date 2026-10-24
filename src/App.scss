@@ -428,9 +428,10 @@ body {
     /*
       Tight top padding on a phone. The header is an in-flow row rather than a
       fixed bar, so the old nav-height allowance left a large empty band above
-      the hero: 76px of padding, then the header, then the hero's own padding.
+      the hero. 12px still cleared the header, so the hero can start closer to
+      the top of the screen.
     */
-    padding: 12px var(--space-3) var(--space-4);
+    padding: 4px var(--space-3) var(--space-4);
   }
 
   .mobile_container {
@@ -440,7 +441,7 @@ body {
   /* On mobile the pill nav becomes a compact bar top-right with a menu toggle,
      and the brand mark stays at the top-left, both inside the row. */
   .site-header {
-    padding: 12px var(--space-3) 0;
+    padding: 8px var(--space-3) 0;
     gap: 10px;
   }
 
