@@ -431,7 +431,7 @@ body {
       the hero. 12px still cleared the header, so the hero can start closer to
       the top of the screen.
     */
-    padding: 4px var(--space-3) var(--space-4);
+    padding: 0 var(--space-3) var(--space-4);
   }
 
   .mobile_container {
@@ -441,7 +441,7 @@ body {
   /* On mobile the pill nav becomes a compact bar top-right with a menu toggle,
      and the brand mark stays at the top-left, both inside the row. */
   .site-header {
-    padding: 8px var(--space-3) 0;
+    padding: 4px var(--space-3) 0;
     gap: 10px;
   }
 
