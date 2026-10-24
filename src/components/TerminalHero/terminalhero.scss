@@ -469,6 +469,8 @@
     /* No extra top padding: the header row already sits above this, and the
        old 64px left a dead band between the nav and the display. */
     padding-top: 0;
+    /* No gap above the display: the header row already sits above this. */
+    margin-top: -4px;
   }
 
   .thero__display {
