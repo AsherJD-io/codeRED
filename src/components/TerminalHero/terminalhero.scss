@@ -445,7 +445,17 @@
   height: 100%;
   object-fit: contain;
   object-position: center center;
-  transform: scale(1.06);
+  /*
+    The photograph carries a dark band at its own left and right edges (the
+    plant and the wall art), which against the dark page reads as a gap between
+    the picture and the inner ring. Scaling it past the frame and letting the
+    frame's `overflow: hidden` clip the excess pushes those bands outside the
+    ring, so the picture meets the boundary.
+
+    Raised from 1.06: at that scale the bands were still visible inside the
+    ring. 1.16 clears them without cropping the subject.
+  */
+  transform: scale(1.16);
   transform-origin: center center;
 }
 
@@ -454,7 +464,7 @@
 @media (max-width: 993px) {
   .thero {
     grid-template-columns: 1fr;
-    gap: var(--space-4);
+    gap: var(--space-3);
     align-items: start;
     /* No extra top padding: the header row already sits above this, and the
        old 64px left a dead band between the nav and the display. */
@@ -517,6 +527,10 @@
 
   .thero__intro {
     order: 2;
+    /* Tighter than the desktop 40px between the name, bio, status and action.
+       Spacing only: the display box and the portrait's dimensions are left
+       exactly as they are. */
+    gap: var(--space-2);
   }
 
   .thero__name {
