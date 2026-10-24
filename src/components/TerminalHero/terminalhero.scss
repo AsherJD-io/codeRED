@@ -469,8 +469,14 @@
     /* No extra top padding: the header row already sits above this, and the
        old 64px left a dead band between the nav and the display. */
     padding-top: 0;
-    /* No gap above the display: the header row already sits above this. */
-    margin-top: -4px;
+    /*
+      Pulls the hero up so the display begins near the top of the screen, while
+      still clearing the header row, which occupies the first 38px. The header
+      is transparent and the page column's top padding is 0, so a 10px start
+      places the display just below the header rather than under it.
+      Spacing only: no image dimension is touched.
+    */
+    margin-top: -28px;
   }
 
   .thero__display {
