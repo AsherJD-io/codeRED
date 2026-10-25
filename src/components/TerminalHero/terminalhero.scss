@@ -301,13 +301,6 @@
   margin: 0 0 6px;
 }
 
-/* The closing command is short, so it is kept to one line rather than allowed
-   to wrap: the prompt and the remark belong together, as on the first line. */
-.thero__cmdline--welcome {
-  flex-wrap: nowrap;
-  white-space: nowrap;
-}
-
 .thero__prompt {
   white-space: nowrap;
 }
@@ -375,9 +368,12 @@
   color: #96d988;
 }
 
-/* The closing command's `$ ` symbol takes the shell's own colour. */
-.thero__cmdline--welcome .thero__prompt-sym {
-  color: #b3b9b8;
+/* The closing command keeps its own line. On a phone it is longer than the
+   prompt, so the remark wraps onto the line below, exactly as the fetch
+   command does. On a desktop the terminal is wide enough for both, so it stays
+   put: nowrap here is what stops it from breaking where it used to fit. */
+.thero__cmdline--welcome {
+  white-space: nowrap;
 }
 
 /*
@@ -551,6 +547,41 @@
     margin: 0 auto;
     max-width: 82%;
     max-height: 82%;
+    /*
+      The rings are sized from the photograph rather than offset by a fixed
+      number of pixels.
+
+      On a phone the frame is 261x243. Fixed offsets put the outer ring a
+      further 9px out, which read as a wide dark band between the picture and
+      the boundary. These two rings are drawn by pseudo-elements positioned a
+      percentage of the frame's own box, so they stay tight to the photograph
+      at whatever size the phone gives it.
+
+      The image's size, inset and aspect ratio are unchanged.
+    */
+    border: none;
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.7);
+  }
+
+  /* The inner rule. Its inset is a proportion of the photograph, so the ring
+     tracks the image's size; the rule itself is a hairline. */
+  .thero__portrait-frame::before {
+    content: "";
+    position: absolute;
+    inset: -0.8%;
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* The outer rule, a further proportion out. */
+  .thero__portrait-frame::after {
+    content: "";
+    position: absolute;
+    inset: -1.8%;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    border-radius: inherit;
+    pointer-events: none;
   }
 
   .thero__body {
