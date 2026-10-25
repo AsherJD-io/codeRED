@@ -301,6 +301,13 @@
   margin: 0 0 6px;
 }
 
+/* The closing command is short, so it is kept to one line rather than allowed
+   to wrap: the prompt and the remark belong together, as on the first line. */
+.thero__cmdline--welcome {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
 .thero__prompt {
   white-space: nowrap;
 }
@@ -368,12 +375,17 @@
   color: #96d988;
 }
 
+/* The closing command's `$ ` symbol takes the shell's own colour. */
+.thero__cmdline--welcome .thero__prompt-sym {
+  color: #b3b9b8;
+}
+
 /*
-   The closing remark. It is not a fetch value, so it is not the yellow those
-   carry: it takes the label's cyan instead, which reads as the same channel as
-   `langs` and `github` rather than as one of their values.
+  The closing remark is not a fetch value, so it is not the yellow those
+  carry: it takes the label's cyan, which reads as the same channel as `langs`
+  and `github` rather than as one of their values.
 */
-.thero__value--closing {
+.thero__cmdline--welcome .thero__command {
   color: #67cbe7;
 }
 
