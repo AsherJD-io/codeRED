@@ -280,8 +280,12 @@ export default function TerminalHero() {
                   </span>
                   <span className="thero__command">
                     {WELCOME.slice(0, welcomeIndex)}
+                    {/* The caret lives inside the command span, so it sits
+                        directly after whatever has been typed rather than at
+                        the end of the command box, which on a phone is
+                        stretched to the full width. */}
+                    <span className="thero__caret" aria-hidden="true" />
                   </span>
-                  <span className="thero__caret" aria-hidden="true" />
                 </p>
               ) : null}
 

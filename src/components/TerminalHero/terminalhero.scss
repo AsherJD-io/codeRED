@@ -386,9 +386,10 @@
   carry: it takes the label's cyan, which reads as the same channel as `langs`
   and `github` rather than as one of their values.
 
-  The 6px left margin the fetch command carries is dropped here: the remark is
-  long enough that those pixels were the difference between one line and two on
-  a desktop terminal.
+  No left margin: the prompt's `$ ` already ends with a space, so the `$` and
+  the `#` are set apart by that alone. The remark is long enough that any extra
+  margin pushed it past the box and onto a second line on a desktop terminal,
+  where it fits on one.
 */
 .thero__cmdline--welcome .thero__command {
   margin-left: 0;
@@ -597,9 +598,19 @@
   }
 
   /* The remark is longer than the prompt, so it continues on the line below,
-     exactly as the fetch command does. */
+     exactly as the fetch command does. It starts under the prompt right away
+     rather than sitting beside it and dropping only once it overflows. */
   .thero__cmdline--welcome {
     flex-wrap: wrap;
+  }
+
+  .thero__cmdline--welcome .thero__command {
+    /* Full width forces the remark onto the line below the prompt, so it
+       begins under `asher@ASHER` from the first character rather than beside
+       the prompt and dropping later. The caret lives inside this span, so it
+       follows the typed text rather than sitting at the end of the box. */
+    flex-basis: 100%;
+    margin-left: 0;
   }
 }
 
