@@ -42,6 +42,13 @@ const PROMPT = {
 const COMMAND = "fetch.sh -u asher";
 
 /*
+ * The closing remark, typed as a second command rather than printed as output.
+ * It is a command of its own, so it gets the prompt, the `# ` symbol and the
+ * resolved-command green, exactly as the first line does.
+ */
+const WELCOME = "# welcome to my space...";
+
+/*
  * The terminal output, in the README's own key/value shape: a dim label, a
  * readable value, nothing decorative.
  *
@@ -59,7 +66,7 @@ const COMMAND = "fetch.sh -u asher";
  * repeats the page's own copy: the left column states who he is and what he
  * works on, and the Work section below lists the projects.
  */
-type Row = { label?: string; values: string[]; closing?: boolean };
+type Row = { label?: string; values: string[] };
 
 const ROWS: Row[] = [
   { label: "github", values: ["16 repos"] },
@@ -69,7 +76,6 @@ const ROWS: Row[] = [
     values: ["TypeScript", "Python", "CSS", "JavaScript", "Shell"],
   },
   { label: "", values: ["SCSS", "HTML", "Dockerfile", "Makefile"] },
-  { label: "", values: ["Welcome to my space."], closing: true },
 ];
 
 const TYPE_CHAR_MS = 46;
@@ -78,11 +84,12 @@ const HOLD_BEFORE_PORTRAIT_MS = 1400;
 const HOLD_PORTRAIT_MS = 4200;
 
 export default function TerminalHero() {
-  const [phase, setPhase] = useState<"typing" | "output" | "portrait">(
-    "typing",
-  );
+  const [phase, setPhase] = useState<
+    "typing" | "output" | "welcome" | "portrait"
+  >("typing");
   const [charIndex, setCharIndex] = useState(0);
   const [rowCount, setRowCount] = useState(0);
+  const [welcomeIndex, setWelcomeIndex] = useState(0);
   const [settled, setSettled] = useState(false);
   const reducedRef = useRef(false);
 
@@ -93,6 +100,8 @@ export default function TerminalHero() {
       reducedRef.current = mq.matches;
       if (mq.matches) {
         setPhase("portrait");
+        setRowCount(ROWS.length);
+        setWelcomeIndex(WELCOME.length);
         setSettled(true);
       }
     };
@@ -115,16 +124,31 @@ export default function TerminalHero() {
     return () => clearTimeout(timer);
   }, [phase, charIndex]);
 
-  /* Phase 2 — reveal the profile rows one at a time. */
+  /* Phase 2 — reveal the profile rows one at a time, then hand over to the
+     welcome command. */
   useEffect(() => {
     if (reducedRef.current || phase !== "output") return;
     if (rowCount >= ROWS.length) {
-      const timer = setTimeout(() => setSettled(true), HOLD_BEFORE_PORTRAIT_MS);
+      const timer = setTimeout(() => setPhase("welcome"), TYPE_LINE_MS);
       return () => clearTimeout(timer);
     }
     const timer = setTimeout(() => setRowCount((r) => r + 1), TYPE_LINE_MS);
     return () => clearTimeout(timer);
   }, [phase, rowCount]);
+
+  /* Phase 3 — type the closing command, one character at a time. */
+  useEffect(() => {
+    if (reducedRef.current || phase !== "welcome") return;
+    if (welcomeIndex >= WELCOME.length) {
+      const timer = setTimeout(() => setSettled(true), HOLD_BEFORE_PORTRAIT_MS);
+      return () => clearTimeout(timer);
+    }
+    const timer = setTimeout(
+      () => setWelcomeIndex((c) => c + 1),
+      welcomeIndex === 0 ? 420 : TYPE_CHAR_MS,
+    );
+    return () => clearTimeout(timer);
+  }, [phase, welcomeIndex]);
 
   /* Phase 3 — hold the portrait, then start the loop again. */
   useEffect(() => {
@@ -132,6 +156,7 @@ export default function TerminalHero() {
     const timer = setTimeout(() => {
       setCharIndex(0);
       setRowCount(0);
+      setWelcomeIndex(0);
       setSettled(false);
       setPhase("typing");
     }, HOLD_PORTRAIT_MS);
@@ -223,10 +248,7 @@ export default function TerminalHero() {
               </p>
 
               {ROWS.slice(0, rowCount).map((row, i) => (
-                <p
-                  className={`thero__row${row.closing ? " thero__row--closing" : ""}`}
-                  key={i}
-                >
+                <p className="thero__row" key={i}>
                   {row.label ? (
                     <span className="thero__label">
                       {row.label.padEnd(6, " ")}
@@ -235,10 +257,7 @@ export default function TerminalHero() {
                     <span className="thero__label">{" ".repeat(6)}</span>
                   )}
                   {row.values.map((value, j) => (
-                    <span
-                      className={`thero__value${row.closing ? " thero__value--closing" : ""}`}
-                      key={j}
-                    >
+                    <span className="thero__value" key={j}>
                       {j > 0 ? (
                         <span className="thero__dot-sep"> · </span>
                       ) : null}
@@ -247,6 +266,24 @@ export default function TerminalHero() {
                   ))}
                 </p>
               ))}
+
+              {/* The closing command, typed out with its own prompt, exactly as
+                  the fetch command above was. */}
+              {phase === "welcome" || settled ? (
+                <p className="thero__cmdline thero__cmdline--welcome">
+                  <span className="thero__prompt">
+                    <span className="thero__prompt-id">{PROMPT.identity}</span>
+                    <span className="thero__prompt-sep">{PROMPT.sep}</span>
+                    <span className="thero__prompt-sep">:</span>
+                    <span className="thero__prompt-path">{PROMPT.path}</span>
+                    <span className="thero__prompt-sym">{PROMPT.sym}</span>
+                  </span>
+                  <span className="thero__command">
+                    {WELCOME.slice(0, welcomeIndex)}
+                  </span>
+                  <span className="thero__caret" aria-hidden="true" />
+                </p>
+              ) : null}
 
               {settled ? (
                 <p className="thero__row thero__row--done">
