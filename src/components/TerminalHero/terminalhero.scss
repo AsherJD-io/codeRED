@@ -481,17 +481,45 @@
 
   .thero__display {
     order: 1;
-    /* A phone keeps the display at a stable height while typing so the box
-       does not collapse to a single line and the portrait has a box to fill. */
-    height: 460px;
+    /*
+      The box is only as tall as the terminal, so the hero text sits directly
+      underneath it.
+
+      The 460px was there to give the portrait room, but the portrait frame is
+      width-bound: its width is 82% of the box's width and its height follows
+      from the 1766/1642 aspect ratio, so it never needed the extra height.
+      Holding 460px left 347px of dead space between the terminal and the hero,
+      which is what made the hero read as a separate page.
+
+      The terminal is in normal flow and sets the height. The portrait face is
+      absolutely positioned over the same box, anchored to the bottom, so the
+      photograph and the terminal share one footprint: the portrait keeps its
+      82% inset, its aspect ratio and its 243px height, unchanged.
+
+      Spacing only. No image dimension is touched.
+    */
+    height: auto;
     min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    /* The box must clear whichever face is taller. In the portrait phase the
+       terminal has fewer lines, so the box would otherwise be too short for
+       the photograph, whose height is capped at 82% of it. */
+    min-height: 296px;
   }
 
   .thero__face {
-    position: absolute;
-    inset: 0;
     display: flex;
     flex-direction: column;
+  }
+
+  /* The portrait overlays the terminal, anchored to the bottom of the box. */
+  .thero__portrait {
+    position: absolute;
+    inset: 0;
+    justify-content: flex-end;
   }
 
   /*
@@ -501,18 +529,6 @@
     desktop: that inset is what gives the outer rule room to be seen, because
     the display clips anything that touches its edge.
   */
-  /*
-    The photograph sits toward the top of the display rather than centred.
-    Centring left a dead band above the picture, and that band is what should
-    absorb the space freed by moving the hero up. The portrait keeps its own
-    width and aspect ratio, and the frame's `overflow: hidden` still clips the
-    scaled edge, so only its position within the box changes.
-  */
-  .thero__portrait {
-    justify-content: flex-start;
-    padding-top: 6%;
-  }
-
   .thero__portrait-frame {
     height: auto;
     max-height: 100%;
@@ -526,11 +542,12 @@
   }
 
   .thero__body {
+    /* The terminal sets the box height. Positioned rather than absolutely
+       placed, so the box ends where the terminal ends. */
+    position: relative;
     align-self: flex-start;
-    /* The terminal hugs its own text, as it does on a desktop, rather than
-       being stretched to fill the display: the phone was showing a tall empty
-       box around a compact terminal. */
     flex-grow: 0;
+    width: 100%;
   }
 
   .thero__intro {
