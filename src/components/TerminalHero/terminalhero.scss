@@ -510,9 +510,9 @@
       which is what made the hero read as a separate page.
 
       The terminal is in normal flow and sets the height. The portrait face is
-      absolutely positioned over the same box, anchored to the bottom, so the
-      photograph and the terminal share one footprint: the portrait keeps its
-      82% inset, its aspect ratio and its 243px height, unchanged.
+      absolutely positioned over the same box, so the photograph and the
+      terminal share one footprint: the portrait keeps its 82% inset, its aspect
+      ratio and its 243px height, unchanged.
 
       Spacing only. No image dimension is touched.
     */
@@ -520,12 +520,8 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     flex: 0 0 auto;
-    /* The box must clear whichever face is taller. In the portrait phase the
-       terminal has fewer lines, so the box would otherwise be too short for
-       the photograph, whose height is capped at 82% of it. */
-    min-height: 296px;
   }
 
   .thero__face {
@@ -533,11 +529,13 @@
     flex-direction: column;
   }
 
-  /* The portrait overlays the terminal, anchored to the bottom of the box. */
+  /* The portrait overlays the terminal, anchored to the top of the box, so the
+     photograph starts where the terminal starts rather than hanging at the
+     bottom of a box that has grown taller. */
   .thero__portrait {
     position: absolute;
     inset: 0;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 
   /*
@@ -558,40 +556,18 @@
     max-width: 82%;
     max-height: 82%;
     /*
-      The rings are sized from the photograph rather than offset by a fixed
-      number of pixels.
+      The same two rings as the desktop frame, drawn the same way: a 2px rule
+      on the image edge, then a 7px dark spacer and a 9px outer rule.
 
-      On a phone the frame is 261x243. Fixed offsets put the outer ring a
-      further 9px out, which read as a wide dark band between the picture and
-      the boundary. These two rings are drawn by pseudo-elements positioned a
-      percentage of the frame's own box, so they stay tight to the photograph
-      at whatever size the phone gives it.
-
-      The image's size, inset and aspect ratio are unchanged.
+      The rings are box-shadows rather than an outline because an outline is
+      always a rectangle and ignores the border-radius, which would leave
+      square corners cutting across the curve of the photograph.
     */
-    border: none;
-    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.7);
-  }
-
-  /* The inner rule. Its inset is a proportion of the photograph, so the ring
-     tracks the image's size; the rule itself is a hairline. */
-  .thero__portrait-frame::before {
-    content: "";
-    position: absolute;
-    inset: -0.8%;
-    border: 1.5px solid rgba(255, 255, 255, 0.6);
-    border-radius: inherit;
-    pointer-events: none;
-  }
-
-  /* The outer rule, a further proportion out. */
-  .thero__portrait-frame::after {
-    content: "";
-    position: absolute;
-    inset: -1.8%;
-    border: 1.5px solid rgba(255, 255, 255, 0.3);
-    border-radius: inherit;
-    pointer-events: none;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 0 0 7px rgba(17, 17, 18, 0.9),
+      0 0 0 9px rgba(255, 255, 255, 0.3),
+      0 30px 70px rgba(0, 0, 0, 0.7);
   }
 
   .thero__body {
