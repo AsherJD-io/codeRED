@@ -60,14 +60,34 @@ function RevealHost({ children }: { children: ReactNode }) {
      * 1 once it is a viewport-height past the fold. Driving `--reveal-progress`
      * from scroll (rather than a one-shot class) is what makes the movement and
      * the colour shift track the scroll continuously instead of fading in once.
+     *
+     * The progress is painted onto the element AND onto every heading inside it.
+     * A heading animates its own words from `--reveal-progress`, so without
+     * this the words were driven by a variable the scroll handler never set on
+     * them: they stayed at their hidden start state and only snapped in once
+     * the container's transform had carried them well into view, which is what
+     * made the reveal read as broken on a phone.
      */
     const paint = (el: HTMLElement) => {
       const rect = el.getBoundingClientRect();
+      /*
+        Progress runs 0 -> 1 over 45% of the viewport rather than 90%.
+
+        At 90% an element only reached full opacity once its top had travelled
+        a third of a viewport ABOVE the screen, so on a phone content stayed
+        dim for the whole scroll and read as never having arrived. Over 45% it
+        is fully revealed once it is about a tenth of the way down, which is
+        what the reference's reveal does.
+      */
       const progress = Math.min(
         1,
-        Math.max(0, (rootBottom() - rect.top) / (window.innerHeight * 0.9)),
+        Math.max(0, (rootBottom() - rect.top) / (window.innerHeight * 0.45)),
       );
-      el.style.setProperty("--reveal-progress", progress.toFixed(3));
+      const value = progress.toFixed(3);
+      el.style.setProperty("--reveal-progress", value);
+      el.querySelectorAll<HTMLElement>(
+        ".section-title, .home__contact-heading, h2, h3",
+      ).forEach((child) => child.style.setProperty("--reveal-progress", value));
     };
 
     /** Reveal and paint anything that has reached the visible bottom edge. */
@@ -75,7 +95,11 @@ function RevealHost({ children }: { children: ReactNode }) {
       const limit = rootBottom();
       for (const el of targets) {
         if (el.getBoundingClientRect().top < limit) reveal(el);
-        if (el.classList.contains("is-visible")) paint(el);
+        // Painted whether or not the element has crossed the line. Content
+        // already inside the viewport on load never crosses it, so without
+        // this it kept the default progress of 0 and sat at the floor opacity
+        // for the rest of the session, dimmed instead of revealed.
+        paint(el);
       }
     };
 
