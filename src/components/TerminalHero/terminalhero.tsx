@@ -59,7 +59,7 @@ const WELCOME = "# welcome to my space...";
  *   - stars received: 15
  *   - languages: every language GitHub reports across the account's own
  *     repositories, ordered by the account's byte share (TypeScript, Python,
- *     CSS, JavaScript, Shell, SCSS, HTML, Makefile), the first five
+ *     CSS, JavaScript, Shell, SCSS, HTML), the first five
  *     on one row and the rest on the next.
  *
  * The fetch output comes first, then the welcome note closes it. None of it
@@ -73,9 +73,16 @@ const ROWS: Row[] = [
   { label: "", values: ["26 PRs", "15 stars"] },
   {
     label: "langs",
-    values: ["TypeScript", "Python", "CSS", "JavaScript", "Shell"],
+    values: [
+      "TypeScript",
+      "Python",
+      "CSS",
+      "JavaScript",
+      "Shell",
+      "SCSS",
+      "HTML",
+    ],
   },
-  { label: "", values: ["SCSS", "HTML", "Makefile"] },
 ];
 
 const TYPE_CHAR_MS = 46;
