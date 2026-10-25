@@ -286,7 +286,11 @@
   flex-direction: column;
   justify-content: center;
   gap: 3px;
-  padding: var(--space-3) var(--space-3);
+  /* 16px rather than 24px. The welcome line is prompt plus a long remark and
+     needs the width: at 24px the two sides together ran past the box and the
+     remark wrapped onto a second line where the terminal was otherwise wide
+     enough for it. */
+  padding: var(--space-3) var(--space-2);
   font-family: var(--mono);
   font-size: clamp(0.62rem, 0.82vw, 0.74rem);
   line-height: 1.7;
@@ -368,20 +372,26 @@
   color: #96d988;
 }
 
-/* The closing command keeps its own line. On a phone it is longer than the
-   prompt, so the remark wraps onto the line below, exactly as the fetch
-   command does. On a desktop the terminal is wide enough for both, so it stays
-   put: nowrap here is what stops it from breaking where it used to fit. */
+/* The closing command keeps one line where the terminal is wide enough for it.
+   `flex-wrap` is what breaks the line, not `white-space`, so this is the
+   property that decides. On a phone the media query below puts it back to
+   wrapping so the remark continues under the prompt, as the fetch command
+   does. */
 .thero__cmdline--welcome {
-  white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
 /*
   The closing remark is not a fetch value, so it is not the yellow those
   carry: it takes the label's cyan, which reads as the same channel as `langs`
   and `github` rather than as one of their values.
+
+  The 6px left margin the fetch command carries is dropped here: the remark is
+  long enough that those pixels were the difference between one line and two on
+  a desktop terminal.
 */
 .thero__cmdline--welcome .thero__command {
+  margin-left: 0;
   color: #67cbe7;
 }
 
@@ -607,6 +617,12 @@
 
   .thero__bio {
     max-width: 100%;
+  }
+
+  /* The remark is longer than the prompt, so it continues on the line below,
+     exactly as the fetch command does. */
+  .thero__cmdline--welcome {
+    flex-wrap: wrap;
   }
 }
 
